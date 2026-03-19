@@ -76,11 +76,13 @@ Research the competitive landscape. Identify 3–5 direct or adjacent competitor
 - Where they fall short (specific friction points or unmet needs)
 - What differentiates them
 
-Synthesize into a structured report:
-- **Competitors**: Table or list with the above per competitor
-- **Market Gaps**: What no one is doing well that users need
-- **Trends**: Relevant shifts in user behavior, technology, or expectations
-- **Key Takeaways**: 3–5 bullets that will directly inform Phase 2
+Synthesize into a structured report with these exact sections:
+1. **Executive Summary** — 3–5 bullets on the most important findings
+2. **Competitor Overview** — feature matrix or table per competitor
+3. **Positioning Analysis** — where each competitor sits and where the whitespace is
+4. **Market Size Estimate** — TAM/SAM/SOM with confidence level
+5. **Key Trends** — technology, behavior, regulatory, and weak signals
+6. **Gaps & Opportunities** — what nobody is doing well that users need (most important)
 
 If you can't find meaningful competitors (niche domain, novel product), name adjacent products 
 and explain what you're borrowing from each.
@@ -139,18 +141,17 @@ or are the entry/exit points of the core flow.
 
 For each screen:
 1. Name the screen and its role in the flow
-2. Select a layout pattern (dashboard, empty state, onboarding step, form, list view, 
-   confirmation, error state, etc.)
-3. Generate an HTML wireframe using Tailwind CSS
+2. Select the closest layout template from `skills/wireframing/templates/` (dashboard, list-detail, form-page, onboarding-wizard, landing-page, settings-page)
+3. Read the template, adapt it to the specific screen, and save as a `.vue` file
 
 **Wireframe constraints**:
 - Grayscale only — structure, not style
 - Realistic placeholder content (product-relevant, not Lorem Ipsum)
-- Each file is standalone `.html` openable in any browser
-- Filename format: `wireframes/01-screen-name.html`
+- Uses shadcn-vue components — output is a `.vue` file for a Vue 3 + shadcn-vue project
+- Filename format: `wireframes/01-screen-name.vue`
 
-**After generating**, present the file list with a one-line description of each screen's purpose. 
-Tell the user to open them in a browser and invite feedback on flow, hierarchy, and missing states.
+**After generating**, present the file list with a one-line description of each screen's purpose.
+Tell the user to add the files to their Vue project and invite feedback on flow, hierarchy, and missing states.
 
 ---
 
@@ -160,8 +161,11 @@ Tell the user to open them in a browser and invite feedback on flow, hierarchy, 
 - **No clear competitors**: Research adjacent categories and explain the transfer.
 - **Phase 2 reveals the brief is wrong**: Surface this explicitly. Propose a reframe before 
   continuing. Let the user decide whether to pivot or continue.
-- **User skips a phase**: Acknowledge what context you're missing and flag any assumptions 
+- **User skips a phase**: Acknowledge what context you're missing and flag any assumptions
   you're making as a result.
+- **User already has a phase artifact**: If the user says "I already have a journey map" or
+  "skip research", accept their artifact as Phase N output and move directly to Phase N+1.
+  Ask them to share the artifact so you can carry it forward explicitly.
 
 ---
 

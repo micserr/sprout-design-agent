@@ -35,8 +35,8 @@ Process:
    - Update placeholder labels ("MAIN CONTENT" → actual section names)
    - Add/remove structural sections as needed
    - Keep all Tailwind classes grayscale
-5. Save the output as `wireframe-[screen-name].vue` in the project's views or pages directory
-6. Tell the user: "Add `wireframe-[screen-name].vue` to your Vue project and open it in a browser."
+5. Save the output as `wireframe-[screen-name].vue` in the project's `src/views/` or `src/pages/` directory (or a `wireframes/` subfolder if the user prefers)
+6. Tell the user: "Add `wireframe-[screen-name].vue` to your Vue project and open it via your dev server."
 
 ## shadcn-vue Component Reference
 

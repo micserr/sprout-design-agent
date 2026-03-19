@@ -10,8 +10,9 @@ A collection of Claude Code skills and an agent for product designers. It covers
 |---|---|---|
 | ux-market-research | Competitive analysis, market sizing, trend identification | "research competitors", "market analysis", "competitive landscape" |
 | problem-framing | JTBD templates, opportunity trees, HMW statements | "frame the problem", "JTBD", "how might we", "problem statement" |
-| wireframing | HTML wireframe templates for 6 layout patterns | "wireframe", "sketch a layout", "design a screen", "information architecture" |
+| wireframing | Vue 3 + shadcn-vue wireframe templates for 6 layout patterns | "wireframe", "sketch a layout", "design a screen", "information architecture" |
 | user-journey | Journey maps and user flow diagrams | "user journey", "user flow", "map the flow", "journey map" |
+| design-tokens | Token architecture, semantic color families, typography, dark mode | "what token should I use", "design token", "which color for", "semantic color" |
 
 ## The Product Design Agent
 
@@ -22,6 +23,7 @@ A dual-mode agent — acts as an advisor for design questions, or as an orchestr
 ## Requirements
 
 - Claude Code installed
+- For the **wireframing** skill: a Vue 3 project with [Tailwind CSS](https://tailwindcss.com) and [shadcn-vue](https://www.shadcn-vue.com) installed
 
 ## Installation
 
