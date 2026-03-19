@@ -1,5 +1,5 @@
 ---
-name: design-tokens
+name: toge:design-tokens
 description: >
   Use when applying design tokens, choosing colors, typography, spacing, or surface styles
   for a product UI. Trigger phrases: "what token should I use", "design token", "color token",

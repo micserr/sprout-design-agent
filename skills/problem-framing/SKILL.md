@@ -1,5 +1,5 @@
 ---
-name: problem-framing
+name: toge:problem-framing
 description: >
   Use when framing a product problem, applying Jobs-to-be-Done thinking, creating
   How-Might-We statements, or building opportunity trees. Trigger phrases: "frame the
