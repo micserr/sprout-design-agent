@@ -1,5 +1,5 @@
 ---
-name: ux-market-research
+name: toge:ux-market-research
 description: >
   Use when researching competitors, analyzing market landscape, or identifying industry trends
   for a product. Trigger phrases: "research competitors", "market analysis", "competitive

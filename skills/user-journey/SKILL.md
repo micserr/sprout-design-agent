@@ -1,5 +1,5 @@
 ---
-name: user-journey
+name: toge:user-journey
 description: >
   Use when mapping user journeys, creating user flow diagrams, or documenting touchpoints
   and interactions end-to-end. Trigger phrases: "user journey", "user flow", "map the flow",
