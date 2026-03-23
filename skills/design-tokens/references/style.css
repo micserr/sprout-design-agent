@@ -1,0 +1,1005 @@
+@import url('https://fonts.googleapis.com/css2?family=Rethink+Sans:wght@500;600;700&family=Rubik:wght@400;500;600&display=swap');
+@import 'tailwindcss';
+@import 'tw-animate-css';
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+/* Clear Tailwind's default color palette before defining ours */
+@theme {
+  --color-*: initial;
+}
+
+/* ─────────────────────────────────────────────────────────────────
+   MAX-WIDTH TOKENS
+   Usage: max-w-content-sm, max-w-content-md, max-w-content-lg, max-w-content-full
+   ───────────────────────────────────────────────────────────────── */
+@theme {
+  --max-width-content-sm: 640px;
+  --max-width-content-md: 1000px;
+  --max-width-content-lg: 1320px;
+  --max-width-content-full: 100%;
+}
+
+/* ─────────────────────────────────────────────────────────────────
+   SHADCN / RADIUS — inline so values stay reactive to :root vars
+   ───────────────────────────────────────────────────────────────── */
+@theme inline {
+  --radius-sm: calc(var(--radius) - 10px);
+  --radius-md: calc(var(--radius) - 8px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-ring: var(--sidebar-ring);
+}
+
+/* ─────────────────────────────────────────────────────────────────
+   PRIMITIVES — raw palette values
+   Clears Tailwind defaults and defines the full custom palette.
+   Emits CSS vars to :root and generates Tailwind utilities.
+   e.g. bg-mushroom-950, text-kangkong-700, border-tomato-300
+   ───────────────────────────────────────────────────────────────── */
+@theme {
+  /* white — explicit white token separate from the neutral scale */
+  --color-white: #ffffff;
+
+  /* neutral — true achromatic gray scale
+     Use for: disabled states, overlays, on-fill text
+     Do NOT use for UI surfaces/text/borders — use mushroom instead */
+  --color-neutral-50: #ffffff;
+  --color-neutral-100: #f1f2f3;
+  --color-neutral-200: #dbdbdd;
+  --color-neutral-300: #babcc0;
+  --color-neutral-400: #989898;
+  --color-neutral-500: #7c7c7c;
+  --color-neutral-600: #656565;
+  --color-neutral-700: #525252;
+  --color-neutral-800: #464646;
+  --color-neutral-900: #3d3d3d;
+  --color-neutral-950: #292929;
+
+  /* mushroom — brand-neutral warm gray (the primary UI gray)
+     Use for: surfaces, text, borders, interactive states
+     This is the main neutral palette — prefer over neutral for UI */
+  --color-mushroom-50: #f7f8f8;
+  --color-mushroom-100: #e6eaea;
+  --color-mushroom-200: #d9dede;
+  --color-mushroom-300: #b8c1c0;
+  --color-mushroom-400: #919f9d;
+  --color-mushroom-500: #738482;
+  --color-mushroom-600: #5d6c6b;
+  --color-mushroom-700: #4c5857;
+  --color-mushroom-800: #414b4b;
+  --color-mushroom-900: #394141;
+  --color-mushroom-950: #262b2b;
+
+  /* tomato */
+  --color-tomato-50: #fef2f3;
+  --color-tomato-100: #fee2e3;
+  --color-tomato-200: #fdcbce;
+  --color-tomato-300: #fba6aa;
+  --color-tomato-400: #f6737a;
+  --color-tomato-500: #ec4750;
+  --color-tomato-600: #da2f38;
+  --color-tomato-700: #b61f27;
+  --color-tomato-800: #971d23;
+  --color-tomato-900: #7d1f24;
+  --color-tomato-950: #440b0e;
+
+  /* carrot */
+  --color-carrot-50: #fffaec;
+  --color-carrot-100: #fff4d3;
+  --color-carrot-200: #ffe5a5;
+  --color-carrot-300: #ffd16d;
+  --color-carrot-400: #ffb132;
+  --color-carrot-500: #ff970a;
+  --color-carrot-600: #ff7f00;
+  --color-carrot-700: #cc5c02;
+  --color-carrot-800: #a1470b;
+  --color-carrot-900: #823c0c;
+  --color-carrot-950: #461c04;
+
+  /* mango */
+  --color-mango-50: #ffffea;
+  --color-mango-100: #fffbc5;
+  --color-mango-200: #fff885;
+  --color-mango-300: #ffed46;
+  --color-mango-400: #ffdf1b;
+  --color-mango-500: #ffbf00;
+  --color-mango-600: #e29300;
+  --color-mango-700: #bb6802;
+  --color-mango-800: #985008;
+  --color-mango-900: #7c420b;
+  --color-mango-950: #482200;
+
+  /* kangkong */
+  --color-kangkong-50: #f0fdf4;
+  --color-kangkong-100: #dcfce6;
+  --color-kangkong-200: #bbf7ce;
+  --color-kangkong-300: #86efa8;
+  --color-kangkong-400: #4ade7b;
+  --color-kangkong-500: #22c558;
+  --color-kangkong-600: #17ad49;
+  --color-kangkong-700: #158039;
+  --color-kangkong-800: #166531;
+  --color-kangkong-900: #14532b;
+  --color-kangkong-950: #052e15;
+
+  /* wintermelon */
+  --color-wintermelon-50: #ecfeff;
+  --color-wintermelon-100: #cefbff;
+  --color-wintermelon-200: #a3f3fe;
+  --color-wintermelon-300: #64e9fc;
+  --color-wintermelon-400: #1ed5f2;
+  --color-wintermelon-500: #02afce;
+  --color-wintermelon-600: #0592b5;
+  --color-wintermelon-700: #0c7492;
+  --color-wintermelon-800: #135e77;
+  --color-wintermelon-900: #154e64;
+  --color-wintermelon-950: #073345;
+
+  /* blueberry */
+  --color-blueberry-50: #eef7ff;
+  --color-blueberry-100: #d8ebff;
+  --color-blueberry-200: #badcff;
+  --color-blueberry-300: #8bbdff;
+  --color-blueberry-400: #549eff;
+  --color-blueberry-500: #2d88ff;
+  --color-blueberry-600: #1679fa;
+  --color-blueberry-700: #0f6eeb;
+  --color-blueberry-800: #1356ba;
+  --color-blueberry-900: #164b92;
+  --color-blueberry-950: #122e59;
+
+  /* ubas — purple
+     Chart/data-viz palette only. No semantic mappings intentionally.
+     Use directly: bg-ubas-500, text-ubas-700, etc. */
+  --color-ubas-50: #f5f3ff;
+  --color-ubas-100: #eee9fe;
+  --color-ubas-200: #ded6fe;
+  --color-ubas-300: #c6b5fd;
+  --color-ubas-400: #aa8bfa;
+  --color-ubas-500: #8952f6;
+  --color-ubas-600: #8139ee;
+  --color-ubas-700: #7227da;
+  --color-ubas-800: #5f21b6;
+  --color-ubas-900: #501d95;
+  --color-ubas-950: #311065;
+}
+
+/* ─────────────────────────────────────────────────────────────────
+   SEMANTICS — map intent to primitives
+   Uses @theme inline so utilities reference the bridge var directly
+   (e.g. background-color: var(--surface-adaptive)). Override bridge vars
+   in .dark {} with direct values — same pattern shadcn uses.
+   e.g. bg-surface, text-strong, border-brand, bg-danger-subtle
+   ───────────────────────────────────────────────────────────────── */
+@theme inline {
+  /* — Surface — surface-white, surface-gray, surface, surface-adaptive (darker container), then rest */
+  --color-surface-white: var(--surface-white);
+  --color-surface-gray: var(--surface-gray);
+  --color-surface: var(--surface);
+  --color-surface-adaptive: var(--surface-adaptive);
+  --color-surface-hover: var(--surface-hover);
+  --color-surface-pressed: var(--surface-pressed);
+  --color-surface-disabled: var(--surface-disabled);
+  --color-surface-inverted: var(--surface-inverted);
+  --color-surface-inverted-hover: var(--surface-inverted-hover);
+  --color-surface-inverted-pressed: var(--surface-inverted-pressed);
+  --color-surface-active: var(--surface-active);
+  --color-surface-active-soft: var(--surface-active-soft);
+
+  /* — Text — not in theme; use .text-strong, .text-base etc. (components layer) so bg-* / border-* are not generated and text semantics can't be misused as fill. */
+
+  /* — Border — not in theme; use .border-strong, .border-base etc. (components layer) so bg-* / text-* are not generated. */
+
+  /* — Brand — */
+  --color-brand: var(--brand);
+  --color-brand-hover: var(--brand-hover);
+  --color-brand-pressed: var(--brand-pressed);
+  --color-brand-subtle: var(--brand-subtle);
+  --color-brand-subtle-hover: var(--brand-subtle-hover);
+  --color-brand-subtle-pressed: var(--brand-subtle-pressed);
+  --color-brand-text: var(--brand-text);
+  --color-brand-text-hover: var(--brand-text-hover);
+  --color-brand-text-pressed: var(--brand-text-pressed);
+
+  /* — Success — */
+  --color-success: var(--success);
+  --color-success-hover: var(--success-hover);
+  --color-success-pressed: var(--success-pressed);
+  --color-success-text: var(--success-text);
+  --color-success-text-hover: var(--success-text-hover);
+  --color-success-text-pressed: var(--success-text-pressed);
+  --color-success-subtle: var(--success-subtle);
+  --color-success-subtle-hover: var(--success-subtle-hover);
+  --color-success-subtle-pressed: var(--success-subtle-pressed);
+
+  /* — Information — */
+  --color-information: var(--information);
+  --color-information-hover: var(--information-hover);
+  --color-information-pressed: var(--information-pressed);
+  --color-information-text: var(--information-text);
+  --color-information-text-hover: var(--information-text-hover);
+  --color-information-text-pressed: var(--information-text-pressed);
+  --color-information-subtle: var(--information-subtle);
+  --color-information-subtle-hover: var(--information-subtle-hover);
+  --color-information-subtle-pressed: var(--information-subtle-pressed);
+
+  /* — Danger — */
+  --color-danger: var(--danger);
+  --color-danger-hover: var(--danger-hover);
+  --color-danger-pressed: var(--danger-pressed);
+  --color-danger-text: var(--danger-text);
+  --color-danger-text-hover: var(--danger-text-hover);
+  --color-danger-text-pressed: var(--danger-text-pressed);
+  --color-danger-subtle: var(--danger-subtle);
+  --color-danger-subtle-hover: var(--danger-subtle-hover);
+  --color-danger-subtle-pressed: var(--danger-subtle-pressed);
+
+  /* — Pending — */
+  --color-pending: var(--pending);
+  --color-pending-hover: var(--pending-hover);
+  --color-pending-pressed: var(--pending-pressed);
+  --color-pending-text: var(--pending-text);
+  --color-pending-text-hover: var(--pending-text-hover);
+  --color-pending-text-pressed: var(--pending-text-pressed);
+  --color-pending-subtle: var(--pending-subtle);
+  --color-pending-subtle-hover: var(--pending-subtle-hover);
+  --color-pending-subtle-pressed: var(--pending-subtle-pressed);
+
+  /* — Caution — */
+  --color-caution: var(--caution);
+  --color-caution-hover: var(--caution-hover);
+  --color-caution-pressed: var(--caution-pressed);
+  --color-caution-text: var(--caution-text);
+  --color-caution-text-hover: var(--caution-text-hover);
+  --color-caution-text-pressed: var(--caution-text-pressed);
+  --color-caution-subtle: var(--caution-subtle);
+  --color-caution-subtle-hover: var(--caution-subtle-hover);
+  --color-caution-subtle-pressed: var(--caution-subtle-pressed);
+
+  /* — Accent — uses --accent-fill to avoid conflict with shadcn's --accent — */
+  --color-accent: var(--accent-fill);
+  --color-accent-hover: var(--accent-fill-hover);
+  --color-accent-pressed: var(--accent-fill-pressed);
+  --color-accent-text: var(--accent-text);
+  --color-accent-text-hover: var(--accent-text-hover);
+  --color-accent-text-pressed: var(--accent-text-pressed);
+  --color-accent-subtle: var(--accent-subtle);
+  --color-accent-subtle-hover: var(--accent-subtle-hover);
+  --color-accent-subtle-pressed: var(--accent-subtle-pressed);
+
+  /* — Control — form control track (toggles, switches, checkboxes) — */
+  --color-control: var(--control);
+  --color-control-hover: var(--control-hover);
+  --color-control-pressed: var(--control-pressed);
+}
+
+/* ─────────────────────────────────────────────────────────────────
+   TYPOGRAPHY SCALE — numeric type scale
+   Generates text-100…text-1000, leading-100…leading-1000,
+   tracking-densest…tracking-widest utilities.
+   Update values when typography primitives JSON is created.
+   ───────────────────────────────────────────────────────────────── */
+@theme {
+  /* font sizes (1rem = 16px). Default for web UI: 14px (--text-300). Avoid 10px/12px for primary text. */
+  --text-100: 0.625rem; /* 10px — avoid for UI */
+  --text-200: 0.75rem; /* 12px — avoid for UI */
+  --text-300: 0.875rem; /* 14px — default body */
+  --text-400: 1rem; /* 16px */
+  --text-500: 1.125rem; /* 18px */
+  --text-600: 1.25rem; /* 20px */
+  --text-700: 1.5rem; /* 24px */
+  --text-800: 1.875rem; /* 30px */
+  --text-900: 2.25rem; /* 36px */
+  --text-1000: 3rem; /* 48px */
+
+  /* line heights */
+  --leading-100: 1;
+  --leading-200: 1.1;
+  --leading-300: 1.25;
+  --leading-400: 1.375;
+  --leading-500: 1.5;
+  --leading-600: 1.625;
+  --leading-700: 1.75;
+  --leading-800: 1.875;
+  --leading-900: 2;
+  --leading-1000: 2.25;
+
+  /* letter spacing */
+  --tracking-densest: -0.05em;
+  --tracking-denser: -0.025em;
+  --tracking-dense: -0.015em;
+  --tracking-normal: 0em;
+  --tracking-wide: 0.025em;
+  --tracking-wider: 0.05em;
+  --tracking-widest: 0.1em;
+
+  /* content max-widths */
+  --max-width-content-sm: 640px;
+  --max-width-content-md: 1000px;
+  --max-width-content-lg: 1320px;
+  --max-width-content-full: 100%;
+}
+
+/* ─────────────────────────────────────────────────────────────────
+   APP THEME — shadcn/reka component theming vars
+   ───────────────────────────────────────────────────────────────── */
+:root {
+  --font-heading: 'Rubik', ui-sans-serif, system-ui, sans-serif;
+  --font-body: 'Rubik', ui-sans-serif, system-ui, sans-serif;
+  --radius: 1.125rem;
+  --background: #fbfcfa;
+  --foreground: #262b2b;
+  --card: oklch(1 0 0);
+  --card-foreground: #262b2b;
+  --popover: oklch(1 0 0);
+  --popover-foreground: #262b2b;
+  --primary: #158039;
+  --primary-foreground: #ffffff;
+  --secondary: #f4f8f4;
+  --secondary-foreground: #244536;
+  --muted: #f5f8f5;
+  --muted-foreground: #5c6b61;
+  --accent: #eef8ec;
+  --accent-foreground: #262b2b;
+  --destructive: oklch(0.603 0.215 23);
+  --border: #e1e9e2;
+  --input: #e1e9e2;
+  --ring: #158039;
+  --chart-1: #32ce13;
+  --chart-2: #7392e3;
+  --chart-3: oklch(0.597 0.196 312);
+  --chart-4: #dff566;
+  --chart-5: oklch(0.633 0.231 29);
+  --sidebar: #fdfefd;
+  --sidebar-foreground: #262b2b;
+  --sidebar-primary: #158039;
+  --sidebar-primary-foreground: #033222;
+  --sidebar-accent: #f4f8f4;
+  --sidebar-accent-foreground: #262b2b;
+  --sidebar-border: #e1e9e2;
+  --sidebar-ring: #158039;
+}
+
+.dark {
+  --background: oklch(0.243 0.012 184);
+  --foreground: oklch(0.965 0.006 152);
+  --card: oklch(0.276 0.01 184);
+  --card-foreground: oklch(0.965 0.006 152);
+  --popover: oklch(0.276 0.01 184);
+  --popover-foreground: oklch(0.965 0.006 152);
+  --primary: oklch(0.731 0.165 146);
+  --primary-foreground: oklch(0.205 0.008 184);
+  --secondary: oklch(0.324 0.011 184);
+  --secondary-foreground: oklch(0.965 0.006 152);
+  --muted: oklch(0.324 0.011 184);
+  --muted-foreground: oklch(0.75 0.012 183);
+  --accent: oklch(0.357 0.03 303);
+  --accent-foreground: oklch(0.965 0.006 152);
+  --destructive: oklch(0.69 0.189 23);
+  --border: oklch(1 0 0 / 0.08);
+  --input: oklch(1 0 0 / 0.12);
+  --ring: oklch(0.731 0.165 146);
+  --chart-1: oklch(0.731 0.165 146);
+  --chart-2: oklch(0.729 0.144 214);
+  --chart-3: oklch(0.73 0.146 312);
+  --chart-4: oklch(0.781 0.149 84);
+  --chart-5: oklch(0.72 0.163 29);
+  --sidebar: oklch(0.276 0.01 184);
+  --sidebar-foreground: oklch(0.965 0.006 152);
+  --sidebar-primary: oklch(0.731 0.165 146);
+  --sidebar-primary-foreground: oklch(0.205 0.008 184);
+  --sidebar-accent: oklch(0.324 0.011 184);
+  --sidebar-accent-foreground: oklch(0.965 0.006 152);
+  --sidebar-border: oklch(1 0 0 / 0.08);
+  --sidebar-ring: oklch(0.731 0.165 146);
+}
+
+/* ─────────────────────────────────────────────────────────────────
+   SEMANTIC VARS — light mode (default)
+   Bridge vars that @theme inline points to. Override in .dark for
+   dark mode. Reference primitives only — no semantic → semantic.
+   In @layer base so :root and .dark stay co-located in compiled output.
+   ───────────────────────────────────────────────────────────────── */
+@layer base {
+  :root {
+    /* Page background gradient — override in .dark */
+    --page-gradient:
+      radial-gradient(circle at top left, rgba(50, 206, 19, 0.12), transparent 34%),
+      radial-gradient(circle at top right, rgba(129, 57, 238, 0.05), transparent 24%),
+      linear-gradient(
+        180deg,
+        rgba(250, 252, 248, 1) 0%,
+        rgba(253, 254, 253, 1) 42%,
+        rgba(245, 250, 243, 1) 100%
+      );
+
+    /* Surface — surface-white, surface-gray (main canvas), surface (same as gray), surface-adaptive (darker container) */
+    --surface-white: var(--color-white);
+    --surface-gray: var(--color-mushroom-50);
+    --surface: var(--color-mushroom-50);
+    --surface-adaptive: color-mix(in srgb, var(--color-mushroom-950) 6%, transparent);
+    --surface-hover: color-mix(in srgb, var(--color-mushroom-950) 8%, transparent);
+    --surface-pressed: color-mix(in srgb, var(--color-mushroom-950) 12%, transparent);
+    --surface-disabled: var(--color-neutral-100);
+    --surface-inverted: var(--color-mushroom-950);
+    --surface-inverted-hover: var(--color-mushroom-900);
+    --surface-inverted-pressed: var(--color-mushroom-800);
+    --surface-active: var(--color-kangkong-100);
+    --surface-active-soft: var(--color-kangkong-50);
+
+    /* Text */
+    --text-strong: var(--color-mushroom-950);
+    --text-supporting: var(--color-mushroom-500);
+    --text-base: var(--color-mushroom-600);
+    --text-weak: var(--color-mushroom-400);
+    --text-disabled: var(--color-neutral-400);
+    --text-on-fill-disabled: var(--color-neutral-500);
+    --text-inverted: var(--color-neutral-50);
+    --text-inverted-base: var(--color-mushroom-200);
+    --text-inverted-weak: var(--color-mushroom-400);
+    --text-inverted-disabled: var(--color-neutral-600);
+
+    /* Border */
+    --border-strong: var(--color-mushroom-500);
+    --border-supporting: var(--color-mushroom-400);
+    --border-base: var(--color-mushroom-300);
+    --border-base-hover: var(--color-mushroom-400);
+    --border-base-pressed: var(--color-mushroom-500);
+    --border-weak: var(--color-mushroom-200);
+    --border-disabled: var(--color-neutral-100);
+    --border-on-fill-disabled: var(--color-neutral-200);
+
+    /* Brand (kangkong) */
+    --brand: var(--color-kangkong-700);
+    --brand-hover: var(--color-kangkong-800);
+    --brand-pressed: var(--color-kangkong-900);
+    --brand-subtle: var(--color-kangkong-100);
+    --brand-subtle-hover: var(--color-kangkong-200);
+    --brand-subtle-pressed: var(--color-kangkong-300);
+    --brand-text: var(--color-kangkong-800);
+    --brand-text-hover: var(--color-kangkong-900);
+    --brand-text-pressed: var(--color-kangkong-950);
+
+    /* Success (kangkong) */
+    --success: var(--color-kangkong-600);
+    --success-hover: var(--color-kangkong-700);
+    --success-pressed: var(--color-kangkong-800);
+    --success-text: var(--color-kangkong-700);
+    --success-text-hover: var(--color-kangkong-800);
+    --success-text-pressed: var(--color-kangkong-900);
+    --success-subtle: var(--color-kangkong-100);
+    --success-subtle-hover: var(--color-kangkong-200);
+    --success-subtle-pressed: var(--color-kangkong-300);
+
+    /* Information (blueberry) */
+    --information: var(--color-blueberry-600);
+    --information-hover: var(--color-blueberry-700);
+    --information-pressed: var(--color-blueberry-800);
+    --information-text: var(--color-blueberry-800);
+    --information-text-hover: var(--color-blueberry-900);
+    --information-text-pressed: var(--color-blueberry-950);
+    --information-subtle: var(--color-blueberry-100);
+    --information-subtle-hover: var(--color-blueberry-200);
+    --information-subtle-pressed: var(--color-blueberry-300);
+
+    /* Danger (tomato) */
+    --danger: var(--color-tomato-600);
+    --danger-hover: var(--color-tomato-700);
+    --danger-pressed: var(--color-tomato-800);
+    --danger-text: var(--color-tomato-700);
+    --danger-text-hover: var(--color-tomato-800);
+    --danger-text-pressed: var(--color-tomato-900);
+    --danger-subtle: var(--color-tomato-100);
+    --danger-subtle-hover: var(--color-tomato-200);
+    --danger-subtle-pressed: var(--color-tomato-300);
+
+    /* Pending (mango) */
+    --pending: var(--color-mango-500);
+    --pending-hover: var(--color-mango-600);
+    --pending-pressed: var(--color-mango-700);
+    --pending-text: var(--color-mango-800);
+    --pending-text-hover: var(--color-mango-900);
+    --pending-text-pressed: var(--color-mango-950);
+    --pending-subtle: var(--color-mango-100);
+    --pending-subtle-hover: var(--color-mango-200);
+    --pending-subtle-pressed: var(--color-mango-300);
+
+    /* Caution (carrot) */
+    --caution: var(--color-carrot-500);
+    --caution-hover: var(--color-carrot-600);
+    --caution-pressed: var(--color-carrot-700);
+    --caution-text: var(--color-carrot-800);
+    --caution-text-hover: var(--color-carrot-900);
+    --caution-text-pressed: var(--color-carrot-950);
+    --caution-subtle: var(--color-carrot-100);
+    --caution-subtle-hover: var(--color-carrot-200);
+    --caution-subtle-pressed: var(--color-carrot-300);
+
+    /* Accent (wintermelon) — --accent-fill avoids shadcn --accent conflict */
+    --accent-fill: var(--color-wintermelon-600);
+    --accent-fill-hover: var(--color-wintermelon-700);
+    --accent-fill-pressed: var(--color-wintermelon-800);
+    --accent-text: var(--color-wintermelon-700);
+    --accent-text-hover: var(--color-wintermelon-800);
+    --accent-text-pressed: var(--color-wintermelon-900);
+    --accent-subtle: var(--color-wintermelon-100);
+    --accent-subtle-hover: var(--color-wintermelon-200);
+    --accent-subtle-pressed: var(--color-wintermelon-300);
+
+    /* Control (mushroom) */
+    --control: var(--color-mushroom-200);
+    --control-hover: var(--color-mushroom-300);
+    --control-pressed: var(--color-mushroom-400);
+  }
+
+  /* ─────────────────────────────────────────────────────────────────
+     SEMANTIC VARS — dark mode overrides
+     Direct values (no var() chains) — same approach shadcn uses.
+     Fill colors shift lighter, text shifts light, subtle shifts dark.
+     ───────────────────────────────────────────────────────────────── */
+  .dark {
+    /* Primitives — white = lightest surface in dark (mushroom-50) so bg-white / surface-white aren’t bright white */
+    --color-white: #eff1f1; /* mushroom-50 */
+
+    /* Page background gradient */
+    --page-gradient:
+      radial-gradient(circle at top left, rgba(50, 206, 19, 0.06), transparent 34%),
+      radial-gradient(circle at top right, rgba(129, 57, 238, 0.04), transparent 24%);
+
+    /* Surface — surface-white = lightest surface in dark (mushroom-50); surface-gray / surface = main dark (mushroom-950) */
+    --surface-white: #262b2b; /* mushroom-950 — lightest in dark */
+    --surface-gray: oklch(0.243 0.012 184); /* mushroom-900 — main dark gray */
+    --surface: #394141; /* mushroom-900 */
+    --surface-adaptive: color-mix(in srgb, #eff1f1 6%, transparent);
+    --surface-hover: color-mix(in srgb, #eff1f1 8%, transparent);
+    --surface-pressed: color-mix(in srgb, #eff1f1 12%, transparent);
+    --surface-disabled: #3d3d3d; /* neutral-900 */
+    --surface-inverted: #eff1f1; /* mushroom-50 */
+    --surface-inverted-hover: #e6eaea; /* mushroom-100 */
+    --surface-inverted-pressed: #d9dede; /* mushroom-200 */
+    --surface-active: #052e15; /* kangkong-950 */
+    --surface-active-soft: #052e15; /* kangkong-950 */
+
+    /* Text — light text on dark bg */
+    --text-strong: #eff1f1; /* mushroom-50 */
+    --text-supporting: #b8c1c0; /* mushroom-300 */
+    --text-base: #919f9d; /* mushroom-400 */
+    --text-weak: #5d6c6b; /* mushroom-600 */
+    --text-disabled: #656565; /* neutral-600 */
+    --text-on-fill-disabled: #7c7c7c; /* neutral-500 */
+    --text-inverted: #262b2b; /* mushroom-950 */
+    --text-inverted-base: #4c5857; /* mushroom-700 */
+    --text-inverted-weak: #5d6c6b; /* mushroom-600 */
+    --text-inverted-disabled: #989898; /* neutral-400 */
+
+    /* Border — subtle strokes on dark bg */
+    --border-strong: #919f9d; /* mushroom-400 */
+    --border-supporting: #738482; /* mushroom-500 */
+    --border-base: #4c5857; /* mushroom-700 */
+    --border-base-hover: #5d6c6b; /* mushroom-600 */
+    --border-base-pressed: #738482; /* mushroom-500 */
+    --border-weak: #414b4b; /* mushroom-800 */
+    --border-disabled: #464646; /* neutral-800 */
+    --border-on-fill-disabled: #525252; /* neutral-700 */
+
+    /* Brand (kangkong) — lighter/brighter on dark bg */
+    --brand: #22c558; /* kangkong-500 */
+    --brand-hover: #4ade7b; /* kangkong-400 */
+    --brand-pressed: #86efa8; /* kangkong-300 */
+    --brand-subtle: #052e15; /* kangkong-950 */
+    --brand-subtle-hover: #14532b; /* kangkong-900 */
+    --brand-subtle-pressed: #166531; /* kangkong-800 */
+    --brand-text: #86efa8; /* kangkong-300 */
+    --brand-text-hover: #bbf7ce; /* kangkong-200 */
+    --brand-text-pressed: #dcfce6; /* kangkong-100 */
+
+    /* Success (kangkong) */
+    --success: #4ade7b; /* kangkong-400 */
+    --success-hover: #86efa8; /* kangkong-300 */
+    --success-pressed: #bbf7ce; /* kangkong-200 */
+    --success-text: #86efa8; /* kangkong-300 */
+    --success-text-hover: #bbf7ce; /* kangkong-200 */
+    --success-text-pressed: #dcfce6; /* kangkong-100 */
+    --success-subtle: #052e15; /* kangkong-950 */
+    --success-subtle-hover: #14532b; /* kangkong-900 */
+    --success-subtle-pressed: #166531; /* kangkong-800 */
+
+    /* Information (blueberry) */
+    --information: #549eff; /* blueberry-400 */
+    --information-hover: #8bbdff; /* blueberry-300 */
+    --information-pressed: #badcff; /* blueberry-200 */
+    --information-text: #8bbdff; /* blueberry-300 */
+    --information-text-hover: #badcff; /* blueberry-200 */
+    --information-text-pressed: #d8ebff; /* blueberry-100 */
+    --information-subtle: #122e59; /* blueberry-950 */
+    --information-subtle-hover: #164b92; /* blueberry-900 */
+    --information-subtle-pressed: #1356ba; /* blueberry-800 */
+
+    /* Danger (tomato) */
+    --danger: #f6737a; /* tomato-400 */
+    --danger-hover: #fba6aa; /* tomato-300 */
+    --danger-pressed: #fdcbce; /* tomato-200 */
+    --danger-text: #fba6aa; /* tomato-300 */
+    --danger-text-hover: #fdcbce; /* tomato-200 */
+    --danger-text-pressed: #fee2e3; /* tomato-100 */
+    --danger-subtle: #440b0e; /* tomato-950 */
+    --danger-subtle-hover: #7d1f24; /* tomato-900 */
+    --danger-subtle-pressed: #971d23; /* tomato-800 */
+
+    /* Pending (mango) */
+    --pending: #ffdf1b; /* mango-400 */
+    --pending-hover: #ffed46; /* mango-300 */
+    --pending-pressed: #fff885; /* mango-200 */
+    --pending-text: #ffed46; /* mango-300 */
+    --pending-text-hover: #fff885; /* mango-200 */
+    --pending-text-pressed: #fffbc5; /* mango-100 */
+    --pending-subtle: #482200; /* mango-950 */
+    --pending-subtle-hover: #7c420b; /* mango-900 */
+    --pending-subtle-pressed: #985008; /* mango-800 */
+
+    /* Caution (carrot) */
+    --caution: #ffb132; /* carrot-400 */
+    --caution-hover: #ffd16d; /* carrot-300 */
+    --caution-pressed: #ffe5a5; /* carrot-200 */
+    --caution-text: #ffd16d; /* carrot-300 */
+    --caution-text-hover: #ffe5a5; /* carrot-200 */
+    --caution-text-pressed: #fff4d3; /* carrot-100 */
+    --caution-subtle: #461c04; /* carrot-950 */
+    --caution-subtle-hover: #823c0c; /* carrot-900 */
+    --caution-subtle-pressed: #a1470b; /* carrot-800 */
+
+    /* Accent (wintermelon) */
+    --accent-fill: #1ed5f2; /* wintermelon-400 */
+    --accent-fill-hover: #64e9fc; /* wintermelon-300 */
+    --accent-fill-pressed: #a3f3fe; /* wintermelon-200 */
+    --accent-text: #64e9fc; /* wintermelon-300 */
+    --accent-text-hover: #a3f3fe; /* wintermelon-200 */
+    --accent-text-pressed: #cefbff; /* wintermelon-100 */
+    --accent-subtle: #073345; /* wintermelon-950 */
+    --accent-subtle-hover: #154e64; /* wintermelon-900 */
+    --accent-subtle-pressed: #135e77; /* wintermelon-800 */
+
+    /* Control */
+    --control: #4c5857; /* mushroom-700 */
+    --control-hover: #5d6c6b; /* mushroom-600 */
+    --control-pressed: #738482; /* mushroom-500 */
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+
+  html {
+    scroll-behavior: smooth;
+    scroll-padding-top: 7rem;
+  }
+
+  body {
+    @apply bg-background text-foreground antialiased;
+    min-height: 100vh;
+    font-family: var(--font-body);
+  }
+
+  #app {
+    min-height: 100vh;
+  }
+}
+
+@layer utilities {
+  .font-heading {
+    font-family: var(--font-heading);
+  }
+
+  .font-ui {
+    font-family: var(--font-body);
+  }
+}
+
+/* #region - Typography utilities
+   Single source of truth: heading/body/label classes. .typography scope
+   reuses them. Body uses ≥1.5 line-height (WCAG). Links get focus-visible. */
+@layer components {
+  /* Text semantics — color only (no theme entry), so bg-inverted etc. cannot be misused */
+  .text-strong {
+    color: var(--text-strong);
+  }
+  .text-supporting {
+    color: var(--text-supporting);
+  }
+  .text-base {
+    color: var(--text-base);
+  }
+  .text-weak {
+    color: var(--text-weak);
+  }
+  .text-disabled {
+    color: var(--text-disabled);
+  }
+  .text-on-fill-disabled {
+    color: var(--text-on-fill-disabled);
+  }
+  .text-inverted {
+    color: var(--text-inverted);
+  }
+  .text-inverted-base {
+    color: var(--text-inverted-base);
+  }
+  .text-inverted-weak {
+    color: var(--text-inverted-weak);
+  }
+  .text-inverted-disabled {
+    color: var(--text-inverted-disabled);
+  }
+
+  /* Border semantics — border-color only (no theme entry), so bg-border-strong etc. cannot be misused */
+  .border-strong {
+    border-color: var(--border-strong);
+  }
+  .border-supporting {
+    border-color: var(--border-supporting);
+  }
+  .border-base {
+    border-color: var(--border-base);
+  }
+  .border-base-hover {
+    border-color: var(--border-base-hover);
+  }
+  .border-base-pressed {
+    border-color: var(--border-base-pressed);
+  }
+  .border-weak {
+    border-color: var(--border-weak);
+  }
+  .border-disabled {
+    border-color: var(--border-disabled);
+  }
+  .border-on-fill-disabled {
+    border-color: var(--border-on-fill-disabled);
+  }
+
+  /* Outline — same values as border, so outline can be used instead of border (e.g. focus rings) */
+  .outline-strong {
+    outline-color: var(--border-strong);
+  }
+  .outline-supporting {
+    outline-color: var(--border-supporting);
+  }
+  .outline-base {
+    outline-color: var(--border-base);
+  }
+  .outline-base-hover {
+    outline-color: var(--border-base-hover);
+  }
+  .outline-base-pressed {
+    outline-color: var(--border-base-pressed);
+  }
+  .outline-weak {
+    outline-color: var(--border-weak);
+  }
+  .outline-disabled {
+    outline-color: var(--border-disabled);
+  }
+  .outline-on-fill-disabled {
+    outline-color: var(--border-on-fill-disabled);
+  }
+
+  /* Headings — shared with .typography h1–h6 to avoid duplication */
+  .heading-xl,
+  .typography h1 {
+    font-size: var(--text-900);
+    line-height: var(--leading-1000);
+    letter-spacing: var(--tracking-densest);
+    font-family: var(--font-body);
+    font-weight: 500;
+  }
+  .heading-lg,
+  .typography h2 {
+    font-size: var(--text-800);
+    line-height: var(--leading-900);
+    letter-spacing: var(--tracking-denser);
+    font-family: var(--font-body);
+    font-weight: 500;
+  }
+  .heading-md,
+  .typography h3 {
+    font-size: var(--text-700);
+    line-height: var(--leading-800);
+    letter-spacing: var(--tracking-denser);
+    font-family: var(--font-body);
+    font-weight: 500;
+  }
+  .heading-sm,
+  .typography h4 {
+    font-size: var(--text-600);
+    line-height: var(--leading-700);
+    letter-spacing: var(--tracking-dense);
+    font-family: var(--font-body);
+    font-weight: 500;
+  }
+  .heading-xs,
+  .typography h5 {
+    font-size: var(--text-500);
+    line-height: var(--leading-600);
+    letter-spacing: var(--tracking-dense);
+    font-family: var(--font-body);
+    font-weight: 500;
+  }
+  /* Subheadings */
+  .subheading-sm,
+  .typography h6 {
+    font-size: var(--text-400);
+    line-height: var(--leading-500);
+    letter-spacing: var(--tracking-dense);
+    font-family: var(--font-body);
+    font-weight: 500;
+  }
+  .subheading-xs {
+    font-size: var(--text-300);
+    line-height: var(--leading-400);
+    letter-spacing: var(--tracking-normal);
+    font-family: var(--font-body);
+    font-weight: 500;
+  }
+
+  /* Body — 3-size scale. Base class sets weight 400 explicitly (no inheritance).
+     Underline is not a named class — use Tailwind's `underline` utility instead.
+     body-lg bumped from 16px → 18px and line-height from 1.625 → 1.75 per spec. */
+  .body,
+  .body-medium,
+  .typography p {
+    font-size: var(--text-300); /* 14px — default body */
+    line-height: var(--leading-500); /* 1.5 — WCAG AA */
+    letter-spacing: var(--tracking-normal);
+    font-family: var(--font-body);
+  }
+  .body-md,
+  .body-md-medium {
+    font-size: var(--text-400); /* 16px */
+    line-height: var(--leading-600); /* 1.625 */
+    letter-spacing: var(--tracking-normal);
+    font-family: var(--font-body);
+  }
+  .body-lg,
+  .body-lg-medium {
+    font-size: var(--text-500); /* 18px — was --text-400 (16px) */
+    line-height: var(--leading-700); /* 1.75 — was --leading-600 (1.625) */
+    letter-spacing: var(--tracking-normal);
+    font-family: var(--font-body);
+  }
+  .body,
+  .body-md,
+  .body-lg,
+  .typography p {
+    font-weight: 400;
+  }
+  .body-medium,
+  .body-md-medium,
+  .body-lg-medium {
+    font-weight: 500;
+  }
+
+  /* Labels — UI chrome (scan, don't read). Tighter leading + wide tracking.
+     label-sm: 14px — nav, tabs, section labels, form labels.
+     label-xs: 12px — badges, table headers, timestamps, helper text. */
+  .label-sm,
+  .label-sm-medium {
+    font-size: var(--text-400); /* 14px */
+    line-height: var(--leading-500); /* 1.375 */
+    letter-spacing: var(--tracking-wide); /* 0.025em */
+    font-family: var(--font-body);
+  }
+  .label-xs,
+  .label-xs-medium {
+    font-size: var(--text-300); /* 12px — was 14px */
+    line-height: var(--leading-400); /* 1.375 */
+    letter-spacing: var(--tracking-wide); /* 0.025em */
+    font-family: var(--font-body);
+  }
+  .label-sm,
+  .label-xs {
+    font-weight: 400;
+  }
+  .label-sm-medium,
+  .label-xs-medium {
+    font-weight: 500;
+  }
+
+  /* Caption — prose-like small text (image captions, fine print, attribution).
+     Same size as label-xs (12px) but normal tracking + looser line-height for multi-line reading.
+     Distinction from label-xs: label has wide tracking (UI chrome); caption has normal tracking (prose).
+     .typography small maps to caption — co-located here to stay in sync. */
+  .caption,
+  .caption-medium,
+  .typography small {
+    font-size: var(--text-200); /* 12px */
+    line-height: var(--leading-500); /* 1.5 — looser than label for multi-line */
+    letter-spacing: var(--tracking-normal); /* 0 — prose, not UI chrome */
+    font-family: var(--font-body);
+  }
+  .caption,
+  .typography small {
+    font-weight: 400;
+  }
+  .caption-medium {
+    font-weight: 500;
+  }
+
+  /* Overline — always uppercase, widest tracking. Placed above headings to signal section type.
+     Single-line only — line-height 1.1 stacks tight above headings with no excess gap.
+     No weight variant — always 500 by design. */
+  .overline {
+    font-size: var(--text-200); /* 12px */
+    line-height: var(--leading-200); /* 1.1 — single-line, minimal gap above heading */
+    letter-spacing: var(--tracking-widest); /* 0.1em */
+    text-transform: uppercase;
+    font-weight: 500;
+    font-family: var(--font-body);
+  }
+
+  /* Code — inline code references only. code-block is a separate component.
+     13px is intentional: monospace fonts render visually larger than proportional fonts
+     at the same em size. 13px optically matches surrounding 14px body text.
+     --text-200 (12px) is too small next to body; --text-300 (14px) reads as oversized.
+     Co-located with .typography code — do NOT use @apply for custom component classes in Tailwind v4. */
+  .code,
+  .typography code {
+    font-size: 0.8125rem; /* 13px — custom value, see note above */
+    line-height: var(--leading-500); /* 1.5 */
+    font-weight: 400;
+    font-family: ui-monospace, 'SFMono-Regular', 'Menlo', 'Monaco', 'Consolas', monospace;
+  }
+
+  /* Skeletal loader */
+  .skeletal-loader {
+    @apply animate-pulse border-neutral-200 bg-[linear-gradient(270deg,var(--color-mushroom-50)_0%,var(--color-mushroom-200)_100%)];
+  }
+
+  /* .typography scope — inline element overrides and a11y */
+  .typography strong,
+  .typography b {
+    font-weight: 500;
+  }
+  .typography a {
+    color: var(--color-brand);
+    text-decoration: underline;
+    text-underline-offset: 0.15em;
+  }
+  .typography a:focus-visible {
+    outline: 2px solid var(--color-ring);
+    outline-offset: 2px;
+  }
+}
+/* #endregion - Typography utilities */
