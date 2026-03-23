@@ -67,15 +67,6 @@ for each of these — one at a time, not as a list dump:
 - What problem are we trying to solve?
 - Any known constraints (platform, timeline, existing product)?
 
-Then ask which design system the project uses via `AskUserQuestion`:
-> "Which design system is this project on — **Sprout Legacy** (`design-system-next` via npm) or
-> **Toge** (component registry via `npx shadcn-vue`)?"
-
-Store the answer as `DESIGN_SYSTEM` and carry it forward into Phase 4. Read the matching guide
-before writing any wireframe code:
-- Sprout Legacy → `guide/sprout-legacy-design-system/README.md`
-- Toge → `guide/toge-design-system/README.md`
-
 If the brief is ambiguous or seems to solve the wrong problem, say so via `AskUserQuestion`
 before proceeding. A weak brief produces weak research — push back early.
 
@@ -142,6 +133,23 @@ statement each maps to.
 **Check-in**: Show the top 3 pain points and the screens you're planning to wireframe. Then use
 `AskUserQuestion`: "Are these the right pain points to design for? Any flows I'm missing?"
 
+**Stack discovery** — before advancing to Phase 4, confirm the tech stack via `AskUserQuestion` one question at a time:
+
+1. **Design system** — auto-detect first:
+   - Check `package.json`: if `design-system-next` is a dependency → `DESIGN_SYSTEM = Sprout Legacy`
+   - Check `components.json`: if `registries["@toge"]` is present → `DESIGN_SYSTEM = Toge`
+   - If both found → `DESIGN_SYSTEM = Toge` (prefer Toge for new code; note this to the user)
+   - If neither found → ask: "Which design system does this project use — **Sprout Legacy** (`design-system-next`) or **Toge** (shadcn-vue registry)?"
+   - Read the matching guide: Sprout Legacy → `guide/sprout-legacy-design-system/README.md` · Toge → `guide/toge-design-system/README.md`
+
+2. **Framework**: `AskUserQuestion` → "What framework is this project on — Vue 3, React, or something else?" → store as `STACK_FRAMEWORK`
+
+3. **Tailwind version**: `AskUserQuestion` → "Which Tailwind version — v3 (tailwind.config.js + postcss) or v4 (@tailwindcss/vite, no config file)?" → store as `STACK_TAILWIND_VERSION`
+
+4. **Prototype entry point**: `AskUserQuestion` → "Where will the prototype entry file live — inside `src/` or in a separate `prototype/` directory outside `src/`?" → store as `STACK_ENTRY_POINT`
+
+Store all 4 vars and carry them forward explicitly into Phase 5.
+
 ---
 
 ### Phase 4: Wireframing
@@ -177,7 +185,10 @@ Read `skills/prototype/SKILL.md` and follow it exactly.
 **Inputs carried forward:**
 - Wireframes from `wireframes/` (Phase 4)
 - User flow diagram (Phase 3) — to map screen-to-screen navigation
-- `DESIGN_SYSTEM` — to pick the correct component library
+- `DESIGN_SYSTEM` — to pick the correct component library and token set
+- `STACK_FRAMEWORK` — to confirm the component model (Vue 3, React, etc.)
+- `STACK_TAILWIND_VERSION` — to confirm CSS utility syntax (v3 vs v4)
+- `STACK_ENTRY_POINT` — to determine where `prototype/main.js` lives and what `@source` paths to use
 
 **What this phase produces:**
 - A runnable `prototype/` directory with real navigation, live state, design system components, and edge states

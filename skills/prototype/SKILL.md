@@ -24,6 +24,21 @@ by real navigation, with actual design system components, live state, and meanin
 
 ---
 
+## Step 0 — Pre-flight Check
+
+Before reading wireframes or writing any code, verify the project environment using the confirmed `// Stack:` context. Run each check against the actual project files. If a check does not apply to the confirmed stack, skip it with a one-line note.
+
+| # | Check | What to verify |
+|---|---|---|
+| 1 | **CSS pipeline consistency** | Does the build tool config match the CSS syntax in the project's stylesheet? Flag if a v3-style `tailwind.config.js` + postcss plugin exists alongside v4 `@import 'tailwindcss'` syntax, or vice versa. Fix before proceeding. |
+| 2 | **Source scanning completeness** | Does the bundler scan every directory containing component files? Verify that `wireframes/`, `prototype/`, and any directory outside the default source root is included in `@source` directives (v4) or `content` globs (v3). Add missing entries before proceeding. |
+| 3 | **Package compatibility** | Are all design system packages compatible with the confirmed framework and CSS version? Check for peer dependency conflicts (e.g. a design system that pins `tailwindcss@^3` installed alongside v4). Uninstall incompatible packages before proceeding. |
+| 4 | **Explicit dependencies** | Are routing and state management packages explicitly declared in `package.json`? Never assume transitive dependencies — if the prototype needs `vue-router` or `pinia`, they must be listed directly. Install any missing explicit deps before proceeding. |
+
+Do not advance to Step 1 until all applicable checks pass.
+
+---
+
 ## Step 1 — Read the Wireframes
 
 Before writing a single line of prototype code, read every file in `wireframes/`.
@@ -54,9 +69,28 @@ Check the `DESIGN_SYSTEM` value carried forward from the design brief:
 **Hard rule:** Never use raw hex colors or grayscale placeholders from the wireframe.
 Every color in the prototype must come from the design system.
 
+**Token enforcement (Toge):** If `DESIGN_SYSTEM` is **Toge**, read `guide/toge-design-system/tokens/token-mapping.yaml` before writing any component. Every default Tailwind color class (`bg-gray-*`, `text-gray-*`, `bg-red-*`, `bg-emerald-*`, `bg-blue-*`, `bg-yellow-*`, `bg-orange-*`) is a violation — replace it with the mapped token before committing output. The design system clears all default Tailwind colors (`--color-*: initial`) so these classes silently render nothing at runtime.
+
+**Known naming collision (Toge):** Do not combine `text-base` with another font-size utility on the same element. The design system defines `.text-base` as `color: var(--text-base)` in `@layer components`, but Tailwind also defines `text-base` as `font-size: 1rem` in `@layer utilities`. The utilities layer wins for `font-size`, so `text-xs text-base` silently becomes 1rem. Use `text-base` alone when 1rem font-size is acceptable, or use `text-strong` / `text-weak` when a specific font-size is also needed.
+
+**Token enforcement (Sprout Legacy):** If `DESIGN_SYSTEM` is **Sprout Legacy**, tokens use the `spr-` prefix. Read `guide/sprout-legacy-design-system/README.md` for the token list. No separate mapping file needed.
+
 ---
 
 ## Step 3 — Scaffold the Prototype
+
+**First action — write the stack context header.** Before creating any files, write the confirmed stack as a comment on the first line of the prototype entry file (`main.js` or equivalent):
+
+```js
+// Stack: {STACK_FRAMEWORK} · {STACK_TAILWIND_VERSION} · {DESIGN_SYSTEM} · entry: {STACK_ENTRY_POINT}
+```
+
+Example:
+```js
+// Stack: Vue 3 · Tailwind v4 · Toge · entry: prototype/main.js
+```
+
+Every subsequent code generation step in this session reads this header first. If a new file needs to be generated mid-session, check this header before writing any class. The header is the anchor that prevents silent stack assumption.
 
 Create this directory structure:
 
