@@ -1,5 +1,5 @@
 ---
-name: toge:wireframing
+name: wireframing
 description: >
   Use when creating wireframes, sketching page layouts, designing information architecture,
   or structuring screens. Trigger phrases: "wireframe", "sketch a layout", "design a screen",
@@ -8,61 +8,85 @@ description: >
 
 ## Overview
 
-This skill produces Vue 3 SFC wireframes using shadcn-vue components and Tailwind CSS. Each wireframe is a `.vue` file that can be dropped into any Vue 3 + shadcn-vue project. Templates use a strict grayscale palette to maintain wireframe aesthetics.
+This skill produces low-fidelity, grayscale wireframes that communicate structure and layout — not visual design. Output is always based on the layout blueprints and adapted to whatever stack the target project uses.
 
-**Requirements:** Target project must have Vue 3, Tailwind CSS, and shadcn-vue installed.
+**Core rule:** Wireframes use grayscale only. No brand colors. No production styling.
 
-## Template Selection Guide
+---
 
-Choose the right template based on the design context:
+## Step 1 — Read the Layout Blueprint
 
-| Template | Use when... | File |
+Before writing any code, read the matching layout blueprint from `skills/wireframing/templates/layout/`. These are pure HTML + Tailwind files that define page structure independent of any framework.
+
+| Template | Use when... | Blueprint file |
 |---|---|---|
-| `dashboard.vue` | Primary overview page, data-heavy, multiple metrics or summaries | `templates/dashboard.vue` |
-| `list-detail.vue` | Browsable list of items with a detail/preview panel | `templates/list-detail.vue` |
-| `form-page.vue` | Data entry, settings, configuration, multi-field input | `templates/form-page.vue` |
-| `onboarding-wizard.vue` | Multi-step flows, setup sequences, guided processes | `templates/onboarding-wizard.vue` |
-| `landing-page.vue` | Marketing pages, entry points, feature showcases | `templates/landing-page.vue` |
-| `settings-page.vue` | Account preferences, app configuration, sectioned options | `templates/settings-page.vue` |
+| `dashboard` | Primary overview, data-heavy, multiple metrics or summaries | `templates/layout/dashboard.html` |
+| `form-page` | Data entry, settings, configuration, multi-field input | `templates/layout/form-page.html` |
+| `onboarding-wizard` | Multi-step flows, setup sequences, guided processes | `templates/layout/onboarding-wizard.html` |
+| `settings-page` | Account preferences, app configuration, sectioned options | `templates/layout/settings-page.html` |
+| `complex-dashboard` | Multi-panel SaaS workflows — selector panel + data table + detail side panel | `templates/layout/complex-dashboard.html` |
 
-## How to Generate a Wireframe
+Focus on:
+- HTML comments — they explain structural intent (e.g. `<!-- SIDEBAR: fixed width, primary navigation -->`)
+- Layout classes — `flex`, `grid`, `w-56`, `gap-4`, `overflow-y-auto`, `rounded-xl`
+- Visual states — active, selected, disabled, placeholder
 
-Process:
-1. Read the design context (product brief, user journey, or screen description)
-2. Pick the closest template from the table above
-3. Read the template file from `skills/wireframing/templates/`
-4. Modify the Vue template to match the specific screen:
-   - Update placeholder labels ("MAIN CONTENT" → actual section names)
-   - Add/remove structural sections as needed
-   - Keep all Tailwind classes grayscale
-5. Save the output as `wireframe-[screen-name].vue` in the project's `src/views/` or `src/pages/` directory (or a `wireframes/` subfolder if the user prefers)
-6. Tell the user: "Add `wireframe-[screen-name].vue` to your Vue project and open it via your dev server."
+Ignore implementation details (which component library, which element tag) — those are resolved by the implementer.
 
-## shadcn-vue Component Reference
+---
 
-Always use grayscale. Never use color classes in wireframes.
+## Step 2 — Generate the Wireframe
 
-| Wireframe element | shadcn-vue component |
-|---|---|
-| Cards / panels | `Card`, `CardHeader`, `CardContent`, `CardFooter` |
-| Buttons | `Button` (variant: `default`, `outline`, `ghost`) |
-| Text inputs | `Input` |
-| Textarea | `Textarea` |
-| Select dropdown | `Select`, `SelectTrigger`, `SelectContent`, `SelectItem` |
-| Checkboxes | `Checkbox` + `Label` |
-| Data table | `Table`, `TableHeader`, `TableBody`, `TableRow`, `TableHead`, `TableCell` |
-| Badges / tags | `Badge` |
-| Form labels + helpers | `Label` |
-| Separators | `Separator` |
-| Avatar placeholder | `Avatar`, `AvatarFallback` |
-| Nav bar | Manual `<nav>` with Tailwind (no shadcn equivalent) |
-| Step indicator | Manual circles with `:class` binding (no shadcn wizard) |
+Translate the blueprint into the target project's stack:
+- Map each structural region to the equivalent element or component in the target framework
+- Replace ALL CAPS labels with actual screen names (e.g. `"MAIN CONTENT"` → `"EMPLOYEE LIST"`)
+- Add/remove sections as needed for the specific screen
+- Keep everything grayscale
 
-Placeholder text conventions:
-- Use ALL CAPS for structural regions: "NAVIGATION", "MAIN CONTENT", "FEATURE TITLE"
-- Use descriptive dummy values for data: "USER NAME", "FIELD VALUE", "CATEGORY"
-- Minimal reactive state only — `ref()` for selected item, active step, active nav section
+**Viewer shortcut:** A ready-to-use local viewer is available at `skills/wireframing/viewer/`. Run `npm run dev` inside that directory to preview wireframes instantly.
+
+---
+
+## Wireframe Conventions
+
+These apply regardless of framework or output format:
+
+- **Grayscale only** — `gray-50` through `gray-900`. Never use color.
+- **ALL CAPS for structural regions** — `"NAVIGATION"`, `"MAIN CONTENT"`, `"FEATURE TITLE"`
+- **Descriptive dummy values for data** — `"USER NAME"`, `"FIELD VALUE"`, `"CATEGORY"`
+- **Minimal state** — only what's needed for basic interactivity (selected tab, active step, open modal)
+- **Dashed borders for placeholders** — for charts, images, maps, and any non-text content area
+
+### Layout Style — Bento
+
+All wireframes use a **bento layout** by default. Panels and sections are floating cards on a gray background, with visible gaps between them. Never use flush borders between adjacent panels.
+
+**Rules:**
+- Outer content area: `bg-gray-100 p-3 gap-3` — the gray shows through as the gutter
+- Each panel/card: `bg-white rounded-xl shadow-sm` — no `border-r` or `border-l` between panels
+- Fixed side nav: full height, outside the bento grid
+- Top bar (if present): flush to the top, full width, with a bottom border
+
+```
+┌─────────────────────────────────────────────┐
+│ TOP BAR (full width, flush)                 │
+├─────────────────────────────────────────────┤
+│ bg-gray-100  p-3  gap-3                     │
+│  ┌──────────┐  ┌─────────────┐  ┌────────┐ │
+│  │  Panel   │  │   Panel     │  │ Panel  │ │
+│  │ rounded  │  │  rounded    │  │rounded │ │
+│  └──────────┘  └─────────────┘  └────────┘ │
+└─────────────────────────────────────────────┘
+```
+
+---
 
 ## Multiple Screens
 
-If the user needs multiple screens (e.g., a full flow), generate one file per screen and number them: `wireframe-01-onboarding.vue`, `wireframe-02-dashboard.vue`, etc.
+Generate one file per screen, numbered sequentially:
+
+```
+wireframe-01-login
+wireframe-02-dashboard
+wireframe-03-detail
+```

@@ -17,5 +17,9 @@
     "lib": "@/lib",
     "composables": "@/composables"
   },
-  "registries": {}
+  "registries": {
+    "@toge": {
+      "url": "https://toge-ds.azurewebsites.net/r/{name}.json"
+    }
+  }
 }

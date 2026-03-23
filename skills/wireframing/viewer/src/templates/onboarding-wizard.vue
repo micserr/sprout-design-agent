@@ -19,13 +19,29 @@ const activeStep = computed(() => steps[currentStep.value - 1])
 </script>
 
 <template>
-  <div class="flex flex-col min-h-screen bg-gray-50">
-    <!-- LOGO HEADER -->
-    <header class="h-14 bg-white border-b border-gray-200 flex items-center justify-center">
-      <div class="w-24 h-6 bg-gray-300 rounded text-xs text-gray-500 flex items-center justify-center">LOGO</div>
-    </header>
+  <div class="flex flex-col min-h-screen bg-gray-50 pl-16">
 
-    <main class="flex-1 flex items-center justify-center p-6">
+    <!-- SIDE NAV: fixed, 64px wide, full height -->
+    <nav class="fixed left-0 top-0 w-16 h-screen bg-gray-900 flex flex-col items-center py-4 z-10">
+      <div class="w-8 h-8 bg-gray-600 rounded mb-6 flex items-center justify-center text-xs text-gray-400">L</div>
+      <div class="flex flex-col items-center gap-2 flex-1">
+        <div class="w-10 h-10 rounded-lg bg-gray-800 flex items-center justify-center">
+          <div class="w-5 h-5 bg-gray-500 rounded-sm" />
+        </div>
+        <div class="w-10 h-10 rounded-lg bg-gray-800 flex items-center justify-center">
+          <div class="w-5 h-5 bg-gray-500 rounded-sm" />
+        </div>
+        <div class="w-10 h-10 rounded-lg bg-gray-800 flex items-center justify-center">
+          <div class="w-5 h-5 bg-gray-500 rounded-sm" />
+        </div>
+        <div class="w-10 h-10 rounded-lg bg-gray-700 flex items-center justify-center">
+          <div class="w-5 h-5 bg-gray-300 rounded-sm" />
+        </div>
+      </div>
+      <div class="w-8 h-8 rounded-full bg-gray-500 flex items-center justify-center text-xs text-gray-300">U</div>
+    </nav>
+
+<main class="flex-1 flex items-center justify-center p-6">
       <div class="w-full max-w-lg space-y-6">
 
         <!-- STEP INDICATOR -->

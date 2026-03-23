@@ -1,0 +1,506 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Complex Dashboard — Layout Blueprint</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-50 h-screen flex flex-col overflow-hidden pl-16">
+
+  <!-- SIDE NAV: fixed, 64px wide, full height, primary icon navigation -->
+  <nav class="fixed left-0 top-0 w-16 h-screen bg-gray-900 flex flex-col items-center py-4 z-10">
+    <div class="w-8 h-8 bg-gray-600 rounded mb-6 flex items-center justify-center text-xs text-gray-400">L</div>
+    <div class="flex flex-col items-center gap-2 flex-1">
+      <div class="w-10 h-10 rounded-lg bg-gray-700 flex items-center justify-center">
+        <div class="w-5 h-5 bg-gray-300 rounded-sm"></div>
+      </div>
+      <div class="w-10 h-10 rounded-lg bg-gray-800 flex items-center justify-center">
+        <div class="w-5 h-5 bg-gray-500 rounded-sm"></div>
+      </div>
+      <div class="w-10 h-10 rounded-lg bg-gray-800 flex items-center justify-center">
+        <div class="w-5 h-5 bg-gray-500 rounded-sm"></div>
+      </div>
+      <div class="w-10 h-10 rounded-lg bg-gray-800 flex items-center justify-center">
+        <div class="w-5 h-5 bg-gray-500 rounded-sm"></div>
+      </div>
+    </div>
+    <div class="w-8 h-8 rounded-full bg-gray-500 flex items-center justify-center text-xs text-gray-300">U</div>
+  </nav>
+
+  <!-- TOP BAR: 60px, contains back button + workflow name, inline stepper, and action buttons -->
+  <header class="h-[60px] bg-white border-b border-gray-200 flex items-center px-6 gap-4 shrink-0">
+
+    <!-- LEFT: back arrow + workflow name -->
+    <div class="flex items-center gap-2 shrink-0">
+      <div class="w-6 h-6 bg-gray-300 rounded-sm"></div>
+      <div class="w-5 h-5 bg-gray-200 rounded-sm"></div>
+      <span class="text-sm font-medium text-gray-900">WORKFLOW NAME</span>
+    </div>
+
+    <!-- CENTER: inline stepper — 4 steps connected by lines, one highlighted as current -->
+    <div class="flex items-center flex-1 justify-center gap-0">
+
+      <!-- STEP 1: completed -->
+      <div class="flex items-center gap-2">
+        <div class="w-5 h-5 rounded-full bg-gray-900 flex items-center justify-center text-xs text-white font-semibold shrink-0">1</div>
+        <span class="text-xs text-gray-500 whitespace-nowrap">STEP ONE</span>
+      </div>
+      <div class="w-12 h-px bg-gray-400 mx-2"></div>
+
+      <!-- STEP 2: current (highlighted) -->
+      <div class="flex items-center gap-2">
+        <div class="w-5 h-5 rounded-full bg-gray-900 ring-2 ring-offset-1 ring-gray-900 flex items-center justify-center text-xs text-white font-semibold shrink-0">2</div>
+        <span class="text-xs font-semibold text-gray-900 whitespace-nowrap">STEP TWO (CURRENT)</span>
+      </div>
+      <div class="w-12 h-px bg-gray-300 mx-2"></div>
+
+      <!-- STEP 3: upcoming -->
+      <div class="flex items-center gap-2">
+        <div class="w-5 h-5 rounded-full border-2 border-gray-300 flex items-center justify-center text-xs text-gray-400 font-semibold shrink-0">3</div>
+        <span class="text-xs text-gray-400 whitespace-nowrap">STEP THREE</span>
+      </div>
+      <div class="w-12 h-px bg-gray-200 mx-2"></div>
+
+      <!-- STEP 4: upcoming -->
+      <div class="flex items-center gap-2">
+        <div class="w-5 h-5 rounded-full border-2 border-gray-300 flex items-center justify-center text-xs text-gray-400 font-semibold shrink-0">4</div>
+        <span class="text-xs text-gray-400 whitespace-nowrap">STEP FOUR</span>
+      </div>
+
+    </div>
+
+    <!-- RIGHT: secondary + primary action buttons -->
+    <div class="flex items-center gap-2 shrink-0">
+      <button class="px-4 py-1.5 border border-gray-300 rounded text-sm text-gray-700 hover:bg-gray-50">BACK</button>
+      <button class="px-4 py-1.5 bg-gray-900 rounded text-sm text-white hover:bg-gray-700">NEXT →</button>
+    </div>
+
+  </header>
+
+  <!-- THREE-PANEL CONTENT AREA: bento layout — gray background shows as gutter between floating cards -->
+  <div class="flex flex-1 overflow-hidden bg-gray-100 p-3 gap-3">
+
+    <!-- LEFT PANEL: fixed width (~338px), floating card -->
+    <aside class="w-[338px] bg-white rounded-xl shadow-sm flex flex-col overflow-y-auto shrink-0">
+
+      <!-- SELECTOR CARD: main context selector (e.g. company, pay group, category) -->
+      <div class="p-4 border-b border-gray-100">
+        <p class="text-sm font-semibold text-gray-900 mb-1">SELECTOR CARD TITLE</p>
+        <p class="text-xs text-gray-400 mb-3">SELECTOR DESCRIPTION PLACEHOLDER</p>
+
+        <!-- Search input -->
+        <div class="border border-gray-300 rounded px-3 py-2 flex items-center gap-2 mb-3">
+          <div class="w-4 h-4 bg-gray-300 rounded-sm shrink-0"></div>
+          <span class="text-xs text-gray-400">SEARCH PLACEHOLDER</span>
+          <div class="ml-auto w-4 h-4 bg-gray-200 rounded-sm shrink-0"></div>
+        </div>
+
+        <!-- LIST ITEMS: selectable rows with label + sublabel + badge -->
+        <div class="flex flex-col gap-0">
+
+          <!-- SELECTED item: highlighted bg + left border -->
+          <div class="px-3 py-2 rounded bg-gray-100 border-l-2 border-gray-900 cursor-pointer">
+            <div class="flex items-center justify-between">
+              <p class="text-sm font-medium text-gray-900">LIST ITEM LABEL</p>
+              <span class="text-xs text-gray-500 border border-gray-300 rounded px-1.5 py-0.5">CODE</span>
+            </div>
+            <p class="text-xs text-gray-500 mt-0.5">SUBLABEL — DATE RANGE</p>
+            <p class="text-xs text-gray-400 mt-0.5">Due DATE PLACEHOLDER</p>
+          </div>
+
+          <div class="px-3 py-2 cursor-pointer hover:bg-gray-50">
+            <div class="flex items-center justify-between">
+              <p class="text-sm text-gray-700">LIST ITEM LABEL</p>
+              <span class="text-xs text-gray-500 border border-gray-300 rounded px-1.5 py-0.5">CODE</span>
+            </div>
+            <p class="text-xs text-gray-400 mt-0.5">SUBLABEL — DATE RANGE</p>
+          </div>
+
+          <!-- GROUPED item: parent label with children -->
+          <div class="px-3 py-2 cursor-pointer hover:bg-gray-50">
+            <div class="flex items-center justify-between">
+              <p class="text-sm text-gray-700 flex items-center gap-1">
+                <span class="w-3 h-3 bg-gray-300 rounded-sm inline-block"></span>
+                GROUP LABEL
+              </p>
+              <span class="text-xs text-gray-500 border border-gray-300 rounded px-1.5 py-0.5">CODE</span>
+            </div>
+            <p class="text-xs text-gray-400 mt-0.5">SUBLABEL — DATE + N employees adjusted</p>
+          </div>
+
+          <div class="px-3 py-2 cursor-pointer hover:bg-gray-50">
+            <div class="flex items-center justify-between">
+              <p class="text-sm text-gray-700 flex items-center gap-1">
+                <span class="w-3 h-3 bg-gray-300 rounded-sm inline-block"></span>
+                GROUP LABEL
+              </p>
+              <span class="text-xs text-gray-500 border border-gray-300 rounded px-1.5 py-0.5">CODE</span>
+            </div>
+          </div>
+
+          <div class="px-3 py-2 cursor-pointer hover:bg-gray-50">
+            <div class="flex items-center justify-between">
+              <p class="text-sm text-gray-700 flex items-center gap-1">
+                <span class="w-3 h-3 bg-gray-300 rounded-sm inline-block"></span>
+                GROUP LABEL
+              </p>
+              <span class="text-xs text-gray-500 border border-gray-300 rounded px-1.5 py-0.5">CODE</span>
+            </div>
+          </div>
+
+          <div class="px-3 py-2 cursor-pointer hover:bg-gray-50">
+            <div class="flex items-center justify-between">
+              <p class="text-sm text-gray-700 flex items-center gap-1">
+                <span class="w-3 h-3 bg-gray-300 rounded-sm inline-block"></span>
+                GROUP LABEL
+              </p>
+              <span class="text-xs text-gray-500 border border-gray-300 rounded px-1.5 py-0.5">CODE</span>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- BULK UPLOAD CARD: secondary card at bottom of left panel -->
+      <div class="p-4 mt-auto">
+        <p class="text-sm font-semibold text-gray-900 mb-1">BULK UPLOAD TITLE</p>
+        <p class="text-xs text-gray-400 mb-3">BULK UPLOAD DESCRIPTION PLACEHOLDER</p>
+        <button class="w-full py-2 border border-gray-300 rounded text-xs text-gray-700 hover:bg-gray-50 mb-2 flex items-center justify-center gap-2">
+          <div class="w-3 h-3 bg-gray-400 rounded-sm"></div>
+          DOWNLOAD TEMPLATE
+        </button>
+        <button class="w-full py-2 border border-gray-300 rounded text-xs text-gray-700 hover:bg-gray-50 flex items-center justify-center gap-2">
+          <div class="w-3 h-3 bg-gray-400 rounded-sm"></div>
+          UPLOAD FILE
+        </button>
+      </div>
+
+    </aside>
+
+    <!-- CENTER PANEL: flex-1, floating card -->
+    <main class="flex-1 flex flex-col overflow-hidden bg-white rounded-xl shadow-sm">
+
+      <!-- TABLE SECTION HEADER: title + description + count badge -->
+      <div class="px-6 py-4 bg-white border-b border-gray-100 flex items-start justify-between">
+        <div>
+          <h1 class="text-base font-semibold text-gray-900">TABLE SECTION TITLE</h1>
+          <p class="text-xs text-gray-400 mt-0.5">TABLE SECTION DESCRIPTION PLACEHOLDER</p>
+        </div>
+        <!-- COUNT BADGE: shows included/total count -->
+        <span class="border border-gray-300 rounded-full px-3 py-1 text-xs text-gray-600 shrink-0">000/000 INCLUDED</span>
+      </div>
+
+      <!-- TABLE ACTIONS: search, filter, bulk action buttons -->
+      <div class="px-6 py-3 bg-white border-b border-gray-200 flex items-center gap-3">
+        <!-- Search -->
+        <div class="flex-1 max-w-xs border border-gray-300 rounded px-3 py-2 flex items-center gap-2">
+          <div class="w-4 h-4 bg-gray-300 rounded-sm shrink-0"></div>
+          <span class="text-xs text-gray-400">SEARCH...</span>
+        </div>
+        <!-- Filter icon button -->
+        <button class="w-9 h-9 border border-gray-300 rounded flex items-center justify-center hover:bg-gray-50">
+          <div class="w-4 h-4 bg-gray-400 rounded-sm"></div>
+        </button>
+        <div class="flex-1"></div>
+        <!-- Action buttons -->
+        <button class="px-3 py-2 border border-gray-300 rounded text-xs text-gray-700 hover:bg-gray-50 flex items-center gap-1.5">
+          <div class="w-3 h-3 bg-gray-400 rounded-sm"></div>
+          BULK ACTION
+        </button>
+        <button class="px-3 py-2 bg-gray-900 rounded text-xs text-white hover:bg-gray-700 flex items-center gap-1.5">
+          <div class="w-3 h-3 bg-gray-300 rounded-sm"></div>
+          PRIMARY ACTION
+        </button>
+      </div>
+
+      <!-- TABS: toggle between filtered views (e.g. included / excluded) -->
+      <div class="px-6 bg-white border-b border-gray-200 flex items-center gap-6">
+        <!-- Active tab -->
+        <button class="py-3 text-sm font-medium text-gray-900 border-b-2 border-gray-900 flex items-center gap-1.5">
+          TAB ONE
+          <span class="bg-gray-900 text-white text-xs rounded-full px-1.5 py-0.5">00</span>
+        </button>
+        <button class="py-3 text-sm text-gray-500 border-b-2 border-transparent flex items-center gap-1.5 hover:text-gray-700">
+          TAB TWO
+          <span class="bg-gray-200 text-gray-600 text-xs rounded-full px-1.5 py-0.5">00</span>
+        </button>
+      </div>
+
+      <!-- DATA TABLE: scrollable, multi-column -->
+      <div class="flex-1 overflow-y-auto">
+        <table class="w-full text-xs bg-white">
+          <!-- TABLE HEADER: sticky, columns = checkbox, name, col1, col2, status, actions -->
+          <thead class="sticky top-0 bg-white border-b border-gray-200 z-10">
+            <tr>
+              <th class="px-4 py-3 w-10"><div class="w-4 h-4 border-2 border-gray-300 rounded"></div></th>
+              <th class="px-4 py-3 text-left font-medium text-gray-500">EMPLOYEE NAME</th>
+              <th class="px-4 py-3 text-left font-medium text-gray-500">COLUMN ONE</th>
+              <th class="px-4 py-3 text-left font-medium text-gray-500">COLUMN TWO</th>
+              <th class="px-4 py-3 text-left font-medium text-gray-500">STATUS</th>
+              <th class="px-4 py-3 w-20"></th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-gray-100">
+            <!-- TABLE ROW with inline action icons on hover -->
+            <tr class="hover:bg-gray-50">
+              <td class="px-4 py-3"><div class="w-4 h-4 border-2 border-gray-300 rounded"></div></td>
+              <td class="px-4 py-3">
+                <p class="font-medium text-gray-900">USER NAME</p>
+                <p class="text-gray-400">#ID000000</p>
+              </td>
+              <td class="px-4 py-3">
+                <p class="text-gray-700">0,000.00</p>
+                <p class="text-gray-400">N ITEMS</p>
+              </td>
+              <td class="px-4 py-3">
+                <p class="text-gray-700">0,000.00</p>
+                <p class="text-gray-400">N ITEMS</p>
+              </td>
+              <td class="px-4 py-3"><span class="border border-gray-300 rounded px-2 py-0.5 text-gray-600">ACTIVE</span></td>
+              <td class="px-4 py-3 flex items-center gap-1">
+                <div class="w-7 h-7 rounded border border-gray-200 flex items-center justify-center"><div class="w-3 h-3 bg-gray-400 rounded-sm"></div></div>
+                <div class="w-7 h-7 rounded border border-gray-200 flex items-center justify-center"><div class="w-3 h-3 bg-gray-400 rounded-sm"></div></div>
+              </td>
+            </tr>
+            <tr class="hover:bg-gray-50">
+              <td class="px-4 py-3"><div class="w-4 h-4 border-2 border-gray-300 rounded"></div></td>
+              <td class="px-4 py-3">
+                <p class="font-medium text-gray-900">USER NAME</p>
+                <p class="text-gray-400">#ID000000</p>
+              </td>
+              <td class="px-4 py-3">
+                <p class="text-gray-700">0,000.00</p>
+                <p class="text-gray-400">N ITEMS</p>
+              </td>
+              <td class="px-4 py-3">
+                <p class="text-gray-700">0,000.00</p>
+                <p class="text-gray-400">N ITEMS</p>
+              </td>
+              <td class="px-4 py-3"><span class="border border-gray-300 rounded px-2 py-0.5 text-gray-600">PART-TIME</span></td>
+              <td class="px-4 py-3 flex items-center gap-1">
+                <div class="w-7 h-7 rounded border border-gray-200 flex items-center justify-center"><div class="w-3 h-3 bg-gray-400 rounded-sm"></div></div>
+                <div class="w-7 h-7 rounded border border-gray-200 flex items-center justify-center"><div class="w-3 h-3 bg-gray-400 rounded-sm"></div></div>
+              </td>
+            </tr>
+            <tr class="hover:bg-gray-50">
+              <td class="px-4 py-3"><div class="w-4 h-4 border-2 border-gray-300 rounded"></div></td>
+              <td class="px-4 py-3">
+                <p class="font-medium text-gray-900">USER NAME</p>
+                <p class="text-gray-400">#ID000000</p>
+              </td>
+              <td class="px-4 py-3">
+                <p class="text-gray-700">0,000.00</p>
+                <p class="text-gray-400">N ITEMS</p>
+              </td>
+              <td class="px-4 py-3">
+                <p class="text-gray-700">0,000.00</p>
+                <p class="text-gray-400">N ITEMS</p>
+              </td>
+              <td class="px-4 py-3"><span class="border border-gray-300 rounded px-2 py-0.5 text-gray-600">ACTIVE</span></td>
+              <td class="px-4 py-3 flex items-center gap-1">
+                <div class="w-7 h-7 rounded border border-gray-200 flex items-center justify-center"><div class="w-3 h-3 bg-gray-400 rounded-sm"></div></div>
+                <div class="w-7 h-7 rounded border border-gray-200 flex items-center justify-center"><div class="w-3 h-3 bg-gray-400 rounded-sm"></div></div>
+              </td>
+            </tr>
+            <tr class="hover:bg-gray-50">
+              <td class="px-4 py-3"><div class="w-4 h-4 border-2 border-gray-300 rounded"></div></td>
+              <td class="px-4 py-3">
+                <p class="font-medium text-gray-900">USER NAME</p>
+                <p class="text-gray-400">#ID000000</p>
+              </td>
+              <td class="px-4 py-3">
+                <p class="text-gray-700">0,000.00</p>
+                <p class="text-gray-400">N ITEMS</p>
+              </td>
+              <td class="px-4 py-3">
+                <p class="text-gray-700">0,000.00</p>
+                <p class="text-gray-400">N ITEMS</p>
+              </td>
+              <td class="px-4 py-3"><span class="border border-gray-300 rounded px-2 py-0.5 text-gray-600">ACTIVE</span></td>
+              <td class="px-4 py-3 flex items-center gap-1">
+                <div class="w-7 h-7 rounded border border-gray-200 flex items-center justify-center"><div class="w-3 h-3 bg-gray-400 rounded-sm"></div></div>
+                <div class="w-7 h-7 rounded border border-gray-200 flex items-center justify-center"><div class="w-3 h-3 bg-gray-400 rounded-sm"></div></div>
+              </td>
+            </tr>
+            <tr class="hover:bg-gray-50">
+              <td class="px-4 py-3"><div class="w-4 h-4 border-2 border-gray-300 rounded"></div></td>
+              <td class="px-4 py-3">
+                <p class="font-medium text-gray-900">USER NAME</p>
+                <p class="text-gray-400">#ID000000</p>
+              </td>
+              <td class="px-4 py-3">
+                <p class="text-gray-700">0,000.00</p>
+                <p class="text-gray-400">N ITEMS</p>
+              </td>
+              <td class="px-4 py-3">
+                <p class="text-gray-700">0,000.00</p>
+                <p class="text-gray-400">N ITEMS</p>
+              </td>
+              <td class="px-4 py-3"><span class="border border-gray-300 rounded px-2 py-0.5 text-gray-600">PART-TIME</span></td>
+              <td class="px-4 py-3 flex items-center gap-1">
+                <div class="w-7 h-7 rounded border border-gray-200 flex items-center justify-center"><div class="w-3 h-3 bg-gray-400 rounded-sm"></div></div>
+                <div class="w-7 h-7 rounded border border-gray-200 flex items-center justify-center"><div class="w-3 h-3 bg-gray-400 rounded-sm"></div></div>
+              </td>
+            </tr>
+            <tr class="hover:bg-gray-50">
+              <td class="px-4 py-3"><div class="w-4 h-4 border-2 border-gray-300 rounded"></div></td>
+              <td class="px-4 py-3">
+                <p class="font-medium text-gray-900">USER NAME</p>
+                <p class="text-gray-400">#ID000000</p>
+              </td>
+              <td class="px-4 py-3">
+                <p class="text-gray-700">0,000.00</p>
+                <p class="text-gray-400">N ITEMS</p>
+              </td>
+              <td class="px-4 py-3">
+                <p class="text-gray-700">0,000.00</p>
+                <p class="text-gray-400">N ITEMS</p>
+              </td>
+              <td class="px-4 py-3"><span class="border border-gray-300 rounded px-2 py-0.5 text-gray-600">ACTIVE</span></td>
+              <td class="px-4 py-3 flex items-center gap-1">
+                <div class="w-7 h-7 rounded border border-gray-200 flex items-center justify-center"><div class="w-3 h-3 bg-gray-400 rounded-sm"></div></div>
+                <div class="w-7 h-7 rounded border border-gray-200 flex items-center justify-center"><div class="w-3 h-3 bg-gray-400 rounded-sm"></div></div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- TABLE FOOTER: rows-per-page selector + pagination range + prev/next -->
+      <div class="bg-white border-t border-gray-200 px-6 py-3 flex items-center gap-4 shrink-0">
+        <select class="border border-gray-300 rounded px-2 py-1 text-xs text-gray-600 bg-white">
+          <option>10 Rows</option>
+          <option>25 Rows</option>
+          <option>50 Rows</option>
+        </select>
+        <span class="text-xs text-gray-400 flex-1">1 – 10 of 000</span>
+        <button class="w-7 h-7 border border-gray-300 rounded flex items-center justify-center hover:bg-gray-50">
+          <div class="w-3 h-3 bg-gray-400 rounded-sm"></div>
+        </button>
+        <button class="w-7 h-7 border border-gray-300 rounded flex items-center justify-center hover:bg-gray-50">
+          <div class="w-3 h-3 bg-gray-400 rounded-sm"></div>
+        </button>
+      </div>
+
+    </main>
+
+    <!-- RIGHT DETAIL PANEL: fixed width (~400px), floating card -->
+    <aside class="w-[400px] bg-white rounded-xl shadow-sm flex flex-col overflow-hidden shrink-0">
+
+      <!-- PANEL HEADER: title + close button -->
+      <div class="px-5 py-4 border-b border-gray-200 flex items-center justify-between shrink-0">
+        <h2 class="text-sm font-semibold text-gray-900">DETAIL PANEL TITLE</h2>
+        <button class="w-7 h-7 flex items-center justify-center text-gray-400 hover:text-gray-700">
+          <div class="w-4 h-4 bg-gray-300 rounded-sm"></div>
+        </button>
+      </div>
+
+      <!-- PANEL META: key field + value -->
+      <div class="px-5 py-3 border-b border-gray-100 flex items-center justify-between">
+        <span class="text-xs text-gray-500">FIELD LABEL</span>
+        <div class="flex items-center gap-2">
+          <div class="w-4 h-4 bg-gray-200 rounded-sm"></div>
+          <span class="text-xs font-medium text-gray-700">FIELD VALUE</span>
+          <div class="w-3 h-3 bg-gray-300 rounded-sm"></div>
+        </div>
+      </div>
+
+      <!-- PANEL TABS: filter the detail content -->
+      <div class="px-5 border-b border-gray-200 flex gap-4 shrink-0">
+        <button class="py-3 text-sm font-medium text-gray-900 border-b-2 border-gray-900">ALL</button>
+        <button class="py-3 text-sm text-gray-500 border-b-2 border-transparent hover:text-gray-700">ADDITIONS</button>
+        <button class="py-3 text-sm text-gray-500 border-b-2 border-transparent hover:text-gray-700">DEDUCTIONS</button>
+      </div>
+
+      <!-- PANEL CONTENT: scrollable list of detail cards -->
+      <div class="flex-1 overflow-y-auto px-5 py-4 flex flex-col gap-3">
+
+        <!-- DETAIL CARD: adjustment/item card with title, amount, code, note, actions -->
+        <div class="border border-gray-200 rounded p-3 flex flex-col gap-2">
+          <div class="flex items-center justify-between">
+            <p class="text-xs font-semibold text-gray-700">ITEM TITLE</p>
+            <p class="text-xs text-gray-500">+ 0,000.00</p>
+          </div>
+          <div class="flex items-center gap-1.5">
+            <div class="w-3 h-3 bg-gray-200 rounded-sm"></div>
+            <p class="text-xs text-gray-500">CUSTOM NAME</p>
+          </div>
+          <div class="flex items-center gap-1.5">
+            <div class="w-3 h-3 bg-gray-200 rounded-sm"></div>
+            <p class="text-xs text-gray-500">CODE VALUE</p>
+          </div>
+          <!-- NOTE: collapsible text -->
+          <p class="text-xs text-gray-400 bg-gray-50 rounded p-2">NOTE PLACEHOLDER TEXT. SHOWS UP TO 2 LINES BEFORE TRUNCATION...</p>
+          <!-- CARD ACTIONS -->
+          <div class="flex items-center justify-end gap-2 pt-1">
+            <button class="w-7 h-7 border border-gray-200 rounded flex items-center justify-center hover:bg-gray-50">
+              <div class="w-3 h-3 bg-gray-400 rounded-sm"></div>
+            </button>
+            <button class="w-7 h-7 border border-gray-200 rounded flex items-center justify-center hover:bg-gray-50">
+              <div class="w-3 h-3 bg-gray-400 rounded-sm"></div>
+            </button>
+          </div>
+        </div>
+
+        <div class="border border-gray-200 rounded p-3 flex flex-col gap-2">
+          <div class="flex items-center justify-between">
+            <p class="text-xs font-semibold text-gray-700">ITEM TITLE</p>
+            <p class="text-xs text-gray-500">– 0,000.00</p>
+          </div>
+          <div class="flex items-center gap-1.5">
+            <div class="w-3 h-3 bg-gray-200 rounded-sm"></div>
+            <p class="text-xs text-gray-500">CUSTOM NAME</p>
+          </div>
+          <div class="flex items-center gap-1.5">
+            <div class="w-3 h-3 bg-gray-200 rounded-sm"></div>
+            <p class="text-xs text-gray-500">CODE VALUE</p>
+          </div>
+          <p class="text-xs text-gray-400 bg-gray-50 rounded p-2">NOTE PLACEHOLDER TEXT. SHOWS UP TO 2 LINES...</p>
+          <div class="flex items-center justify-end gap-2 pt-1">
+            <button class="w-7 h-7 border border-gray-200 rounded flex items-center justify-center hover:bg-gray-50">
+              <div class="w-3 h-3 bg-gray-400 rounded-sm"></div>
+            </button>
+            <button class="w-7 h-7 border border-gray-200 rounded flex items-center justify-center hover:bg-gray-50">
+              <div class="w-3 h-3 bg-gray-400 rounded-sm"></div>
+            </button>
+          </div>
+        </div>
+
+        <div class="border border-gray-200 rounded p-3 flex flex-col gap-2">
+          <div class="flex items-center justify-between">
+            <p class="text-xs font-semibold text-gray-700">ITEM TITLE</p>
+            <p class="text-xs text-gray-500">+ 0,000.00</p>
+          </div>
+          <div class="flex items-center gap-1.5">
+            <div class="w-3 h-3 bg-gray-200 rounded-sm"></div>
+            <p class="text-xs text-gray-500">CUSTOM NAME</p>
+          </div>
+          <div class="flex items-center gap-1.5">
+            <div class="w-3 h-3 bg-gray-200 rounded-sm"></div>
+            <p class="text-xs text-gray-500">CODE VALUE</p>
+          </div>
+          <p class="text-xs text-gray-400 bg-gray-50 rounded p-2">NOTE PLACEHOLDER TEXT...</p>
+          <div class="flex items-center justify-end gap-2 pt-1">
+            <button class="w-7 h-7 border border-gray-200 rounded flex items-center justify-center hover:bg-gray-50">
+              <div class="w-3 h-3 bg-gray-400 rounded-sm"></div>
+            </button>
+            <button class="w-7 h-7 border border-gray-200 rounded flex items-center justify-center hover:bg-gray-50">
+              <div class="w-3 h-3 bg-gray-400 rounded-sm"></div>
+            </button>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- PANEL FOOTER: primary action pinned to bottom -->
+      <div class="px-5 py-4 border-t border-gray-200 shrink-0">
+        <button class="w-full py-2.5 bg-gray-900 rounded text-sm text-white hover:bg-gray-700">ADD NEW</button>
+      </div>
+
+    </aside>
+
+  </div>
+
+</body>
+</html>

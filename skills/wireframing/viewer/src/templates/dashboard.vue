@@ -23,18 +23,29 @@ const navItems = ['OVERVIEW', 'ANALYTICS', 'REPORTS', 'USERS', 'SETTINGS']
 </script>
 
 <template>
-  <div class="flex flex-col h-screen bg-gray-50">
-    <!-- TOP NAV -->
-    <nav class="h-14 bg-gray-900 flex items-center justify-between px-6 shrink-0">
-      <div class="flex items-center gap-6">
-        <div class="w-24 h-6 bg-gray-600 rounded text-xs text-gray-400 flex items-center justify-center">LOGO</div>
+  <div class="flex flex-col h-screen bg-gray-50 pl-16">
+
+    <!-- SIDE NAV: fixed, 64px wide, full height -->
+    <nav class="fixed left-0 top-0 w-16 h-screen bg-gray-900 flex flex-col items-center py-4 z-10">
+      <div class="w-8 h-8 bg-gray-600 rounded mb-6 flex items-center justify-center text-xs text-gray-400">L</div>
+      <div class="flex flex-col items-center gap-2 flex-1">
+        <div class="w-10 h-10 rounded-lg bg-gray-700 flex items-center justify-center">
+          <div class="w-5 h-5 bg-gray-300 rounded-sm" />
+        </div>
+        <div class="w-10 h-10 rounded-lg bg-gray-800 flex items-center justify-center">
+          <div class="w-5 h-5 bg-gray-500 rounded-sm" />
+        </div>
+        <div class="w-10 h-10 rounded-lg bg-gray-800 flex items-center justify-center">
+          <div class="w-5 h-5 bg-gray-500 rounded-sm" />
+        </div>
+        <div class="w-10 h-10 rounded-lg bg-gray-800 flex items-center justify-center">
+          <div class="w-5 h-5 bg-gray-500 rounded-sm" />
+        </div>
       </div>
-      <div class="flex items-center gap-3">
-        <div class="w-8 h-8 rounded-full bg-gray-600 flex items-center justify-center text-xs text-gray-300">U</div>
-      </div>
+      <div class="w-8 h-8 rounded-full bg-gray-500 flex items-center justify-center text-xs text-gray-300">U</div>
     </nav>
 
-    <div class="flex flex-1 overflow-hidden">
+<div class="flex flex-1 overflow-hidden">
       <!-- SIDEBAR -->
       <aside class="w-56 bg-white border-r border-gray-200 flex flex-col shrink-0">
         <div class="p-4 space-y-1">
