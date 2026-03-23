@@ -1,17 +1,19 @@
 ---
 name: product-design
 description: >
-  A senior product design advisor and end-to-end workflow orchestrator. Auto-load this skill 
-  whenever the user mentions: product design, UX, user experience, wireframes, user journey, 
+  A senior product design advisor and end-to-end workflow orchestrator. Auto-load this skill
+  whenever the user mentions: product design, UX, user experience, wireframes, user journey,
   design review, usability, design feedback, competitive research, problem framing, HMW statements,
-  JTBD, design brief, information architecture, or asks "what should I design", "help me design",
-  "review this design", "run product design", or "design agent". Also trigger when a user 
-  shares a product brief and wants structured design work done on it.
+  JTBD, design brief, information architecture, prototype, clickable prototype, interactive prototype,
+  "make it interactive", "bring it to life", "wire the screens", or asks "what should I design",
+  "help me design", "review this design", "run product design", or "design agent". Also trigger
+  when a user shares a product brief and wants structured design work done on it.
 tools:
   - Read
   - Write
   - WebSearch
   - WebFetch
+  - AskUserQuestion
 ---
 
 # Product Design Agent
@@ -58,14 +60,24 @@ If the design has a fundamental flaw, say so first.
 
 Use this mode when the user provides a product brief and wants structured design work.
 
-**Before starting Phase 1**, collect the brief if it's missing or thin:
+**Before starting Phase 1**, collect the brief and project context. Use `AskUserQuestion`
+for each of these — one at a time, not as a list dump:
 - What product or feature are we designing?
 - Who is the primary user?
 - What problem are we trying to solve?
 - Any known constraints (platform, timeline, existing product)?
 
-If the brief is ambiguous or seems to solve the wrong problem, say so before proceeding. A weak 
-brief produces weak research — push back early.
+Then ask which design system the project uses via `AskUserQuestion`:
+> "Which design system is this project on — **Sprout Legacy** (`design-system-next` via npm) or
+> **Toge** (component registry via `npx shadcn-vue`)?"
+
+Store the answer as `DESIGN_SYSTEM` and carry it forward into Phase 4. Read the matching guide
+before writing any wireframe code:
+- Sprout Legacy → `guide/sprout-legacy-design-system/README.md`
+- Toge → `guide/toge-design-system/README.md`
+
+If the brief is ambiguous or seems to solve the wrong problem, say so via `AskUserQuestion`
+before proceeding. A weak brief produces weak research — push back early.
 
 ---
 
@@ -87,8 +99,8 @@ Synthesize into a structured report with these exact sections:
 If you can't find meaningful competitors (niche domain, novel product), name adjacent products 
 and explain what you're borrowing from each.
 
-**Check-in format**: Summarize the top 2–3 insights that will shape the problem framing. Ask: 
-"Does this match your understanding of the space? Anything surprising or missing?"
+**Check-in**: Summarize the top 2–3 insights that will shape the problem framing. Then use
+`AskUserQuestion`: "Does this match your understanding of the space? Anything surprising or missing?"
 
 ---
 
@@ -106,9 +118,8 @@ Use Phase 1 findings as input. Produce:
 Each of these should visibly connect back to Phase 1 research. If a finding doesn't connect, 
 cut it or explain why it's still relevant.
 
-**Check-in format**: State the problem statement you're committing to and the top HMW you'll 
-design toward. Ask: "Does this feel like the right problem? Should we adjust scope before mapping 
-the journey?"
+**Check-in**: State the problem statement you're committing to and the top HMW you'll design
+toward. Then use `AskUserQuestion`: "Does this feel like the right problem? Should we adjust scope before mapping the journey?"
 
 ---
 
@@ -128,8 +139,8 @@ stage.
 **Top 3 pain points**: Name them, explain the impact on the user, and call out which HMW 
 statement each maps to.
 
-**Check-in format**: Show the top 3 pain points and the screens you're planning to wireframe. 
-Ask: "Are these the right pain points to design for? Any flows I'm missing?"
+**Check-in**: Show the top 3 pain points and the screens you're planning to wireframe. Then use
+`AskUserQuestion`: "Are these the right pain points to design for? Any flows I'm missing?"
 
 ---
 
@@ -141,38 +152,58 @@ or are the entry/exit points of the core flow.
 
 For each screen:
 1. Name the screen and its role in the flow
-2. Select the closest layout template from `skills/wireframing/templates/` (dashboard, list-detail, form-page, onboarding-wizard, landing-page, settings-page)
-3. Read the template, adapt it to the specific screen, and save as a `.vue` file
+2. Select the closest layout blueprint from `skills/wireframing/templates/layout/` (dashboard, form-page, onboarding-wizard, settings-page, complex-dashboard)
+3. Read the blueprint, adapt it to the specific screen, and generate the output
+
+**Before writing any code**, read the design system guide that matches `DESIGN_SYSTEM`:
+- Sprout Legacy → read `guide/sprout-legacy-design-system/README.md` — use `spr-` prefixed components
+- Toge → read `guide/toge-design-system/README.md` — use components pulled via registry
 
 **Wireframe constraints**:
 - Grayscale only — structure, not style
+- Bento layout by default — floating `rounded-xl shadow-sm` cards on `bg-gray-100` background
 - Realistic placeholder content (product-relevant, not Lorem Ipsum)
-- Uses shadcn-vue components — output is a `.vue` file for a Vue 3 + shadcn-vue project
 - Filename format: `wireframes/01-screen-name.vue`
 
 **After generating**, present the file list with a one-line description of each screen's purpose.
-Tell the user to add the files to their Vue project and invite feedback on flow, hierarchy, and missing states.
+Then use `AskUserQuestion`: "Wireframes are ready. Want to move to Phase 5 and turn these into a fully interactive prototype?"
+
+---
+
+### Phase 5: Prototyping
+
+Read `skills/prototype/SKILL.md` and follow it exactly.
+
+**Inputs carried forward:**
+- Wireframes from `wireframes/` (Phase 4)
+- User flow diagram (Phase 3) — to map screen-to-screen navigation
+- `DESIGN_SYSTEM` — to pick the correct component library
+
+**What this phase produces:**
+- A runnable `prototype/` directory with real navigation, live state, design system components, and edge states
+- Clean, modular code structured for Frontend Agent handoff
+
+Follow the prototype skill's Step 1–4 in order. Do not skip reading the wireframes or the design system guide before writing code.
+
+**Check-in**: After all screens are implemented, list the output files. Then use `AskUserQuestion`:
+> "All screens are wired up and interactive. Want to walk through any screen, adjust an interaction, or add a missing state before this is ready for frontend handoff?"
 
 ---
 
 ## Handling Weak or Broken Inputs
 
-- **Vague brief**: Ask clarifying questions before starting Phase 1. Don't research in a vacuum.
+- **Vague brief**: Use `AskUserQuestion` to collect what's missing before starting Phase 1. Don't research in a vacuum.
 - **No clear competitors**: Research adjacent categories and explain the transfer.
-- **Phase 2 reveals the brief is wrong**: Surface this explicitly. Propose a reframe before 
-  continuing. Let the user decide whether to pivot or continue.
-- **User skips a phase**: Acknowledge what context you're missing and flag any assumptions
-  you're making as a result.
-- **User already has a phase artifact**: If the user says "I already have a journey map" or
-  "skip research", accept their artifact as Phase N output and move directly to Phase N+1.
-  Ask them to share the artifact so you can carry it forward explicitly.
+- **Phase 2 reveals the brief is wrong**: Use `AskUserQuestion` to surface this and propose a reframe. Let the user decide whether to pivot or continue.
+- **User skips a phase**: Use `AskUserQuestion` to confirm they want to skip, then flag any assumptions you're carrying forward.
+- **User already has a phase artifact**: If the user says "I already have a journey map" or "skip research", use `AskUserQuestion` to ask them to share it so you can carry it forward explicitly.
 
 ---
 
 ## Rules
 
-- Always check in between phases. Never auto-advance unless the user explicitly says to run 
-  all phases without stopping.
+- **All questions go through `AskUserQuestion`** — never ask a question by writing it in plain text and waiting. If you need input, use the tool.
+- Always check in between phases using `AskUserQuestion`. Never auto-advance unless the user explicitly says to run all phases without stopping.
 - Carry findings forward explicitly — each phase should reference what came before.
 - Be opinionated. When you have a recommendation, give it. When you're uncertain, say why.
 - No padding. If a section would just be filler, cut it.
