@@ -12,10 +12,13 @@ description: >
 This skill maps design intent to the correct token class. The system uses a **three-layer architecture** — never skip layers or reach into primitives from component code.
 
 For the full token list, see the references folder:
-- [`references/primitives.yaml`](references/primitives.yaml) — all palettes, shades, usage rules
-- [`references/color-tokens.yaml`](references/color-tokens.yaml) — all surface, semantic, text, border, outline tokens
-- [`references/typography.yaml`](references/typography.yaml) — all component typography classes
+- [`references/style.css`](references/style.css) — **the real token source** — all `@theme` definitions, CSS custom properties, primitives, semantic tokens, bridge layer, typography, and max-width tokens as they are actually shipped
+- [`references/primitives.yaml`](references/primitives.yaml) — palette inventory and usage rules
+- [`references/color-tokens.yaml`](references/color-tokens.yaml) — surface, semantic, text, border, outline token reference
+- [`references/typography.yaml`](references/typography.yaml) — component typography classes
 - [`references/bridge-dark-mode.yaml`](references/bridge-dark-mode.yaml) — bridge layer, light/dark resolved values
+
+**When in doubt about a token value or whether it exists, read `references/style.css` first — it is the authoritative source.**
 
 ---
 
@@ -27,7 +30,7 @@ Layer 2 — Bridge (semantic)  @layer base :root / .dark              Maps primi
 Layer 3 — Utilities          bg-{token}, .text-{token}, .border-*  Use these in components.
 ```
 
-**Rule:** Components always use Layer 3. Layer 1 exists only in `style.css`.
+**Rule:** Components always use Layer 3. Layer 1 exists only in `references/style.css`.
 **Exception:** `ubas` palette (charts/data-viz only) — primitives used directly, e.g. `bg-ubas-500`.
 
 ---
