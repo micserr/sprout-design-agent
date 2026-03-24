@@ -1,5 +1,5 @@
 ---
-name: prototype
+name: toge:prototype
 description: >
   Turns wireframes into a fully interactive Vue 3 prototype that users can feel, navigate, and
   experience. Use when converting wireframes to a clickable prototype, making screens interactive,
@@ -59,21 +59,21 @@ wireframe doesn't appear in the flow, flag it — it may be a secondary state of
 
 Check the `DESIGN_SYSTEM` value carried forward from the design brief:
 
-- **Sprout Legacy** → read `guide/sprout-legacy-design-system/README.md`
+- **Toge v1** → read `guide/toge-design-system-v1/README.md`
   - Use `spr-` prefixed components: `<spr-button>`, `<spr-input>`, `<spr-modal>`
   - Use `spr-` Tailwind tokens for color, typography, border-radius
-- **Toge** → read `guide/toge-design-system/README.md`
+- **Toge v2** → read `guide/toge-design-system-v2/README.md`
   - Components were pulled via `npx shadcn-vue@latest add @toge/ui/[component]`
   - Import from `@/components/ui/[component-name]`
 
 **Hard rule:** Never use raw hex colors or grayscale placeholders from the wireframe.
 Every color in the prototype must come from the design system.
 
-**Token enforcement (Toge):** If `DESIGN_SYSTEM` is **Toge**, read `guide/toge-design-system/tokens/token-mapping.yaml` before writing any component. Every default Tailwind color class (`bg-gray-*`, `text-gray-*`, `bg-red-*`, `bg-emerald-*`, `bg-blue-*`, `bg-yellow-*`, `bg-orange-*`) is a violation — replace it with the mapped token before committing output. The design system clears all default Tailwind colors (`--color-*: initial`) so these classes silently render nothing at runtime.
+**Token enforcement (Toge v2):** If `DESIGN_SYSTEM` is **Toge v2**, read `guide/toge-design-system-v2/tokens/token-mapping.yaml` before writing any component. Every default Tailwind color class (`bg-gray-*`, `text-gray-*`, `bg-red-*`, `bg-emerald-*`, `bg-blue-*`, `bg-yellow-*`, `bg-orange-*`) is a violation — replace it with the mapped token before committing output. The design system clears all default Tailwind colors (`--color-*: initial`) so these classes silently render nothing at runtime.
 
-**Known naming collision (Toge):** Do not combine `text-base` with another font-size utility on the same element. The design system defines `.text-base` as `color: var(--text-base)` in `@layer components`, but Tailwind also defines `text-base` as `font-size: 1rem` in `@layer utilities`. The utilities layer wins for `font-size`, so `text-xs text-base` silently becomes 1rem. Use `text-base` alone when 1rem font-size is acceptable, or use `text-strong` / `text-weak` when a specific font-size is also needed.
+**Known naming collision (Toge v2):** Do not combine `text-base` with another font-size utility on the same element. The design system defines `.text-base` as `color: var(--text-base)` in `@layer components`, but Tailwind also defines `text-base` as `font-size: 1rem` in `@layer utilities`. The utilities layer wins for `font-size`, so `text-xs text-base` silently becomes 1rem. Use `text-base` alone when 1rem font-size is acceptable, or use `text-strong` / `text-weak` when a specific font-size is also needed.
 
-**Token enforcement (Sprout Legacy):** If `DESIGN_SYSTEM` is **Sprout Legacy**, tokens use the `spr-` prefix. Read `guide/sprout-legacy-design-system/README.md` for the token list. No separate mapping file needed.
+**Token enforcement (Toge v1):** If `DESIGN_SYSTEM` is **Toge v1**, tokens use the `spr-` prefix. Read `guide/toge-design-system-v1/README.md` for the token list. No separate mapping file needed.
 
 ---
 

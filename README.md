@@ -1,4 +1,4 @@
-# product-design-agent-promax
+# sprout-design-agent
 
 ## What is this?
 
@@ -31,9 +31,9 @@ Brief → Phase 1: UX Research → Phase 2: Problem Framing → Phase 3: User Jo
 
 The agent checks in between every phase using interactive CLI prompts (`AskUserQuestion`). It never auto-advances.
 
-At the start of every workflow, it asks which design system the project uses:
-- **Sprout Legacy** (`design-system-next` via npm) — see `guide/sprout-legacy-design-system/`
-- **Toge** (component registry via `npx shadcn-vue`) — see `guide/toge-design-system/`
+At the start of every workflow, it confirms which design system the project uses:
+- **Toge v1** (`design-system-next` via npm) — see `guide/toge-design-system-v1/`
+- **Toge v2** (component registry via `npx shadcn-vue`) — see `guide/toge-design-system-v2/`
 
 **Trigger phrases:** "design agent, here's my brief:", "run product design for", "review this design", "prototype this"
 
@@ -45,8 +45,8 @@ The `guide/` directory contains reference docs for AI agents working on Sprout p
 
 | Guide | When to use |
 |---|---|
-| `guide/sprout-legacy-design-system/` | Project has `design-system-next` in `package.json` |
-| `guide/toge-design-system/` | Project has `components.json` with `@toge` registry |
+| `guide/toge-design-system-v1/` | Project has `design-system-next` in `package.json` |
+| `guide/toge-design-system-v2/` | Project has `components.json` with `@toge` registry |
 
 See `guide/README.md` for how to detect which system a project uses.
 
@@ -56,15 +56,15 @@ See `guide/README.md` for how to detect which system a project uses.
 
 - Claude Code installed
 - For the **wireframing** skill viewer: Node.js (run `npm run dev` inside `skills/wireframing/viewer/`)
-- For the **prototype** skill output: a Vue 3 project with Tailwind CSS and either `design-system-next` or shadcn-vue + Toge registry
+- For the **prototype** skill output: a Vue 3 project with Tailwind CSS and either `design-system-next` (Toge v1) or shadcn-vue + Toge registry (Toge v2)
 
 ---
 
 ## Installation
 
 ```bash
-git clone https://github.com/YOUR_USERNAME/product-design-agent-promax.git
-cd product-design-agent-promax
+git clone https://github.com/YOUR_USERNAME/sprout-design-agent.git
+cd sprout-design-agent
 chmod +x install.sh
 ./install.sh
 ```
@@ -110,7 +110,7 @@ Review this design and give me feedback based on UX heuristics.
 ## Updating
 
 ```bash
-cd product-design-agent-promax
+cd sprout-design-agent
 git pull
 ```
 

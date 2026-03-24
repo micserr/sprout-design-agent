@@ -8,9 +8,9 @@ This is the new workflow. Use this for new projects or when migrating away from 
 
 ---
 
-## How It's Different from Sprout Legacy
+## How It's Different from Toge v1
 
-| | Sprout Legacy | Toge |
+| | Toge v1 | Toge v2 |
 |---|---|---|
 | **Delivery** | npm package (`design-system-next`) | CLI registry pull |
 | **Components** | Pre-built, locked in node_modules | Copied into your project |
@@ -116,4 +116,4 @@ npx shadcn-vue@latest add @toge/ui/toge-badge
 - You need to customize component internals beyond what props allow
 - You want zero runtime dependency on a shared npm package
 
-For existing projects already on `design-system-next`, see [`../sprout-legacy-design-system/README.md`](../sprout-legacy-design-system/README.md).
+For existing projects already on `design-system-next`, see [`../toge-design-system-v1/README.md`](../toge-design-system-v1/README.md).

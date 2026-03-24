@@ -136,11 +136,11 @@ statement each maps to.
 **Stack discovery** — before advancing to Phase 4, confirm the tech stack via `AskUserQuestion` one question at a time:
 
 1. **Design system** — auto-detect first:
-   - Check `package.json`: if `design-system-next` is a dependency → `DESIGN_SYSTEM = Sprout Legacy`
-   - Check `components.json`: if `registries["@toge"]` is present → `DESIGN_SYSTEM = Toge`
-   - If both found → `DESIGN_SYSTEM = Toge` (prefer Toge for new code; note this to the user)
-   - If neither found → ask: "Which design system does this project use — **Sprout Legacy** (`design-system-next`) or **Toge** (shadcn-vue registry)?"
-   - Read the matching guide: Sprout Legacy → `guide/sprout-legacy-design-system/README.md` · Toge → `guide/toge-design-system/README.md`
+   - Check `package.json`: if `design-system-next` is a dependency → `DESIGN_SYSTEM = Toge v1`
+   - Check `components.json`: if `registries["@toge"]` is present → `DESIGN_SYSTEM = Toge v2`
+   - If both found → `DESIGN_SYSTEM = Toge v2` (prefer Toge v2 for new code; note this to the user)
+   - If neither found → ask: "Which design system does this project use — **Toge v1** (`design-system-next`) or **Toge v2** (shadcn-vue registry)?"
+   - Read the matching guide: Toge v1 → `guide/toge-design-system-v1/README.md` · Toge v2 → `guide/toge-design-system-v2/README.md`
 
 2. **Framework**: `AskUserQuestion` → "What framework is this project on — Vue 3, React, or something else?" → store as `STACK_FRAMEWORK`
 
@@ -164,8 +164,8 @@ For each screen:
 3. Read the blueprint, adapt it to the specific screen, and generate the output
 
 **Before writing any code**, read the design system guide that matches `DESIGN_SYSTEM`:
-- Sprout Legacy → read `guide/sprout-legacy-design-system/README.md` — use `spr-` prefixed components
-- Toge → read `guide/toge-design-system/README.md` — use components pulled via registry
+- Toge v1 → read `guide/toge-design-system-v1/README.md` — use `spr-` prefixed components
+- Toge v2 → read `guide/toge-design-system-v2/README.md` — use components pulled via registry
 
 **Wireframe constraints**:
 - Grayscale only — structure, not style

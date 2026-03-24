@@ -10,8 +10,8 @@ Sprout has two design systems. They are **not interchangeable** — check which 
 
 | Guide | When to use |
 |---|---|
-| [Sprout Legacy Design System](./sprout-legacy-design-system/README.md) | Project has `design-system-next` in `package.json` |
-| [Toge Design System](./toge-design-system/README.md) | Project uses a `components.json` with `@toge` registry |
+| [Toge v1 Design System](./toge-design-system-v1/README.md) | Project has `design-system-next` in `package.json` |
+| [Toge v2 Design System](./toge-design-system-v2/README.md) | Project uses a `components.json` with `@toge` registry |
 
 ### How to detect which system a project uses
 
@@ -23,6 +23,6 @@ Sprout has two design systems. They are **not interchangeable** — check which 
 
 ## Quick Rules
 
-- Never mix `spr-` prefixed components with Toge components in the same file
+- Never mix `spr-` prefixed components (Toge v1) with Toge v2 components in the same file
 - Never hardcode hex colors — always use design tokens from the active system
 - When in doubt about a component API, read the guide for that system before writing code

@@ -1,5 +1,5 @@
 ---
-name: wireframing
+name: toge:wireframing
 description: >
   Use when creating wireframes, sketching page layouts, designing information architecture,
   or structuring screens. Trigger phrases: "wireframe", "sketch a layout", "design a screen",

@@ -1,8 +1,8 @@
-# Sprout Legacy Design System
+# Toge v1 Design System
 
 ## Overview
 
-The Sprout Legacy Design System is consumed via the **`design-system-next`** npm package. It ships a complete set of pre-built Vue 3 components (65+), design tokens, and Tailwind utilities. Everything is centrally managed — you install, import, and use. You do not own or modify the source files.
+The Toge v1 Design System is consumed via the **`design-system-next`** npm package. It ships a complete set of pre-built Vue 3 components (65+), design tokens, and Tailwind utilities. Everything is centrally managed — you install, import, and use. You do not own or modify the source files.
 
 This is the older workflow. Most existing Sprout products use this system.
 
