@@ -63,7 +63,7 @@ Check the `DESIGN_SYSTEM` value carried forward from the design brief:
   - Use `spr-` prefixed components: `<spr-button>`, `<spr-input>`, `<spr-modal>`
   - Use `spr-` Tailwind tokens for color, typography, border-radius
 - **Toge v2** → read `guide/toge-design-system-v2/README.md`
-  - Components were pulled via `npx shadcn-vue@latest add @toge/ui/[component]`
+  - Components were pulled via `npx shadcn-vue@latest add https://toge-ds.azurewebsites.net/r/ui/[component].json`
   - Import from `@/components/ui/[component-name]`
 
 **Hard rule:** Never use raw hex colors or grayscale placeholders from the wireframe.
