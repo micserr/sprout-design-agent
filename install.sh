@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# product-design-agent-promax installer
+# sprout-design-agent installer
 # Installs the product-design agent and skills to your AI framework of choice.
 
 set -euo pipefail
@@ -7,8 +7,8 @@ set -euo pipefail
 SCRIPT_DIR=$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)
 
 echo ""
-echo "product-design-agent-promax"
-echo "==========================="
+echo "sprout-design-agent"
+echo "==================="
 echo ""
 echo "Which framework would you like to install to?"
 echo ""

@@ -1,6 +1,6 @@
 # Default Tailwind color class → Toge design token mapping.
-# Source of truth for token values:  guide/toge-design-system/tokens/style.css
-# Token names and structure:         guide/toge-design-system/tokens/design-tokens.yaml
+# Source of truth for token values:  guide/toge-design-system-v2/tokens/style.css
+# Token names and structure:         guide/toge-design-system-v2/tokens/design-tokens.yaml
 # Derivation reference:              PROTOTYPE_LESSONS.md Quick Reference table
 # Usage: read this file in prototype/SKILL.md Step 2 when DESIGN_SYSTEM = Toge.
 # Every default Tailwind color class listed here is a violation in prototype code.
