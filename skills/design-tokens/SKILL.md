@@ -18,7 +18,12 @@ For the full token list, see the references folder:
 - [`references/typography.yaml`](references/typography.yaml) — component typography classes
 - [`references/bridge-dark-mode.yaml`](references/bridge-dark-mode.yaml) — bridge layer, light/dark resolved values
 
-**When in doubt about a token value or whether it exists, read `references/style.css` first — it is the authoritative source.**
+**When in doubt about a token value or whether it exists, read the authoritative source first:**
+- **Toge v2 projects:** `guide/toge-design-system-v2/tokens/style.css`
+- **Toge v1 projects:** `node_modules/design-system-next` (installed package)
+- **This skill's reference copy:** `references/style.css` (may lag behind the project's installed version — prefer the project source)
+
+Do not rely on memory for token names. Read the file.
 
 ---
 
@@ -31,7 +36,7 @@ Layer 3 — Utilities          bg-{token}, .text-{token}, .border-*  Use these i
 ```
 
 **Rule:** Components always use Layer 3. Layer 1 exists only in `references/style.css`.
-**Exception:** `ubas` palette (charts/data-viz only) — primitives used directly, e.g. `bg-ubas-500`.
+**Exception:** `ubas` palette — for **data visualization only**: charts, graphs, progress rings. Status badges, tags, labels, and any UI element that communicates semantic state must use semantic color families (`success`, `danger`, `caution`, etc.), not `ubas`.
 
 ---
 
@@ -136,6 +141,42 @@ Default body: 14px (`text-300`). Always use component classes — never raw `tex
 | `max-w-content-full` | 100% | Edge-to-edge: full-bleed sections |
 
 ---
+
+## Token Enforcement
+
+Before writing any Tailwind class with `[` brackets containing a color or spacing value, stop. Look up the token equivalent. If none exists, add `/* no token: intentional raw value */` as an inline comment.
+
+### Never Use Raw Values
+
+```
+❌ bg-[#251F31]                         → bg-surface-gray or bg-surface-adaptive
+❌ text-[#262B2B]                        → text-strong or text-base
+❌ border-[#D9DEDE]                      → border border-base or border-weak
+❌ shadow-[0_1px_3px_rgba(0,0,0,0.1)]   → use shadow token from surfaces.md
+❌ bg-mushroom-100                       → bg-surface-gray (primitive in component code)
+❌ text-kangkong-600                     → text-strong / text-{family}-text
+```
+
+### Always Map to Tokens
+
+```
+✅ bg-surface-white       → page/canvas background, light mode
+✅ bg-surface-adaptive    → cards, panels, inputs — adapts light/dark
+✅ bg-surface-gray        → app shell, main canvas
+✅ text-strong            → primary text
+✅ text-base              → default body text
+✅ text-weak              → secondary/supporting text
+✅ border border-base     → default border
+✅ border border-weak     → subtle divider
+```
+
+### No Token Exists?
+
+Leave an inline comment so the intent is explicit and reviewable:
+```html
+<!-- no token: intentional raw value — chart grid line color, ubas exception -->
+<div class="bg-[#F5F5F5]">
+```
 
 ## Decision Guide
 
