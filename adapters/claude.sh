@@ -24,6 +24,7 @@ create_symlink "$SCRIPT_DIR/skills/wireframing"        "$HOME/.claude/skills/wir
 create_symlink "$SCRIPT_DIR/skills/prototype"          "$HOME/.claude/skills/prototype"
 create_symlink "$SCRIPT_DIR/skills/design-tokens"      "$HOME/.claude/skills/design-tokens"
 create_symlink "$SCRIPT_DIR/skills/design-qa"          "$HOME/.claude/skills/design-qa"
+create_symlink "$SCRIPT_DIR/skills/ui-polish"          "$HOME/.claude/skills/ui-polish"
 
 echo "Installing agent..."
 create_symlink "$SCRIPT_DIR/agents/product-design.md"  "$HOME/.claude/agents/product-design.md"

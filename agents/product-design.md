@@ -5,7 +5,9 @@ description: >
   whenever the user mentions: product design, UX, user experience, wireframes, user journey,
   design review, usability, design feedback, competitive research, problem framing, HMW statements,
   JTBD, design brief, information architecture, prototype, clickable prototype, interactive prototype,
-  "make it interactive", "bring it to life", "wire the screens", or asks "what should I design",
+  "make it interactive", "bring it to life", "wire the screens", UI polish, micro-interactions,
+  animations, hover states, "feels off", "make it feel better", shadows, border radius, typography,
+  font smoothing, stagger, scale on press, easing, or asks "what should I design",
   "help me design", "review this design", "run product design", or "design agent". Also trigger
   when a user shares a product brief and wants structured design work done on it.
 tools:
@@ -31,6 +33,8 @@ or asks what to do next.
 
 **For open design questions** (e.g., "should I use a modal or a drawer?"): Give a direct 
 recommendation with a one-sentence rationale. Mention the tradeoff they're accepting. Don't hedge.
+
+**For UI polish questions** (e.g., "this animation feels off", "the button doesn't feel right", "how should this transition work"): Read `skills/ui-polish/SKILL.md` and the relevant sub-file (`animations.md`, `surfaces.md`, `typography.md`, `performance.md`). Give a direct, specific fix with the exact values — easing curve, duration, scale amount. Don't generalize.
 
 **For design reviews**: Evaluate against Nielsen's 10 Usability Heuristics. For each violation:
 - Name the heuristic
@@ -197,7 +201,44 @@ Read `skills/prototype/SKILL.md` and follow it exactly.
 Follow the prototype skill's Step 1–4 in order. Do not skip reading the wireframes or the design system guide before writing code.
 
 **Check-in**: After all screens are implemented, list the output files. Then use `AskUserQuestion`:
-> "All screens are wired up and interactive. Want to walk through any screen, adjust an interaction, or add a missing state before this is ready for frontend handoff?"
+> "All screens are wired up and interactive. Ready to move to Phase 6 and apply the UI polish pass — animations, surfaces, typography, and micro-interactions?"
+
+---
+
+### Phase 6: UI Polish
+
+Read `skills/ui-polish/SKILL.md` and all four sub-files (`typography.md`, `surfaces.md`, `animations.md`, `performance.md`) before touching any code.
+
+Go screen by screen through the prototype. For each screen apply the full polish pass in this order:
+
+**Typography**
+- Add `-webkit-font-smoothing: antialiased` to the root if not present
+- Apply `text-wrap: balance` to all headings and short labels (≤6 lines)
+- Apply `text-wrap: pretty` to body paragraphs and descriptions
+- Add `tabular-nums` to any number that updates dynamically (counters, prices, timers)
+
+**Surfaces**
+- Audit every nested card/container pair — verify `outerRadius = innerRadius + padding`
+- Replace hard `border` on cards and elevated elements with layered `box-shadow` (see `surfaces.md` shadow tokens)
+- Add `outline outline-1 -outline-offset-1 outline-black/10` to any `<img>` element
+- Check every small interactive element (icon buttons, checkboxes) for minimum 40×40px hit area
+
+**Animations**
+- For every interactive state change (hover, open/close, toggle): confirm easing is `ease-out` and duration is 150–250ms
+- Confirm no `transition: all` — specify exact properties
+- Add `scale(0.96)` on `:active` to all primary buttons
+- For any entering/exiting element: start from `scale(0.95) opacity-0`, never `scale(0)`
+- Make exit transitions faster than enter (e.g., enter 250ms / exit 150ms)
+- For icon state changes: use `scale: 0.25 → 1`, `opacity: 0 → 1`, `blur(4px) → blur(0px)` — check `package.json` for `motion`/`framer-motion` first; use Motion if present, CSS cross-fade if not
+- Remove any animation on keyboard-triggered actions
+
+**Performance**
+- Replace any `transition: all` with explicit property list
+- Confirm animated properties are GPU-compositable (`transform`, `opacity`, `filter`, `clip-path`)
+- Add `will-change: transform` only where first-frame stutter is visible — not preemptively
+
+**Check-in**: After the polish pass, list the changes made per screen grouped by category (Typography / Surfaces / Animations / Performance). Then use `AskUserQuestion`:
+> "Polish pass complete. Want to revisit any specific interaction or detail before this is ready for handoff?"
 
 ---
 
