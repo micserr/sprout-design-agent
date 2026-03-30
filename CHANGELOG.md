@@ -5,6 +5,26 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## 1.0.0 (2026-03-30)
+
+
+### Features
+
+* add pre-flight check, token enforcement, and stack context header to prototype skill ([f214576](https://github.com/micserr/sprout-design-agent/commit/f21457651eb142fe153ff172099cce9279da118b))
+* add stack discovery at Phase 3→4 transition in product design agent ([f607c7a](https://github.com/micserr/sprout-design-agent/commit/f607c7a8939f7d6a65583aa22c96b447c5bb17ff))
+* add Toge token mapping YAML for prototype code generation ([3c5d0c0](https://github.com/micserr/sprout-design-agent/commit/3c5d0c0bf2f7051ba2762ad51cfd0af4f82556b5))
+* add ui-polish as Phase 6 in product design agent ([c7e00a4](https://github.com/micserr/sprout-design-agent/commit/c7e00a4ff539c83483cf7b1828ee5101cfa5018a))
+* add ui-polish skill, Toge v2 tokens, and missing assets ([d17ba46](https://github.com/micserr/sprout-design-agent/commit/d17ba46ca8b56fd6b0b9f359e1bdddbe2d692fc8))
+* add ui-polish skill, Toge v2 tokens, and missing assets ([305b39e](https://github.com/micserr/sprout-design-agent/commit/305b39e3947f611aaa51211d7c8400129bd3cfd4))
+* officialize Toge v1/v2 naming and add toge: skill prefix ([af6c366](https://github.com/micserr/sprout-design-agent/commit/af6c366c9f73cf9911228b50c4d04f29597af76c))
+* officialize Toge v1/v2 naming and add toge: skill prefix ([cab4c2f](https://github.com/micserr/sprout-design-agent/commit/cab4c2fc8079be76dfa91da1af27db8d5ea913c6))
+
+
+### Bug Fixes
+
+* add border border-gray-100 to wireframe bento card constraint ([a09de09](https://github.com/micserr/sprout-design-agent/commit/a09de09e2d69626a199461f9cc6ae20867ba470a))
+* make ui-polish performance.md framework-agnostic ([a863834](https://github.com/micserr/sprout-design-agent/commit/a863834f60a162bb80100d1b4241bfdf5f95642c))
+
 ## [Unreleased]
 
 ## [0.3.0] - 2026-03-24
