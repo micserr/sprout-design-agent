@@ -37,6 +37,11 @@ Before reading wireframes or writing any code, verify the project environment us
 
 **If any check fails: stop immediately. Do not generate any files.**
 
+**If a check reveals a potential concern but not a definitive failure** (e.g., both `tailwind.config.js` and v4 `@import 'tailwindcss'` exist but are not yet conflicting): surface it as a warning via `AskUserQuestion` — report what was found, explain the risk, and ask if the user wants to resolve it before continuing. Do not block on warnings, but document them at the top of the first generated file:
+```js
+// Pre-flight warning: [description of concern]
+```
+
 Surface the issue via `AskUserQuestion` with:
 1. What was found (e.g., "Missing `@source` directive for `wireframes/` in your CSS config")
 2. What the fix is (e.g., "Add `@source '../wireframes/**/*.vue'` to your `app.css`")
