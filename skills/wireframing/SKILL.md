@@ -49,7 +49,7 @@ Focus on:
 - Layout classes — `flex`, `grid`, `w-56`, `gap-4`, `overflow-y-auto`, `rounded-xl`
 - Visual states — active, selected, disabled, placeholder
 
-Ignore implementation details (which component library, which element tag) — those are resolved by the implementer.
+Ignore HTML implementation details (element tags, semantic HTML choices) — those are resolved by the implementer. Design system component selection is not ignored — check Toge version in Step 2 before writing any component.
 
 ---
 
