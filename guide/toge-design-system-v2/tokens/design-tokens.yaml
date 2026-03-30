@@ -1,0 +1,216 @@
+# Design token structure — maps to src/style.css.
+# Canonical values live in ../style.css; this file describes names and structure only (no hex/rem).
+
+primitives:
+  palettes:
+    - name: white
+      css_prefix: color-white
+      shades: [default]
+      usage: "Context-aware: light = #fff; dark = mushroom-50 so bg-white/surface-white are lightest surface in dark, not bright white."
+    - name: neutral
+      css_prefix: color-neutral
+      shades: [50, 100, 200, 300, 400, 500, 600, 700, 800, 900, 950]
+      usage: "Disabled states, overlays, on-fill text. Do not use for primary UI surfaces/text — use mushroom."
+    - name: mushroom
+      css_prefix: color-mushroom
+      shades: [50, 100, 200, 300, 400, 500, 600, 700, 800, 900, 950]
+      usage: "Primary UI gray — surfaces, text, borders."
+    - name: tomato
+      css_prefix: color-tomato
+      shades: [50, 100, 200, 300, 400, 500, 600, 700, 800, 900, 950]
+      usage: "Danger/semantic red."
+    - name: carrot
+      css_prefix: color-carrot
+      shades: [50, 100, 200, 300, 400, 500, 600, 700, 800, 900, 950]
+      usage: "Caution."
+    - name: mango
+      css_prefix: color-mango
+      shades: [50, 100, 200, 300, 400, 500, 600, 700, 800, 900, 950]
+      usage: "Pending."
+    - name: kangkong
+      css_prefix: color-kangkong
+      shades: [50, 100, 200, 300, 400, 500, 600, 700, 800, 900, 950]
+      usage: "Brand, success (green)."
+    - name: wintermelon
+      css_prefix: color-wintermelon
+      shades: [50, 100, 200, 300, 400, 500, 600, 700, 800, 900, 950]
+      usage: "Accent (teal)."
+    - name: blueberry
+      css_prefix: color-blueberry
+      shades: [50, 100, 200, 300, 400, 500, 600, 700, 800, 900, 950]
+      usage: "Information."
+    - name: ubas
+      css_prefix: color-ubas
+      shades: [50, 100, 200, 300, 400, 500, 600, 700, 800, 900, 950]
+      usage: "Chart/data-viz only. No semantic mapping; use directly (e.g. bg-ubas-500)."
+
+semantics:
+  in_theme:
+    surface:
+      - surface-white
+      - surface-gray
+      - surface
+      - surface-adaptive
+      - surface-hover
+      - surface-pressed
+      - surface-disabled
+      - surface-inverted
+      - surface-inverted-hover
+      - surface-inverted-pressed
+      - surface-active
+      - surface-active-soft
+    brand:
+      - brand
+      - brand-hover
+      - brand-pressed
+      - brand-subtle
+      - brand-subtle-hover
+      - brand-subtle-pressed
+      - brand-text
+      - brand-text-hover
+      - brand-text-pressed
+    success:
+      - success
+      - success-hover
+      - success-pressed
+      - success-text
+      - success-text-hover
+      - success-text-pressed
+      - success-subtle
+      - success-subtle-hover
+      - success-subtle-pressed
+    information:
+      - information
+      - information-hover
+      - information-pressed
+      - information-text
+      - information-text-hover
+      - information-text-pressed
+      - information-subtle
+      - information-subtle-hover
+      - information-subtle-pressed
+    danger:
+      - danger
+      - danger-hover
+      - danger-pressed
+      - danger-text
+      - danger-text-hover
+      - danger-text-pressed
+      - danger-subtle
+      - danger-subtle-hover
+      - danger-subtle-pressed
+    pending:
+      - pending
+      - pending-hover
+      - pending-pressed
+      - pending-text
+      - pending-text-hover
+      - pending-text-pressed
+      - pending-subtle
+      - pending-subtle-hover
+      - pending-subtle-pressed
+    caution:
+      - caution
+      - caution-hover
+      - caution-pressed
+      - caution-text
+      - caution-text-hover
+      - caution-text-pressed
+      - caution-subtle
+      - caution-subtle-hover
+      - caution-subtle-pressed
+    # Accent: theme tokens map to bridge vars accent-fill, accent-fill-hover, accent-fill-pressed (avoids shadcn --accent)
+    accent:
+      - accent
+      - accent-hover
+      - accent-pressed
+      - accent-text
+      - accent-text-hover
+      - accent-text-pressed
+      - accent-subtle
+      - accent-subtle-hover
+      - accent-subtle-pressed
+    control:
+      - control
+      - control-hover
+      - control-pressed
+  component_only:
+    text:
+      - strong
+      - supporting
+      - base
+      - weak
+      - disabled
+      - on-fill-disabled
+      - inverted
+      - inverted-base
+      - inverted-weak
+      - inverted-disabled
+    border:
+      - strong
+      - supporting
+      - base
+      - base-hover
+      - base-pressed
+      - weak
+      - disabled
+      - on-fill-disabled
+    outline: "Same as border; classes .outline-strong, .outline-base, etc. use --border-* for outline-color."
+
+bridge:
+  scope: "@layer base :root and .dark"
+  light: "References primitives only, e.g. var(--color-mushroom-100)"
+  dark: "Override in .dark with hex/oklch; no var() chain"
+  surface_light_dark:
+    surface_white:
+      light: "var(--color-white) → #fff"
+      dark: "#262b2b (mushroom-950) — page/canvas background in dark mode (darkest layer)"
+    surface_gray:
+      light: "var(--color-mushroom-50)"
+      dark: "#394141 (mushroom-900) — main dark gray canvas"
+    surface:
+      light: "var(--color-mushroom-50) — same as surface-gray"
+      dark: "#394141 (mushroom-900) — same as surface-gray"
+    surface_adaptive:
+      light: "color-mix(in srgb, var(--color-mushroom-950) 6%, transparent) — translucent overlay; works on any bg"
+      dark: "color-mix(in srgb, #eff1f1 6%, transparent) — translucent white overlay on dark canvas"
+
+# Other :root vars (not in bridge/dark override pattern)
+other:
+  in_root:
+    - page-gradient
+    - font-heading
+    - font-body
+
+layout:
+  max_width:
+    description: "Content container widths. In @theme so Tailwind generates max-w-content-sm, max-w-content-md, max-w-content-lg, max-w-content-full."
+    tokens:
+      - name: max-width-content-sm
+        value: "640px"
+        usage: "Narrow single-column content: forms, auth pages, article text."
+      - name: max-width-content-md
+        value: "1000px"
+        usage: "Standard content area: dashboards, settings, most page bodies."
+      - name: max-width-content-lg
+        value: "1320px"
+        usage: "Wide layout: landing pages, full-width tables, marketing sections."
+      - name: max-width-content-full
+        value: "100%"
+        usage: "Edge-to-edge: full-bleed sections, hero backgrounds."
+
+typography:
+  scale:
+    font_size: "text-100..text-1000 (rem)"
+    line_height: "leading-100..leading-1000"
+    letter_spacing: "tracking-densest..tracking-widest"
+  default_body_rem: "0.875"
+  component_classes:
+    body: [body, body-medium, body-md, body-md-medium, body-lg, body-lg-medium]
+    label: [label-xs, label-xs-medium, label-sm, label-sm-medium]
+    heading: [heading-xl, heading-lg, heading-md, heading-sm, heading-xs]
+    subheading: [subheading-sm, subheading-xs]
+    caption: [caption, caption-medium]
+    overline: [overline]
+    code: [code]
+    prose_scope: typography
