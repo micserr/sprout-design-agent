@@ -5,6 +5,14 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.1.0](https://github.com/micserr/sprout-design-agent/compare/v1.0.0...v1.1.0) (2026-03-30)
+
+
+### Features
+
+* add Phase 5.5 design-qa to agent workflow, pre-flight failure handling ([59e4c5c](https://github.com/micserr/sprout-design-agent/commit/59e4c5c8626cd97050f9ac7c355f0ece8f1704ac))
+* improve skills and agent with audit findings ([301a20e](https://github.com/micserr/sprout-design-agent/commit/301a20e2aff22e0c115b54af52d9f438714deac8))
+
 ## 1.0.0 (2026-03-30)
 
 
