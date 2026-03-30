@@ -5,6 +5,19 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.1.1](https://github.com/micserr/sprout-design-agent/compare/v1.1.0...v1.1.1) (2026-03-30)
+
+
+### Bug Fixes
+
+* add dark mode to stack discovery, add custom design system fallback ([ad1b966](https://github.com/micserr/sprout-design-agent/commit/ad1b966ea84543108656e5e2628ce1f9810d9e33))
+* add pre-flight warning guidance for pass-with-caveats scenarios ([6a49d7c](https://github.com/micserr/sprout-design-agent/commit/6a49d7c328751829c6ea5056c85de3c539d76da3))
+* final targeted fixes from fourth audit ([346226d](https://github.com/micserr/sprout-design-agent/commit/346226de7eb98ee3462b702b6cea0a485711a4bc))
+* resolve design system scope contradiction in wireframing skill ([313a718](https://github.com/micserr/sprout-design-agent/commit/313a718c1bfeec4a096e0ce0a697b6f1c1ea8776))
+* resolve ease-in contradiction — narrow rule to entering elements only ([43a56a8](https://github.com/micserr/sprout-design-agent/commit/43a56a85a07bc1b23e867592236ab5d297cfabdd))
+* resolve skill contradictions and agent gaps from multi-round audit ([874b94d](https://github.com/micserr/sprout-design-agent/commit/874b94d4ce5960cf9713eafd4c9a86cf2d15ee11))
+* resolve third-audit contradictions and missing definitions ([3832aae](https://github.com/micserr/sprout-design-agent/commit/3832aae1b2b5fb34e4c68a3767f4e32e992b6795))
+
 ## [1.1.0](https://github.com/micserr/sprout-design-agent/compare/v1.0.0...v1.1.0) (2026-03-30)
 
 
