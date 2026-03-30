@@ -49,7 +49,7 @@ Element entering or exiting?
     Default → ease-out
 ```
 
-**Never use ease-in for UI animations.** It starts slow — exactly when the user is watching most closely. A 300ms `ease-in` *feels* slower than a 300ms `ease-out`.
+**Never use ease-in for entering elements.** It starts slow — exactly when the user is watching most closely. A 300ms `ease-in` *feels* slower than a 300ms `ease-out`. For **exits**, ease-in is acceptable — by the time an element is leaving, the user's focus has already moved on.
 
 **Use custom curves — built-in CSS easings are too weak:**
 
