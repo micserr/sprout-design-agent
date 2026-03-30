@@ -85,7 +85,7 @@ This skill produces a structured **Design QA report** that evaluates a screen or
 - [ ] Focus states are visible and distinct — not just a color change
 - [ ] Icons used without text have an accessible label or tooltip defined
 - [ ] Error states include both color and a text message — never color alone
-- [ ] **Dark mode** (if in scope): run all 4 pillars twice — once in light mode, once in dark mode. Tag findings that only appear in one mode with `[dark only]` or `[light only]` in the Findings Table.
+- [ ] **Dark mode** (if in scope): run all 4 pillars twice — once in light mode, once in dark mode. Tag findings that only appear in one mode with `[dark only]` or `[light only]` in the Findings Table. Critical and Major findings block handoff regardless of which mode they appear in — a Critical finding in dark mode only still blocks handoff.
 
 ### Interaction Readiness
 

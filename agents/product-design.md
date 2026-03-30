@@ -176,7 +176,7 @@ For each screen:
 
 **Wireframe constraints**:
 - Grayscale only — structure, not style
-- Bento layout by default — floating `rounded-xl shadow-sm border border-gray-100` cards on `bg-gray-100` background
+- Bento layout by default — `flex gap-3 bg-gray-100 p-3` outer container, each card `bg-white rounded-xl shadow-sm border border-gray-100` (see wireframing/SKILL.md for full spec)
 - Realistic placeholder content (product-relevant, not Lorem Ipsum)
 - Filename format: `wireframes/01-screen-name.vue`
 
