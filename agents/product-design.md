@@ -142,7 +142,9 @@ stage.
    - Check `package.json`: if `design-system-next` is a dependency → `DESIGN_SYSTEM = Toge v1`
    - Check `components.json`: if `registries["@toge"]` is present → `DESIGN_SYSTEM = Toge v2`
    - If both found → `DESIGN_SYSTEM = Toge v2` (prefer Toge v2 for new code; note this to the user)
-   - If neither found → ask: "Which design system does this project use — **Toge v1** (`design-system-next`) or **Toge v2** (shadcn-vue registry)?"
+   - If neither found → ask: "Which design system does this project use — **Toge v1** (`design-system-next`), **Toge v2** (shadcn-vue registry), or a **custom/other** system?"
+     - Toge v1 or v2 → `DESIGN_SYSTEM = Toge v1` or `Toge v2`. Read the matching guide.
+     - Custom/other → `DESIGN_SYSTEM = custom`. Skip token enforcement steps. Ask: "How are design tokens structured in this project — CSS variables, a config file, or inline values?" before writing any styled component.
    - Read the matching guide: Toge v1 → `guide/toge-design-system-v1/README.md` · Toge v2 → `guide/toge-design-system-v2/README.md`
 
 2. **Framework**: `AskUserQuestion` → "What framework is this project on — Vue 3, React, or something else?" → store as `STACK_FRAMEWORK`
@@ -151,7 +153,9 @@ stage.
 
 4. **Prototype entry point**: `AskUserQuestion` → "Where will the prototype entry file live — inside `src/` or in a separate `prototype/` directory outside `src/`?" → store as `STACK_ENTRY_POINT`
 
-Store all 4 vars and carry them forward explicitly into Phase 5.
+5. **Dark mode**: `AskUserQuestion` → "Does this project support dark mode?" → store as `STACK_DARK_MODE = yes/no`. If unsure, check `tailwind.config.js` for `darkMode` config or scan the design system guide.
+
+Store all 5 vars and carry them forward explicitly into Phase 5.
 
 ---
 
@@ -221,7 +225,7 @@ Run all 4 pillars against the completed prototype:
 3. Accessibility
 4. Interaction Readiness
 
-If dark mode is in scope for this project, run all pillars in both light and dark mode.
+If `STACK_DARK_MODE = yes`, run all pillars in both light and dark mode.
 
 **Output:** Produce the full Findings Table with severity ratings.
 
