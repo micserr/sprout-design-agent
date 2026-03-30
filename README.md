@@ -16,17 +16,19 @@ A collection of Claude Code skills and an agent for product designers. It covers
 | `wireframing` | Framework-agnostic layout blueprints for 5 SaaS patterns; bento layout by default | "wireframe", "sketch a layout", "design a screen", "information architecture" |
 | `prototype` | Turns wireframes into a runnable, interactive Vue 3 prototype with real navigation, state, and design system components | "prototype", "make it interactive", "clickable prototype", "wire the screens" |
 | `design-tokens` | Token architecture, semantic color families, typography, dark mode | "what token should I use", "design token", "which color for", "semantic color" |
+| `design-qa` | Pre-handoff QA across 4 pillars: visual consistency, token compliance, accessibility, interaction readiness | "design qa", "review this design", "audit the UI", "is this ready for handoff" |
+| `ui-polish` | Micro-interactions, animations, hover states, shadows, borders, typography details, optical alignment — based on principles from Emil Kowalski and Jakub Krehel | "ui polish", "make it feel better", "feels off", "hover state", "animation", "shadow", "border radius", "font smoothing" |
 
 ---
 
 ## The Product Design Agent
 
-A dual-mode agent — acts as an **advisor** for focused design questions, or as an **orchestrator** that runs the full 5-phase workflow from a single brief.
+A dual-mode agent — acts as an **advisor** for focused design questions, or as an **orchestrator** that runs the full workflow from a single brief.
 
 ### Workflow (Orchestrator Mode)
 
 ```
-Brief → Phase 1: UX Research → Phase 2: Problem Framing → Phase 3: User Journey → Phase 4: Wireframes → Phase 5: Interactive Prototype
+Brief → Phase 1: UX Research → Phase 2: Problem Framing → Phase 3: User Journey → Phase 4: Wireframes → Phase 5: Prototype → Phase 5.5: Design QA → Phase 6: UI Polish
 ```
 
 The agent checks in between every phase using interactive CLI prompts (`AskUserQuestion`). It never auto-advances.

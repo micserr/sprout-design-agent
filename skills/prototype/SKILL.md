@@ -37,6 +37,11 @@ Before reading wireframes or writing any code, verify the project environment us
 
 **If any check fails: stop immediately. Do not generate any files.**
 
+**If a check reveals a potential concern but not a definitive failure** (e.g., both `tailwind.config.js` and v4 `@import 'tailwindcss'` exist but are not yet conflicting): surface it as a warning via `AskUserQuestion` — report what was found, explain the risk, and ask if the user wants to resolve it before continuing. Do not block on warnings, but document them at the top of the first generated file:
+```js
+// Pre-flight warning: [description of concern]
+```
+
 Surface the issue via `AskUserQuestion` with:
 1. What was found (e.g., "Missing `@source` directive for `wireframes/` in your CSS config")
 2. What the fix is (e.g., "Add `@source '../wireframes/**/*.vue'` to your `app.css`")
@@ -83,7 +88,7 @@ Every color in the prototype must come from the design system.
 
 **Token enforcement (Toge v2):** If `DESIGN_SYSTEM` is **Toge v2**, read `guide/toge-design-system-v2/tokens/token-mapping.yaml` before writing any component. Every default Tailwind color class (`bg-gray-*`, `text-gray-*`, `bg-red-*`, `bg-emerald-*`, `bg-blue-*`, `bg-yellow-*`, `bg-orange-*`) is a violation — replace it with the mapped token before committing output. The design system clears all default Tailwind colors (`--color-*: initial`) so these classes silently render nothing at runtime.
 
-**Known naming collision (Toge v2):** Do not combine `text-base` with another font-size utility on the same element. The design system defines `.text-base` as `color: var(--text-base)` in `@layer components`, but Tailwind also defines `text-base` as `font-size: 1rem` in `@layer utilities`. The utilities layer wins for `font-size`, so `text-xs text-base` silently becomes 1rem. Use `text-base` alone when 1rem font-size is acceptable, or use `text-strong` / `text-weak` when a specific font-size is also needed.
+**Known naming collision (Toge v2) — read before writing any text class:** Do not combine `text-base` with another font-size utility on the same element. The design system defines `.text-base` as `color: var(--text-base)` in `@layer components`, but Tailwind also defines `text-base` as `font-size: 1rem` in `@layer utilities`. The utilities layer wins for `font-size`, so `text-xs text-base` silently becomes 1rem. Use `text-base` alone when 1rem font-size is acceptable, or use `text-strong` / `text-weak` when a specific font-size is also needed.
 
 **Token enforcement (Toge v1):** If `DESIGN_SYSTEM` is **Toge v1**, tokens use the `spr-` prefix. Read `guide/toge-design-system-v1/README.md` for the token list. No separate mapping file needed.
 
@@ -177,7 +182,7 @@ For each screen, implement the states the journey map flagged as pain points:
 
 Every form in the prototype follows these patterns:
 
-- **Validation**: Show inline errors on blur (field loses focus), not on submit. Place error message directly below the field.
+- **Validation**: Show inline errors on blur (field loses focus), not on submit. Place error message directly below the field. **Exception:** dependent fields (e.g., "confirm password") should only validate after the primary field has a value — not on first blur of the dependent field alone.
 - **Submission feedback**: Disable the submit button and show a spinner during the pending state. Minimum 300ms simulated delay so the state is visible.
 - **Error display**: Always use text + color + icon together — never color alone (accessibility requirement).
 - **Success**: Either navigate away OR show inline confirmation — never both. If navigating, pass a success flag via router state to show a toast on the destination screen.

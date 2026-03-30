@@ -127,7 +127,7 @@ Full class list in `references/typography.md`.
 | Utility | `caption` · `caption-medium` · `overline` · `code` |
 | Prose | `typography` (wrapper for long-form content) |
 
-Default body: 14px (`text-300`). Always use component classes — never raw `text-{size}`.
+Default body: 14px. Always use component classes — never raw `text-{size}` utilities (e.g., `text-sm`, `text-base`, `text-lg`).
 
 ---
 
@@ -144,7 +144,7 @@ Default body: 14px (`text-300`). Always use component classes — never raw `tex
 
 ## Token Enforcement
 
-Before writing any Tailwind class with `[` brackets containing a color or spacing value, stop. Look up the token equivalent. If none exists, add `/* no token: intentional raw value */` as an inline comment.
+Never use raw color or spacing values in any form — not in Tailwind bracket syntax, not in inline `style` attributes, not in CSS-in-JS. Always use token classes or CSS custom properties. If no token exists, add `/* no token: intentional raw value */` as an inline comment.
 
 ### Never Use Raw Values
 

@@ -41,7 +41,7 @@ Good taste is a trained instinct. Develop it by studying great work, reverse-eng
 | `ease-in` on UI element | Switch to `ease-out` or custom curve |
 | Duration > 300ms on UI | Reduce to 150–250ms |
 | Same enter/exit speed | Make exit faster |
-| Elements all appear at once | Stagger 30–80ms |
+| Elements all appear at once | Stagger ~100ms between groups |
 | Animation on keyboard action | Remove entirely |
 | Hover without media query | Add `@media (hover: hover) and (pointer: fine)` |
 | Numbers cause layout shift | `font-variant-numeric: tabular-nums` |
