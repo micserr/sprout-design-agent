@@ -2,6 +2,17 @@
 
 Animation decisions, easing, duration, enter/exit patterns, and component-level micro-interactions.
 
+## When to Use Motion vs CSS
+
+Use CSS transitions/animations by default. Only reach for Motion/Framer Motion when the interaction requires:
+- **Orchestrated sequences** — multiple elements animating in relation to each other
+- **Gesture-driven motion** — drag, swipe, follow cursor
+- **Physics-based spring animations** — momentum, bounce, interruption with velocity
+
+For everything else — hover states, button press, simple enter/exit — CSS is sufficient and faster.
+
+When Motion is justified, prefer `style={{ transform }}` over shorthand props (`x`, `y`, `scale`) to stay GPU-accelerated. See `performance.md` for details.
+
 ## Should This Animate at All?
 
 | Frequency | Decision |
@@ -50,6 +61,15 @@ Element entering or exiting?
 
 Resources: [easing.dev](https://easing.dev/) · [easings.co](https://easings.co/)
 
+### Easing by Interaction Type
+
+| Interaction | Easing | Why |
+|---|---|---|
+| Element entering | `ease-out` | Starts fast, feels responsive as user watches |
+| Element exiting | `ease-in` | Slow start is fine — user focus has moved on |
+| Hover / press | `ease-in-out` | Natural arc for state toggles |
+| Morphing (scale, rotate, shape change) | Spring with bounce `0.1–0.2` | Simulates physical response |
+
 ## Duration
 
 | Element | Duration |
@@ -83,6 +103,12 @@ Resources: [easing.dev](https://easing.dev/) · [easings.co](https://easings.co/
 
 Always prefer CSS transitions for interactive elements. Reserve keyframes for one-shot sequences.
 
+### Handling Interruptions
+
+If a user triggers a new interaction mid-animation, immediately snap to the target state of the interrupted animation, then start the new one. Never queue animations — queuing makes interfaces feel laggy.
+
+CSS transitions handle this automatically (they retarget mid-animation). For Motion, avoid `AnimatePresence` queuing by using `mode="popLayout"` or managing `key` prop changes directly.
+
 ## Asymmetric Enter/Exit
 
 Entering should feel smooth; exiting should be fast. The user is done — get out of the way.
@@ -103,6 +129,7 @@ Don't animate a single container. Break content into semantic chunks and animate
 
 ```tsx
 // Motion (Framer Motion) — staggered enter
+// Complex interaction — Motion justified: orchestrated multi-element sequence
 <motion.div initial="hidden" animate="visible" variants={{ visible: { transition: { staggerChildren: 0.1 } } }}>
   <motion.h1 variants={{ hidden: { opacity: 0, y: 12, filter: "blur(4px)" }, visible: { opacity: 1, y: 0, filter: "blur(0px)" } }}>
     Welcome
@@ -138,6 +165,7 @@ Exits should be softer and faster than enters. The user's focus is moving to the
 
 ```tsx
 // Subtle exit (recommended)
+// Complex interaction — Motion justified: exit needs velocity awareness
 <motion.div exit={{ opacity: 0, y: -12, filter: "blur(4px)", transition: { duration: 0.15, ease: "easeIn" } }}>
   {content}
 </motion.div>
@@ -150,14 +178,17 @@ Key rules:
 
 ## Never Animate from scale(0)
 
-Nothing in the real world disappears and reappears completely. Start from `scale(0.95)` with opacity.
+Nothing in the real world disappears and reappears completely. `scale(0)` collapses to a point and looks mechanical. Use `scale(0.95)` for most elements — or `scale(0.25)` as the minimum for icon/glyph animations where spatial origin needs preserving. Anything below `0.1` is effectively invisible and should be treated as `scale(0)`.
 
 ```css
 /* ❌ Pops out of nowhere */
 .entering { transform: scale(0); }
 
-/* ✅ Natural */
+/* ✅ Natural — general elements */
 .entering { transform: scale(0.95); opacity: 0; }
+
+/* ✅ Natural — icon/glyph with spatial origin (see Icon Animations section) */
+.entering { transform: scale(0.25); opacity: 0; filter: blur(4px); }
 ```
 
 ## Popover Origin-Awareness
