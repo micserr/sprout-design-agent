@@ -12,6 +12,24 @@ This skill produces low-fidelity, grayscale wireframes that communicate structur
 
 **Core rule:** Wireframes use grayscale only. No brand colors. No production styling.
 
+## Layout Selection Guide
+
+Before reading a blueprint, pick the closest match:
+
+| Product type | Recommended blueprint |
+|---|---|
+| Data-heavy analytics, metrics overview | `complex-dashboard` |
+| Step-by-step flow, onboarding, setup wizard | `onboarding-wizard` |
+| Configuration, preferences, account settings | `settings-page` |
+| Data entry, creation forms, multi-field input | `form-page` |
+| General SaaS overview, mixed content | `dashboard` (default) |
+
+If none fit closely, default to **Bento layout** and document why in a comment at the top of the wireframe file:
+
+```html
+<!-- Layout: Bento (custom — no blueprint matched: [reason]) -->
+```
+
 ---
 
 ## Step 1 — Read the Layout Blueprint
@@ -44,6 +62,12 @@ Translate the blueprint into the target project's stack:
 - Keep everything grayscale
 
 **Viewer shortcut:** A ready-to-use local viewer is available at `skills/wireframing/viewer/`. Run `npm run dev` inside that directory to preview wireframes instantly.
+
+**Design system check:** Before writing any component, check which Toge version the project uses:
+- v1: `design-system-next` present in `package.json` → use `spr-` prefixed components
+- v2: `components.json` with `@toge` registry → use components pulled via registry
+
+See `guide/toge-design-system-v1/` or `guide/toge-design-system-v2/` accordingly.
 
 ---
 
