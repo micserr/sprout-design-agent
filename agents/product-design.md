@@ -131,8 +131,7 @@ the transition.
 **Touchpoint summary**: Key channels (web, email, mobile, etc.) and interaction types at each 
 stage.
 
-**Top 3 pain points**: Name them, explain the impact on the user, and call out which HMW 
-statement each maps to.
+**Top 3 pain points**: Name the top 3 (by frequency × impact on retention), explain the impact on the user, and call out which HMW statement each maps to.
 
 **Check-in**: Show the top 3 pain points and the screens you're planning to wireframe. Then use
 `AskUserQuestion`: "Are these the right pain points to design for? Any flows I'm missing?"
@@ -186,6 +185,13 @@ Then use `AskUserQuestion`: "Wireframes are ready. Want to move to Phase 5 and t
 
 Read `skills/prototype/SKILL.md` and follow it exactly.
 
+**Pre-flight failure handling (Step 0):** If any pre-flight check fails, stop immediately. Do not generate any files. Use `AskUserQuestion` to surface:
+- What was found (e.g., "Missing `@source` directive for `wireframes/` in your CSS config")
+- What the fix is (e.g., "Add `@source '../wireframes/**/*.vue'` to `app.css`")
+- The question: "Should I apply this fix before continuing?"
+
+Only proceed after the user confirms. Document applied fixes at the top of the first generated file.
+
 **Inputs carried forward:**
 - Wireframes from `wireframes/` (Phase 4)
 - User flow diagram (Phase 3) — to map screen-to-screen navigation
@@ -202,6 +208,35 @@ Follow the prototype skill's Step 1–4 in order. Do not skip reading the wirefr
 
 **Check-in**: After all screens are implemented, list the output files. Then use `AskUserQuestion`:
 > "All screens are wired up and interactive. Ready to move to Phase 6 and apply the UI polish pass — animations, surfaces, typography, and micro-interactions?"
+
+---
+
+### Phase 5.5: Design QA
+
+After Phase 5 completes, invoke `skills/design-qa/SKILL.md` automatically — do not skip.
+
+Run all 4 pillars against the completed prototype:
+1. Visual Consistency
+2. Token Compliance (requires loading `toge:design-tokens` first)
+3. Accessibility
+4. Interaction Readiness
+
+If dark mode is in scope for this project, run all pillars in both light and dark mode.
+
+**Output:** Produce the full Findings Table with severity ratings.
+
+**Then use `AskUserQuestion`:**
+> "Here are the Design QA findings. Which issues do you want me to fix? (all / just criticals / pick by number)"
+
+Fix selected issues in the same session. After fixing, list what was changed grouped by pillar.
+
+**Critical issues block handoff.** If the user defers a Critical, state it explicitly:
+> "Note: [issue] is a Critical finding and has been deferred. Recommend resolving before production handoff."
+
+**Standalone use:** The user can invoke design-qa at any time — not just post-prototype. Trigger phrases: "review this design", "design qa", "audit the UI", "is this ready for handoff".
+
+**Check-in**: After QA fixes are applied, use `AskUserQuestion`:
+> "Design QA complete. Ready to move to Phase 6 — the UI polish pass?"
 
 ---
 
