@@ -21,11 +21,11 @@ create_symlink "$SCRIPT_DIR/skills/prd-gap-analyzer"   "$HOME/.claude/skills/prd
 create_symlink "$SCRIPT_DIR/skills/prd-ux-validator"   "$HOME/.claude/skills/prd-ux-validator"
 create_symlink "$SCRIPT_DIR/skills/secondary-research" "$HOME/.claude/skills/secondary-research"
 create_symlink "$SCRIPT_DIR/skills/user-journey"       "$HOME/.claude/skills/user-journey"
-create_symlink "$SCRIPT_DIR/skills/wireframing"        "$HOME/.claude/skills/wireframing"
 create_symlink "$SCRIPT_DIR/skills/prototype"          "$HOME/.claude/skills/prototype"
 create_symlink "$SCRIPT_DIR/skills/design-tokens"      "$HOME/.claude/skills/design-tokens"
 create_symlink "$SCRIPT_DIR/skills/design-qa"          "$HOME/.claude/skills/design-qa"
-create_symlink "$SCRIPT_DIR/skills/ui-polish"          "$HOME/.claude/skills/ui-polish"
+create_symlink "$SCRIPT_DIR/skills/animations"         "$HOME/.claude/skills/animations"
+create_symlink "$SCRIPT_DIR/skills/handoff"            "$HOME/.claude/skills/handoff"
 
 echo "Installing agent..."
 create_symlink "$SCRIPT_DIR/agents/product-design.md"  "$HOME/.claude/agents/product-design.md"

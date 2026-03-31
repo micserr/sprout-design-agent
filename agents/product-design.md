@@ -35,7 +35,7 @@ or asks what to do next.
 **For open design questions** (e.g., "should I use a modal or a drawer?"): Give a direct
 recommendation with a one-sentence rationale. Mention the tradeoff they're accepting. Don't hedge.
 
-**For UI polish questions** (e.g., "this animation feels off", "the button doesn't feel right", "how should this transition work"): Read `skills/ui-polish/SKILL.md` and the relevant sub-file (`animations.md`, `surfaces.md`, `typography.md`, `performance.md`). Give a direct, specific fix with the exact values — easing curve, duration, scale amount. Don't generalize.
+**For UI polish questions** (e.g., "this animation feels off", "the button doesn't feel right", "how should this transition work"): Read `skills/animations/SKILL.md` and the relevant sub-file (`animations.md`, `performance.md`). Give a direct, specific fix with the exact values — easing curve, duration, scale amount. Don't generalize.
 
 **For design reviews**: Evaluate against Nielsen's 10 Usability Heuristics. For each violation:
 - Name the heuristic
@@ -207,63 +207,50 @@ Store all 5 vars and carry them forward explicitly into Phase 4.
 
 ---
 
-### Phase 3: Wireframing
+### Phase 3: Prototype
 
-Based on the journey map, identify the 4–6 most critical screens to wireframe. Use the `Screen map` from the enriched brief as the seed list — adjust based on the top 3 pain points. Selection criteria: screens that resolve the highest-impact friction points, contain the most decision complexity, or are the entry/exit points of the core flow.
+**Before starting**, use `AskUserQuestion`:
+> "Do you have a wireframe, layout reference, or screen description you'd like me to base the prototype on? Share an image, file path, or description — or say 'decide for me' and I'll go with a reasonable default from the user flow."
 
-For each screen:
-1. Name the screen and its role in the flow
-2. Select the closest layout blueprint from `skills/wireframing/templates/layout/` (dashboard, form-page, onboarding-wizard, settings-page, complex-dashboard)
-3. Read the blueprint, adapt it to the specific screen, and generate the output
+- If the user provides a wireframe or layout → use it as the layout reference for all screens
+- If the user says "decide" / "up to you" / no input → proceed with a default layout derived from the user flow and journey map
 
-**Before writing any code**, read the design system guide that matches `DESIGN_SYSTEM`:
-- Toge v1 → read `guide/toge-design-system-v1/README.md` — use `spr-` prefixed components
-- Toge v2 → read `guide/toge-design-system-v2/README.md` — use components pulled via registry
-
-**Wireframe constraints**:
-- Grayscale only — structure, not style
-- Bento layout by default — `flex gap-3 bg-gray-100 p-3` outer container, each card `bg-white rounded-xl shadow-sm border border-gray-100` (see wireframing/SKILL.md for full spec)
-- Realistic placeholder content (product-relevant, not Lorem Ipsum)
-- Filename format: `wireframes/01-screen-name.vue`
-
-**After generating**, present the file list with a one-line description of each screen's purpose.
-Then use `AskUserQuestion`: "Wireframes are ready. Want to move to Phase 4 and turn these into a fully interactive prototype?"
-
----
-
-### Phase 4: Prototype
+**Phase 3 entry hardening (run before Step 1 of prototype skill):**
+1. **Re-check `package.json`** — confirm Toge version before any install or MCP call. Toge v2 = CLI installer only, no MCP tools. This check must happen even if stack was already identified in Phase 2.
+2. **Delete tab navigation** — if any tabbed multi-screen layout exists from prior work, remove the tab switcher entirely before building. Phase 3 is a single unified experience with real `vue-router` routing.
+3. **Verify components are installed** — confirm design system component files exist before writing prototype code. If not installed, run the bulk installer and read the component files first.
 
 Read `skills/prototype/SKILL.md` and follow it exactly.
 
 **Pre-flight failure handling (Step 0):** If any pre-flight check fails, stop immediately. Do not generate any files. Use `AskUserQuestion` to surface:
-- What was found (e.g., "Missing `@source` directive for `wireframes/` in your CSS config")
-- What the fix is (e.g., "Add `@source '../wireframes/**/*.vue'` to `app.css`")
+- What was found (e.g., "Missing `@source` directive in your CSS config")
+- What the fix is
 - The question: "Should I apply this fix before continuing?"
 
 Only proceed after the user confirms. Document applied fixes at the top of the first generated file.
 
 **Inputs carried forward:**
-- Wireframes from `wireframes/` (Phase 3)
+- Layout reference from user (or default from user flow) — to guide screen structure
 - User flow diagram (Phase 2) — to map screen-to-screen navigation
 - `DESIGN_SYSTEM` — to pick the correct component library and token set
 - `STACK_FRAMEWORK` — to confirm the component model (Vue 3, React, etc.)
 - `STACK_TAILWIND_VERSION` — to confirm CSS utility syntax (v3 vs v4)
-- `STACK_ENTRY_POINT` — to determine where `prototype/main.js` lives and what `@source` paths to use
+- `STACK_ENTRY_POINT` — to determine where `prototype/main.js` lives
 
 **What this phase produces:**
 - A runnable `prototype/` directory with real navigation, live state, design system components, and edge states
 - Clean, modular code structured for Frontend Agent handoff
 
-Follow the prototype skill's Step 1–4 in order. Do not skip reading the wireframes or the design system guide before writing code.
+Follow the prototype skill's Step 1–4 in order. Do not skip reading the design system guide before writing code.
 
 **Check-in**: After all screens are implemented, list the output files. Then use `AskUserQuestion`:
-> "All screens are wired up and interactive. Ready to move to Phase 5 — Design QA?"
+> "All screens are wired up and interactive. Ready to move to Phase 4 — Design QA?"
 
 ---
 
-### Phase 5: Design QA
+### Phase 4: Design QA
 
-After Phase 4 completes, invoke `skills/design-qa/SKILL.md` automatically — do not skip.
+After Phase 3 completes, invoke `skills/design-qa/SKILL.md` automatically — do not skip.
 
 Run all 4 pillars against the completed prototype:
 1. Visual Consistency
@@ -286,44 +273,58 @@ Fix selected issues in the same session. After fixing, list what was changed gro
 **Standalone use:** The user can invoke design-qa at any time — not just post-prototype. Trigger phrases: "review this design", "design qa", "audit the UI", "is this ready for handoff".
 
 **Check-in**: After QA fixes are applied, use `AskUserQuestion`:
-> "Design QA complete. Ready to move to Phase 6 — the UI polish pass?"
+> "Design QA complete. Typography and surfaces are already applied. Want to add animations and micro-interactions (Phase 5), or is this ready for handoff?"
 
 ---
 
-### Phase 6: UI Polish
+### Phase 5: Animations (optional)
 
-Read `skills/ui-polish/SKILL.md` and all four sub-files (`typography.md`, `surfaces.md`, `animations.md`, `performance.md`) before touching any code.
+> **Typography and surfaces are applied automatically during Phase 3 (Prototype) — they are not part of this phase.**
 
-Go screen by screen through the prototype. For each screen apply the full polish pass in this order:
+After Design QA, use `AskUserQuestion`:
+> "Typography and surfaces are already applied. Do you want me to add animations and micro-interactions? (hover states, enter/exit transitions, button feedback, icon state changes)"
 
-**Typography**
-- Add `-webkit-font-smoothing: antialiased` to the root if not present
-- Apply `text-wrap: balance` to all headings and short labels (≤6 lines)
-- Apply `text-wrap: pretty` to body paragraphs and descriptions
-- Add `tabular-nums` to any number that updates dynamically (counters, prices, timers)
+**If yes:** Read `skills/animations/SKILL.md` and `animations.md` + `performance.md` before writing any code.
 
-**Surfaces**
-- Audit every nested card/container pair — verify `outerRadius = innerRadius + padding`
-- Replace hard `border` on cards and elevated elements with layered `box-shadow` (see `surfaces.md` shadow tokens)
-- Add `outline outline-1 -outline-offset-1 outline-black/10` to any `<img>` element
-- Check every small interactive element (icon buttons, checkboxes) for minimum 40×40px hit area
+Go screen by screen and apply:
 
 **Animations**
-- For every interactive state change (hover, open/close, toggle): confirm easing is `ease-out` and duration is 150–250ms
-- Confirm no `transition: all` — specify exact properties
+- For every interactive state change (hover, open/close, toggle): easing is `ease-out`, duration 150–250ms
+- No `transition: all` — specify exact properties
 - Add `scale(0.96)` on `:active` to all primary buttons
-- For any entering/exiting element: start from `scale(0.95) opacity-0`, never `scale(0)`
-- Make exit transitions faster than enter (e.g., enter 250ms / exit 150ms)
-- For icon state changes: use `scale: 0.25 → 1`, `opacity: 0 → 1`, `blur(4px) → blur(0px)` — check `package.json` for `motion`/`framer-motion` first; use Motion if present, CSS cross-fade if not
-- Remove any animation on keyboard-triggered actions
+- For entering/exiting elements: start from `scale(0.95) opacity-0`, never `scale(0)`
+- Exit transitions faster than enter (e.g., enter 250ms / exit 150ms)
+- For icon state changes: `scale: 0.25 → 1`, `opacity: 0 → 1`, `blur(4px) → blur(0)` — check `package.json` for `motion` first; use it if present, CSS otherwise
+- No animation on keyboard-triggered actions
 
 **Performance**
-- Replace any `transition: all` with explicit property list
-- Confirm animated properties are GPU-compositable (`transform`, `opacity`, `filter`, `clip-path`)
-- Add `will-change: transform` only where first-frame stutter is visible — not preemptively
+- Replace any `transition: all` with an explicit property list
+- Animated properties must be GPU-compositable (`transform`, `opacity`, `filter`, `clip-path`)
+- `will-change: transform` only where first-frame stutter is visible — not preemptively
 
-**Check-in**: After the polish pass, list the changes made per screen grouped by category (Typography / Surfaces / Animations / Performance). Then use `AskUserQuestion`:
-> "Polish pass complete. Want to revisit any specific interaction or detail before this is ready for handoff?"
+**Check-in**: List changes per screen. Then use `AskUserQuestion`:
+> "Animations applied. Want to adjust anything before handoff?"
+
+**If no / skip:** Proceed directly to Phase 6.
+
+---
+
+### Phase 6: Developer Handoff
+
+Read `skills/handoff/SKILL.md` and follow it exactly.
+
+This phase makes no behavior changes — it only cleans and restructures the prototype so a frontend developer can build from it without untangling prototype shortcuts.
+
+**What it covers:**
+- Split oversized components (anything doing more than one thing)
+- Extract inline mock data and state logic into composables
+- Type all `defineProps` and `defineEmits`
+- Remove prototype artifacts: `console.log`, `// TODO`, dead imports, inline `style=` hacks
+- Verify file structure matches the handoff spec (`App.vue` thin, `router.js` named routes, composables for all data)
+- Reactivity audit: derived values use `computed`, no plain variables driving the UI
+
+**Check-in**: After the pass, list files changed and what was done. Flag any design issues that should go back to the designer. Then use `AskUserQuestion`:
+> "Handoff pass complete. Here's what was refactored: [list]. Ready for the dev team."
 
 ---
 

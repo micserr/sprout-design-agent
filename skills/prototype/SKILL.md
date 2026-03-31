@@ -34,6 +34,8 @@ Before reading wireframes or writing any code, verify the project environment us
 | 2 | **Source scanning completeness** | Does the bundler scan every directory containing component files? Verify that `wireframes/`, `prototype/`, and any directory outside the default source root is included in `@source` directives (v4) or `content` globs (v3). Add missing entries before proceeding. |
 | 3 | **Package compatibility** | Are all design system packages compatible with the confirmed framework and CSS version? Check for peer dependency conflicts (e.g. a design system that pins `tailwindcss@^3` installed alongside v4). Uninstall incompatible packages before proceeding. |
 | 4 | **Explicit dependencies** | Are routing and state management packages explicitly declared in `package.json`? Never assume transitive dependencies — if the prototype needs `vue-router` or `pinia`, they must be listed directly. Install any missing explicit deps before proceeding. |
+| 5 | **Toge version gate** | Read `package.json`. If `design-system-next` or `@toge-design-system/toge` is present → Toge v1 → MCP tools are appropriate. If neither is present and `components.json` has `registries["@toge"]` → Toge v2 → use CLI installer only. **Never call MCP tools for Toge v2 under any circumstances.** If version cannot be determined, ask via `AskUserQuestion` before any install step. |
+| 6 | **Design system components installed** | Before writing any prototype code, verify that design system component files exist in the project (e.g., `src/components/ui/` for Toge v2). If they don't exist, run the bulk installer first. Then read the installed component files to understand actual prop signatures, variants, and slot names. Component discovery must happen before the first line of prototype code is written. |
 
 **If any check fails: stop immediately. Do not generate any files.**
 
@@ -53,6 +55,8 @@ Only proceed after the user confirms. When proceeding, add a comment at the top 
 ```
 
 Do not advance to Step 1 until all applicable checks pass and any fixes are confirmed.
+
+**Interactive CLI scripts (readline/promises):** If a setup script uses Node's `readline/promises` and piped input (`printf "...\n" | node script.mjs`) fails silently after one attempt, stop immediately. Do not retry the same pipe pattern. Tell the user: "This script requires a TTY — run it interactively with `! node /path/to/script.mjs`."
 
 ---
 
@@ -82,6 +86,7 @@ Check the `DESIGN_SYSTEM` value carried forward from the design brief:
 - **Toge v2** → read `guide/toge-design-system-v2/README.md`
   - Components were pulled via `npx shadcn-vue@latest add https://toge-ds.azurewebsites.net/r/ui/[component].json`
   - Import from `@/components/ui/[component-name]`
+  - **Hard rule for Toge v2:** Do NOT call `mcp__design-system-toge__*` tools. MCP reflects Toge v1 tokens and components — calling it for a Toge v2 project returns wrong data. Use only the installed files in `src/components/ui/` and `guide/toge-design-system-v2/`.
 
 **Hard rule:** Never use raw hex colors or grayscale placeholders from the wireframe.
 Every color in the prototype must come from the design system.
@@ -155,6 +160,17 @@ import { RouterView } from 'vue-router'
 
 ## Step 4 — Implement Each Screen
 
+### Teardown before building
+
+Before touching any screen code:
+
+1. **Delete the tab/screen switcher** — any `<select>`, tabbed `<nav>`, or conditional render used to flip between wireframe screens is a Phase 3 debugging aid, not a product nav pattern. Remove it entirely.
+2. Rebuild navigation as `vue-router` named routes. Every screen gets its own route.
+
+If any tab navigation component survives into Step 4, Phase 4 is not done.
+
+---
+
 Work through screens in flow order (start → end). For each screen:
 
 ### Replace wireframe placeholders
@@ -162,6 +178,13 @@ Work through screens in flow order (start → end). For each screen:
 - Grayscale placeholder blocks → actual design system components
 - `bg-gray-*` color blocks → design system token classes
 - Dashed border boxes → real content (charts can stay as styled placeholders if complex)
+
+**Phase 4 is not complete if any of these exist:**
+- Any `bg-gray-*` class used as a placeholder fill
+- Any arbitrary hex value (`text-[#333]`, `bg-[#F5F6F6]`, etc.)
+- Any `<div>` or `<span>` standing in for a real component (icon blocks, card skeletons, mock borders)
+
+Run a final scan before check-in: search for `bg-gray-`, `[#`, and placeholder-pattern divs. If found, replace before declaring done.
 
 ### Add interactions
 Every user action identified in Step 1 must do something:
@@ -252,6 +275,9 @@ to read and build production code from.
 | No hardcoded data | Mock data lives in composables, never inline in templates |
 | Composables return reactive state | `return { items, isLoading, selectedItem }` — not raw arrays |
 | Stores are lean | Pinia stores hold only **cross-screen state** — any value read or written by 2+ screens. Local UI state (open/closed, selected tab, form field value) stays in the screen component as `ref`. When in doubt, keep it local until a second screen needs it. |
+| Double quotes for natural language | Use double quotes for any string containing natural language: `"Here's your payslip"`. Reserve single quotes for identifiers and keys guaranteed not to contain apostrophes. Single-quoted strings with apostrophes (`'Here's your...'`) close the string literal early and cause Vue SFC compiler errors. |
+| `components.json` — no undocumented keys | Valid top-level keys: `$schema`, `style`, `typescript`, `tailwind`, `aliases`. Never add inferred keys (e.g., `"framework"`). If unsure, run `npx shadcn-vue@latest init --defaults` and use the generated file as-is. |
+| tsconfig alias — patch both files | When adding `@/*` path aliases in a Vite + Vue project, add `compilerOptions.paths` to both `tsconfig.json` (for shadcn-vue init validator) and `tsconfig.app.json` (for the TypeScript compiler). Patching only one causes silent shadcn-vue init failures. |
 
 **Composable pattern:**
 ```js
@@ -278,6 +304,51 @@ export function useEmployees() {
 
 ---
 
+## UIFork Usage
+
+UIFork (`uifork-vue`) is a **component-level design exploration tool** — it lets you switch between parallel versions of a single component without reloads. Each version is a separate file (`Button.v1.vue`, `Button.v2.vue`); a generated wrapper renders the active version controlled by the UIFork widget.
+
+**Install:** `npm install uifork-vue@github:maaraquel08/design-fork`
+
+**Mount the widget once at root:**
+```vue
+<!-- App.vue -->
+<script setup>
+import { UIFork } from "uifork-vue"
+const isDev = import.meta.env.DEV
+</script>
+<template>
+  <RouterView />
+  <UIFork v-if="isDev" />
+</template>
+```
+
+**Initialize a component for versioning:**
+```bash
+npx uifork-vue src/components/PayslipCard.vue
+# Creates PayslipCard.v1.vue, PayslipCard.versions.ts, PayslipCard.vue (wrapper)
+```
+
+**Promote the winning version when done:**
+```bash
+npx uifork-vue promote PayslipCard v2
+# Replaces PayslipCard.vue with v2 content, removes all version files
+```
+
+**Use UIFork for:**
+- Exploring 2–3 layout alternatives for the same component
+- Comparing interaction models side-by-side with real app state
+- Gathering stakeholder feedback on UI variants before committing
+
+**Do NOT use UIFork for:**
+- Sequential screen transitions or flow navigation — use `vue-router` named routes
+- Chat-style message accumulation — use reactive state (`ref`/`reactive`)
+- Any pattern where screens build on each other's output
+
+The widget stores the active version in localStorage. It has no programmatic API for sequential advancement — attempting to drive a multi-step flow through `ForkedComponent` will break cumulative UI patterns and has no reset path.
+
+---
+
 ## Prototype Conventions
 
 - **Realistic content** — use plausible names, dates, amounts, and statuses. Not "John Doe", "01/01/2024", or "Lorem Ipsum".
@@ -285,6 +356,25 @@ export function useEmployees() {
 - **Accessible markup** — `<button>` for actions, `<a>` or `<router-link>` for navigation, every `<input>` has a `<label>`.
 - **Desktop-first** — design for 1280px+. No need to be fully responsive unless the brief specifies mobile.
 - **Design tokens only** — no raw hex, no arbitrary Tailwind values (`text-[#333]` is a violation).
+
+### Typography (always applied — not optional)
+
+Apply these to every screen during Step 4. They are baseline quality, not a polish pass.
+
+- Add `-webkit-font-smoothing: antialiased` to the root element if not already present
+- Apply `text-wrap: balance` to all headings and short labels (≤6 lines)
+- Apply `text-wrap: pretty` to body paragraphs and descriptions
+- Add `tabular-nums` to any number that updates dynamically (counters, prices, timers)
+
+### Surfaces (always applied — not optional)
+
+Apply these to every screen during Step 4. They are baseline quality, not a polish pass.
+
+- Audit every nested card/container pair — verify `outerRadius = innerRadius + padding`
+- **Flat surfaces and cards** — use `border` and `border-weak` (no shadow)
+- **Elevated surfaces** (popover, modal, dropdown panels, etc.) — same `border` and `border-weak`, plus layered `box-shadow` for lift
+- Add `outline outline-1 -outline-offset-1 outline-black/10` to any `<img>` element
+- Ensure every small interactive element (icon buttons, checkboxes) has a minimum 40×40px hit area
 
 ---
 

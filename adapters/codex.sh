@@ -60,11 +60,11 @@ SKILLS=(
   "prd-ux-validator:PRD UX Validator"
   "secondary-research:Secondary Research"
   "user-journey:User Journey"
-  "wireframing:Wireframing"
   "prototype:Prototyping"
   "design-tokens:Design Tokens"
   "design-qa:Design QA"
-  "ui-polish:UI Polish"
+  "animations:Animations"
+  "handoff:Developer Handoff"
 )
 
 for entry in "${SKILLS[@]}"; do
