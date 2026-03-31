@@ -5,6 +5,14 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.2.0](https://github.com/micserr/sprout-design-agent/compare/v1.1.1...v1.2.0) (2026-03-31)
+
+
+### Features
+
+* add PRD-first workflow with Phase 0 validate+enrich pipeline ([4656947](https://github.com/micserr/sprout-design-agent/commit/4656947fe5e1e4a4d35cc174e53402517ad75ab0))
+* add PRD-first workflow with Phase 0 validate+enrich pipeline ([6c90385](https://github.com/micserr/sprout-design-agent/commit/6c90385b43f3b6efd901af317f3211162dcf40f8))
+
 ## [1.1.1](https://github.com/micserr/sprout-design-agent/compare/v1.1.0...v1.1.1) (2026-03-30)
 
 
