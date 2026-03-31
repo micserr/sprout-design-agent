@@ -56,13 +56,15 @@ echo "The following skills are available. Apply them when the relevant phase or 
 echo "" >> "$OUT"
 
 SKILLS=(
-  "ux-market-research:UX Market Research"
-  "problem-framing:Problem Framing"
+  "prd-gap-analyzer:PRD Gap Analyzer"
+  "prd-ux-validator:PRD UX Validator"
+  "secondary-research:Secondary Research"
   "user-journey:User Journey"
   "wireframing:Wireframing"
   "prototype:Prototyping"
   "design-tokens:Design Tokens"
   "design-qa:Design QA"
+  "ui-polish:UI Polish"
 )
 
 for entry in "${SKILLS[@]}"; do

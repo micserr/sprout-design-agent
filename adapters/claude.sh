@@ -17,8 +17,9 @@ create_symlink() {
 }
 
 echo "Installing skills..."
-create_symlink "$SCRIPT_DIR/skills/ux-market-research" "$HOME/.claude/skills/ux-market-research"
-create_symlink "$SCRIPT_DIR/skills/problem-framing"    "$HOME/.claude/skills/problem-framing"
+create_symlink "$SCRIPT_DIR/skills/prd-gap-analyzer"   "$HOME/.claude/skills/prd-gap-analyzer"
+create_symlink "$SCRIPT_DIR/skills/prd-ux-validator"   "$HOME/.claude/skills/prd-ux-validator"
+create_symlink "$SCRIPT_DIR/skills/secondary-research" "$HOME/.claude/skills/secondary-research"
 create_symlink "$SCRIPT_DIR/skills/user-journey"       "$HOME/.claude/skills/user-journey"
 create_symlink "$SCRIPT_DIR/skills/wireframing"        "$HOME/.claude/skills/wireframing"
 create_symlink "$SCRIPT_DIR/skills/prototype"          "$HOME/.claude/skills/prototype"

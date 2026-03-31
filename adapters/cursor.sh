@@ -52,18 +52,20 @@ echo "  ✓ product-design-agent.mdc"
 # --- Skill rules ---
 skill_desc() {
   case "$1" in
-    ux-market-research) echo "Competitive analysis, market sizing, and trend identification for product research." ;;
-    problem-framing)    echo "JTBD statements, opportunity trees, HMW statements, and problem statements." ;;
+    prd-gap-analyzer)   echo "Validates a PRD before design begins — scans for missing sections and produces a handoff brief." ;;
+    prd-ux-validator)   echo "Enriches a PRD with secondary research, fills gaps, and produces a prototype-ready design brief." ;;
+    secondary-research) echo "Free-form competitive and market research producing an 18-section design brief." ;;
     user-journey)       echo "Journey maps, user flow diagrams, pain points, and touchpoint summaries." ;;
     wireframing)        echo "Framework-agnostic layout blueprints and wireframe generation using bento layout." ;;
     prototype)          echo "Turns wireframes into runnable Vue 3 prototypes with real navigation and interactions." ;;
     design-tokens)      echo "Token architecture, semantic color families, typography, and dark mode guidance." ;;
     design-qa)          echo "Design quality assurance against token, layout, and accessibility standards." ;;
+    ui-polish)          echo "Micro-interactions, animations, surfaces, typography, and optical alignment details." ;;
     *)                  echo "Product design skill." ;;
   esac
 }
 
-SKILLS=(ux-market-research problem-framing user-journey wireframing prototype design-tokens design-qa)
+SKILLS=(prd-gap-analyzer prd-ux-validator secondary-research user-journey wireframing prototype design-tokens design-qa ui-polish)
 
 for slug in "${SKILLS[@]}"; do
   skill_file="$SCRIPT_DIR/skills/$slug/SKILL.md"

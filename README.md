@@ -8,10 +8,18 @@ See [`PROMPTS.md`](PROMPTS.md) for ready-to-use prompts for every skill and work
 
 ## Skills
 
+### PRD → Design Pipeline
+
 | Skill | What it does | Trigger phrases |
 |---|---|---|
-| `ux-market-research` | Competitive analysis, market sizing, trend identification | "research competitors", "market analysis", "competitive landscape" |
-| `problem-framing` | JTBD statements, opportunity trees, HMW statements | "frame the problem", "JTBD", "how might we", "problem statement" |
+| `prd-gap-analyzer` | Validates a PRD before design begins — scans for missing sections, rates severity, generates clarifying questions, and produces a handoff block for the enrichment step | "analyze this PRD", "check for gaps", "is this PRD ready for design", "PRD gap check" |
+| `prd-ux-validator` | Takes a PRD + gap report and enriches it with secondary research — fills gaps, flags assumptions, and produces a prototype-ready design brief | "validate the PRD", "PRD + research brief", "enrich the brief", "prd-ux-validator" |
+| `secondary-research` | Free-form competitive and market research — produces the same 18-section brief format as prd-ux-validator for use when no PRD exists | "research X", "competitive analysis", "landscape of X", "desk research on X" |
+
+### Design Workflow
+
+| Skill | What it does | Trigger phrases |
+|---|---|---|
 | `user-journey` | Journey maps and user flow diagrams | "user journey", "user flow", "map the flow", "journey map" |
 | `wireframing` | Framework-agnostic layout blueprints for 5 SaaS patterns; bento layout by default | "wireframe", "sketch a layout", "design a screen", "information architecture" |
 | `prototype` | Turns wireframes into a runnable, interactive Vue 3 prototype with real navigation, state, and design system components | "prototype", "make it interactive", "clickable prototype", "wire the screens" |
@@ -19,22 +27,27 @@ See [`PROMPTS.md`](PROMPTS.md) for ready-to-use prompts for every skill and work
 | `design-qa` | Pre-handoff QA across 4 pillars: visual consistency, token compliance, accessibility, interaction readiness | "design qa", "review this design", "audit the UI", "is this ready for handoff" |
 | `ui-polish` | Micro-interactions, animations, hover states, shadows, borders, typography details, optical alignment | "ui polish", "make it feel better", "feels off", "hover state", "animation", "shadow", "border radius", "font smoothing" |
 
+
 ---
 
 ## The Product Design Agent
 
-A dual-mode agent — acts as an **advisor** for focused design questions, or as an **orchestrator** that runs the full workflow from a single brief.
+A dual-mode agent — acts as an **advisor** for focused design questions, or as an **orchestrator** that runs the full workflow from a PRD.
 
 ### Workflow (Orchestrator Mode)
 
 ```
-Brief
-  → Phase 1: UX Research
-  → Phase 2: Problem Framing
-  → Phase 3: User Journey + Stack Discovery
-  → Phase 4: Wireframes
-  → Phase 5: Interactive Prototype
-  → Phase 5.5: Design QA
+PM Agent Intent / PRD
+  → Phase 0: Validate + Enrich
+      prd-gap-analyzer  (flag missing sections)
+      prd-ux-validator  (fill gaps with research, tag assumptions)
+      Designer check-in (confirm context)
+  → Phase 1: Design Framing
+      JTBD statements · HMW statements · Problem statement · Success criteria
+  → Phase 2: User Journey + Stack Discovery
+  → Phase 3: Wireframes
+  → Phase 4: Interactive Prototype
+  → Phase 5: Design QA
   → Phase 6: UI Polish
 ```
 

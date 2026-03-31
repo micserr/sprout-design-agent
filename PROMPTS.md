@@ -6,47 +6,64 @@ Ready-to-use prompts for every skill and workflow. Copy, fill in the brackets, a
 
 ## Full Workflow (Product Design Agent)
 
-**Run the complete design workflow from a brief**
+**Start from a PRD or Intent doc — standard entry point**
 ```
-Design agent, here's my brief:
-
-Product: [what you're building]
-User: [who it's for]
-Problem: [what problem it solves]
-Constraints: [platform, timeline, existing product]
+Design agent, here's the PRD: [file path or paste content]
 
 Run the full product design workflow.
 ```
 
+**Start with a gap check first, then hand off to the agent**
+```
+Run prd-gap-analyzer on [file path].
+Then pass the gap report to prd-ux-validator and produce the enriched design brief.
+```
+
 **Resume at a specific phase**
 ```
-Skip to Phase 4. Here's the context:
+Skip to Phase 3. Here's the context:
 - Product: [product name]
+- Enriched brief: [file path to secondary-research output]
 - User journey already mapped: [paste or describe it]
 - Stack: Vue 3 · Tailwind v4 · Toge v2
 
-Wireframe the 5 most critical screens.
+Wireframe the most critical screens.
+```
+
+---
+
+## PRD Pipeline (Individual Steps)
+
+### Step 1 — Gap Analysis
+```
+Analyze this PRD for gaps before we start design work:
+[file path or paste PRD content]
+```
+
+### Step 2 — Context Enrichment
+```
+Run prd-ux-validator on this PRD.
+Gap report: [file path from step 1]
+Depth: standard
+Geography: Philippines
+```
+
+### Step 3 — Design Framing (from enriched brief)
+```
+Run Phase 1 Design Framing using the enriched brief at:
+[file path to secondary-research output]
+
+Extract JTBD statements, HMW statements, and reframe the success criteria as UX outcomes.
 ```
 
 ---
 
 ## Individual Skills
 
-### UX Market Research
-```
-Research the competitive landscape for [product idea].
-Identify 3–5 direct or adjacent competitors and surface the biggest gaps in the market.
-```
-
-### Problem Framing
-```
-Help me frame the problem for [product/feature].
-Generate JTBD statements, an opportunity tree, and 3–5 How-Might-We statements.
-```
-
 ### User Journey
 ```
 Map the end-to-end user journey for [primary use case].
+Anchor pain points on: [FP-1 description] and [FP-2 description].
 Include a journey map table and a Mermaid flow diagram. Focus on the critical path.
 ```
 

@@ -40,13 +40,15 @@ description: >
 agents:
   - product-design-agent
 skills:
-  - ux-market-research
-  - problem-framing
+  - prd-gap-analyzer
+  - prd-ux-validator
+  - secondary-research
   - user-journey
   - wireframing
   - prototype
   - design-tokens
   - design-qa
+  - ui-polish
 YAML
 echo "  ✓ module.yaml"
 
@@ -81,13 +83,15 @@ echo "The following skills are embedded for reference. Apply the relevant skill 
 echo "" >> "$AGENT_OUT"
 
 SKILLS=(
-  "ux-market-research:UX Market Research"
-  "problem-framing:Problem Framing"
+  "prd-gap-analyzer:PRD Gap Analyzer"
+  "prd-ux-validator:PRD UX Validator"
+  "secondary-research:Secondary Research"
   "user-journey:User Journey"
   "wireframing:Wireframing"
   "prototype:Prototyping"
   "design-tokens:Design Tokens"
   "design-qa:Design QA"
+  "ui-polish:UI Polish"
 )
 
 for entry in "${SKILLS[@]}"; do
