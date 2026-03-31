@@ -56,16 +56,16 @@ skill_desc() {
     prd-ux-validator)   echo "Enriches a PRD with secondary research, fills gaps, and produces a prototype-ready design brief." ;;
     secondary-research) echo "Free-form competitive and market research producing an 18-section design brief." ;;
     user-journey)       echo "Journey maps, user flow diagrams, pain points, and touchpoint summaries." ;;
-    wireframing)        echo "Framework-agnostic layout blueprints and wireframe generation using bento layout." ;;
-    prototype)          echo "Turns wireframes into runnable Vue 3 prototypes with real navigation and interactions." ;;
+    prototype)          echo "Turns user flow and layout reference into runnable Vue 3 prototypes with real navigation and interactions." ;;
     design-tokens)      echo "Token architecture, semantic color families, typography, and dark mode guidance." ;;
     design-qa)          echo "Design quality assurance against token, layout, and accessibility standards." ;;
-    ui-polish)          echo "Micro-interactions, animations, surfaces, typography, and optical alignment details." ;;
+    animations)         echo "Animation and micro-interaction principles — hover states, transitions, easing, and motion details." ;;
+    handoff)            echo "Developer handoff pass — splits components, extracts composables, types props/emits, removes prototype artifacts." ;;
     *)                  echo "Product design skill." ;;
   esac
 }
 
-SKILLS=(prd-gap-analyzer prd-ux-validator secondary-research user-journey wireframing prototype design-tokens design-qa ui-polish)
+SKILLS=(prd-gap-analyzer prd-ux-validator secondary-research user-journey prototype design-tokens design-qa animations handoff)
 
 for slug in "${SKILLS[@]}"; do
   skill_file="$SCRIPT_DIR/skills/$slug/SKILL.md"

@@ -1,6 +1,6 @@
 # sprout-design-agent
 
-A collection of Claude Code skills and an agent for product designers. Covers the full product design workflow — market research, problem framing, user journeys, wireframing, prototyping, design QA, and UI polish — so you can run structured, repeatable design thinking directly from your terminal.
+A collection of Claude Code skills and an agent for product designers. Covers the full product design workflow — market research, problem framing, user journeys, prototyping, design QA, and animations — so you can run structured, repeatable design thinking directly from your terminal.
 
 See [`PROMPTS.md`](PROMPTS.md) for ready-to-use prompts for every skill and workflow.
 
@@ -21,11 +21,11 @@ See [`PROMPTS.md`](PROMPTS.md) for ready-to-use prompts for every skill and work
 | Skill | What it does | Trigger phrases |
 |---|---|---|
 | `user-journey` | Journey maps and user flow diagrams | "user journey", "user flow", "map the flow", "journey map" |
-| `wireframing` | Framework-agnostic layout blueprints for 5 SaaS patterns; bento layout by default | "wireframe", "sketch a layout", "design a screen", "information architecture" |
-| `prototype` | Turns wireframes into a runnable, interactive Vue 3 prototype with real navigation, state, and design system components | "prototype", "make it interactive", "clickable prototype", "wire the screens" |
+| `prototype` | Builds an interactive Vue 3 prototype from a user flow and layout reference — typography and surfaces built-in | "prototype", "make it interactive", "clickable prototype", "wire the screens" |
 | `design-tokens` | Token architecture, semantic color families, typography, dark mode | "what token should I use", "design token", "which color for", "semantic color" |
 | `design-qa` | Pre-handoff QA across 4 pillars: visual consistency, token compliance, accessibility, interaction readiness | "design qa", "review this design", "audit the UI", "is this ready for handoff" |
-| `ui-polish` | Micro-interactions, animations, hover states, shadows, borders, typography details, optical alignment | "ui polish", "make it feel better", "feels off", "hover state", "animation", "shadow", "border radius", "font smoothing" |
+| `animations` | Micro-interactions, hover states, enter/exit transitions, easing, and icon state changes (optional phase — designer decides) | "add animations", "make it feel better", "feels off", "hover state", "transition", "easing", "scale on press" |
+| `handoff` | Developer handoff pass — splits oversized components, extracts composables, types props/emits, removes prototype artifacts, verifies file structure | "ready for handoff", "clean up the code", "handoff pass", "production ready", "prepare for dev" |
 
 
 ---
@@ -45,17 +45,17 @@ PM Agent Intent / PRD
   → Phase 1: Design Framing
       JTBD statements · HMW statements · Problem statement · Success criteria
   → Phase 2: User Journey + Stack Discovery
-  → Phase 3: Wireframes
-  → Phase 4: Interactive Prototype
-  → Phase 5: Design QA
-  → Phase 6: UI Polish
+  → Phase 3: Interactive Prototype (typography + surfaces built-in)
+  → Phase 4: Design QA
+  → Phase 5: Animations (optional — designer decides)
+  → Phase 6: Developer Handoff
 ```
 
 The agent checks in between every phase. It never auto-advances.
 
 ### Design System Support
 
-The agent auto-detects the design system at Phase 3 and carries it forward:
+The agent auto-detects the design system at Phase 2 (Stack Discovery) and carries it forward:
 
 | Design system | Detection |
 |---|---|
@@ -70,7 +70,6 @@ See `guide/toge-design-system-v1/` and `guide/toge-design-system-v2/` for design
 ## Requirements
 
 - Claude Code installed
-- For the **wireframing** skill viewer: Node.js (`npm run dev` inside `skills/wireframing/viewer/`)
 - For the **prototype** skill output: a Vue 3 project with Tailwind CSS and Toge v1 or v2
 
 ---

@@ -12,6 +12,23 @@ This skill produces two primary artifacts: a **journey map** that captures the h
 
 ---
 
+## Output Format Selection
+
+**Before producing any output**, ask the user which format they want via `AskUserQuestion`:
+
+> "How would you like the user journey delivered? Pick one or more:
+>
+> 1. **Markdown table** — journey map as a readable `.md` file (good for docs and PRs)
+> 2. **Mermaid diagram** — flow diagram as a `.mermaid` file (renders in GitHub, Notion, VS Code)
+> 3. **ASCII flow** — plain-text diagram readable in any terminal or editor
+> 4. **All of the above**
+>
+> Default is **1 + 2** if you'd like to skip this."
+
+Use the answer to determine which artifacts to generate and save (see [File Output](#file-output) below).
+
+---
+
 ## Journey Map
 
 ### Structure
@@ -113,9 +130,56 @@ Focus on the touchpoints that are load-bearing: where the user makes a commitmen
 
 ## Output Format
 
-Produce four artifacts in this order:
+Produce the artifacts the user selected, in this order:
 
-1. **Journey Map table** — full markdown table covering all stages and rows
-2. **User Flow diagram** — Mermaid `flowchart TD` code block showing the full flow with decision branches
-3. **Touchpoint summary** — a brief list of key touchpoints with channel and interaction type for each
-4. **Top 3 design recommendations** — concrete, prioritized recommendations derived directly from the **top 3 pain points** identified in the map. Each recommendation names the pain point it resolves.
+1. **Journey Map table** — full markdown table covering all stages and rows *(always included)*
+2. **User Flow diagram** — Mermaid `flowchart TD` code block showing the full flow with decision branches *(if Mermaid or All selected)*
+3. **ASCII flow** — plain-text diagram of the happy path + key branches *(if ASCII or All selected)*
+4. **Touchpoint summary** — a brief list of key touchpoints with channel and interaction type for each *(always included)*
+5. **Top 3 design recommendations** — concrete, prioritized recommendations derived directly from the **top 3 pain points** identified in the map. Each recommendation names the pain point it resolves. *(always included)*
+
+---
+
+## File Output
+
+Save all generated artifacts to `skills/user-journey/outputs/<feature-name>/`. Use the product or feature name from the brief (kebab-case). Create the directory if it doesn't exist.
+
+| Format selected | File saved |
+|---|---|
+| Markdown table | `<feature-name>-journey-map.md` |
+| Mermaid diagram | `<feature-name>-flow.mermaid` |
+| ASCII flow | `<feature-name>-flow.txt` |
+
+**Markdown file structure** (when saving `.md`):
+
+```markdown
+# User Journey — [Feature Name]
+
+> Generated: [date] · Format: [selected format(s)]
+
+## Journey Map
+[table]
+
+## Touchpoint Summary
+[list]
+
+## Top 3 Design Recommendations
+[recommendations]
+```
+
+**Mermaid file** (`.mermaid`) — raw Mermaid syntax only, no markdown wrapper. Renders directly in GitHub, Notion, VS Code Mermaid extension.
+
+**ASCII file** (`.txt`) — plain text, no markdown. Use `+`, `-`, `|`, `>`, `v` characters. Example:
+
+```
+[Start] --> [Screen A] --> {Decision?}
+                               |Yes        |No
+                               v           v
+                          [Screen B]   [Screen C]
+                               |
+                               v
+                            [End]
+```
+
+After saving, tell the user:
+> "Saved to `skills/user-journey/outputs/<feature-name>/`. Open the `.mermaid` file in VS Code (with the Mermaid extension) or paste it into [mermaid.live](https://mermaid.live) to preview the flow."

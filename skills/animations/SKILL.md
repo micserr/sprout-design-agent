@@ -1,6 +1,6 @@
 ---
-name: ui-polish
-description: Merged design engineering principles from Emil Kowalski and Jakub Krehel. Use when building UI components, reviewing frontend code, implementing animations, hover states, shadows, borders, typography, micro-interactions, or any visual detail work. Triggers on UI polish, "make it feel better", "feels off", stagger, border radius, optical alignment, font smoothing, tabular numbers, image outlines, shadows, scale on press.
+name: animations
+description: Animation and micro-interaction principles from Emil Kowalski and Jakub Krehel. Use when adding animations, hover states, enter/exit transitions, icon state changes, button feedback, or any motion detail to a prototype. Triggers on "add animations", "make it feel better", "feels off", "hover state", "transition", "easing", "scale on press", "micro-interactions".
 ---
 
 # UI Polish — Design Engineering Principles
@@ -22,10 +22,10 @@ Good taste is a trained instinct. Develop it by studying great work, reverse-eng
 
 | Category | When to Use |
 | --- | --- |
-| [Typography](typography.md) | Text wrapping, font smoothing, tabular numbers |
-| [Surfaces](surfaces.md) | Border radius, optical alignment, shadows, image outlines, hit areas |
 | [Animations](animations.md) | Animation decisions, easing, duration, enter/exit, icon animations, scale on press, springs |
 | [Performance](performance.md) | GPU-compositable properties, transition specificity, `will-change` usage |
+
+> Typography and surfaces are applied during the Prototype phase — see `skills/prototype/SKILL.md` Prototype Conventions.
 
 ---
 

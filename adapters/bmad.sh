@@ -35,8 +35,8 @@ name: product-design
 version: 1.0.0
 description: >
   Product design workflow module — covers UX research, problem framing,
-  user journeys, wireframing, and interactive prototyping. Includes a
-  senior product design advisor agent and 7 supporting skills.
+  user journeys, interactive prototyping, and design QA. Includes a
+  senior product design advisor agent and 8 supporting skills.
 agents:
   - product-design-agent
 skills:
@@ -44,11 +44,11 @@ skills:
   - prd-ux-validator
   - secondary-research
   - user-journey
-  - wireframing
   - prototype
   - design-tokens
   - design-qa
-  - ui-polish
+  - animations
+  - handoff
 YAML
 echo "  ✓ module.yaml"
 
@@ -87,11 +87,11 @@ SKILLS=(
   "prd-ux-validator:PRD UX Validator"
   "secondary-research:Secondary Research"
   "user-journey:User Journey"
-  "wireframing:Wireframing"
   "prototype:Prototyping"
   "design-tokens:Design Tokens"
   "design-qa:Design QA"
-  "ui-polish:UI Polish"
+  "animations:Animations"
+  "handoff:Developer Handoff"
 )
 
 for entry in "${SKILLS[@]}"; do
