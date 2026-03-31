@@ -5,6 +5,15 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.3.0](https://github.com/micserr/sprout-design-agent/compare/v1.2.0...v1.3.0) (2026-03-31)
+
+
+### Features
+
+* refactor workflow — remove wireframing phase, add handoff skill, fix learnings gaps ([874ef5d](https://github.com/micserr/sprout-design-agent/commit/874ef5d16d8968b3960d4a1c971494547463d898))
+* **user-journey:** add format selection and file output to skill ([1772dc1](https://github.com/micserr/sprout-design-agent/commit/1772dc1376853b853c14b0ee4024a9f889f93771))
+* workflow refactor — animations, handoff phase, and learnings fixes ([e194908](https://github.com/micserr/sprout-design-agent/commit/e1949080ea5a26e0a896a795baa5e80960efbdf6))
+
 ## [1.2.0](https://github.com/micserr/sprout-design-agent/compare/v1.1.1...v1.2.0) (2026-03-31)
 
 
