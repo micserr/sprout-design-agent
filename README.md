@@ -55,22 +55,14 @@ The agent checks in between every phase. It never auto-advances.
 
 ### Design System Support
 
-The agent auto-detects the design system at Phase 2 (Stack Discovery) and carries it forward:
-
-| Design system | Detection |
-|---|---|
-| **Toge v1** (`design-system-next`) | `package.json` contains `design-system-next` |
-| **Toge v2** (shadcn-vue registry) | `components.json` has `registries["@toge"]` |
-| **Custom / other** | Falls back to asking the user |
-
-See `guide/toge-design-system-v1/` and `guide/toge-design-system-v2/` for design system reference docs.
+The agent uses **Toge** (shadcn-vue registry) exclusively. See `guide/toge-design-system-v2/` for reference docs.
 
 ---
 
 ## Requirements
 
 - Claude Code installed
-- For the **prototype** skill output: a Vue 3 project with Tailwind CSS and Toge v1 or v2
+- For the **prototype** skill output: a Vue 3 project with Tailwind CSS and Toge (shadcn-vue registry)
 
 ---
 
