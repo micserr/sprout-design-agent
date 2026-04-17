@@ -1,0 +1,86 @@
+# Schema for the ux-brief artifact produced by prd-ux-validator.
+#
+# An enriched design brief built from PRD + gap report + secondary research.
+# Fills PRD gaps with researched assumptions (marked explicitly), flags
+# conflicts, produces the PROTOTYPE AGENT INPUT block used by downstream
+# skills (user-journey, prototype).
+
+$schema: https://json-schema.org/draft-07/schema#
+$id: contracts/ux-brief.schema.yaml
+title: UX Brief
+description: >
+  Enriched design brief. The prd-ux-validator skill produces this by taking a
+  PRD + an optional ux-readiness report and filling gaps with secondary
+  research. Gap-filled items are tagged so downstream skills know what's
+  confirmed vs. assumed.
+
+type: object
+
+required: [front_matter, prototype_agent_input]
+
+properties:
+
+  front_matter:
+    type: object
+    required: [inputDocuments, producedBy, skill]
+    properties:
+      inputDocuments: { type: array, items: { type: string } }
+      producedBy:     { type: string, const: "sprout-design-agent" }
+      skill:          { type: string, const: "prd-ux-validator" }
+      classification: { type: object }
+      stepsCompleted: { type: array, items: { type: string } }
+      editHistory:    { type: array, items: { type: object } }
+      feature:        { type: string }
+      date:           { type: string }
+    additionalProperties: true
+
+  gap_fill_confidence:
+    type: string
+    enum: [high, medium, low]
+    description: >
+      Overall confidence that gap-filling is grounded in research rather than
+      speculation. Phase 1 check-in caveats scale to this value.
+
+  research_summary:
+    type: string
+    description: What was researched and where the evidence came from.
+
+  research_conflicts:
+    type: array
+    description: Places where research contradicts the PRD. Needs PM resolution.
+    items:
+      type: object
+      required: [field, prd_says, research_says]
+      properties:
+        field:          { type: string }
+        prd_says:       { type: string }
+        research_says:  { type: string }
+        recommendation: { type: string }
+
+  prototype_agent_input:
+    type: object
+    description: >
+      The 8-field block downstream skills (user-journey, prototype) consume
+      directly. This is the Phase 0 → Phase 1 handoff contract.
+    required: [user, core_need, success_state]
+    properties:
+      user:               { type: string, description: "Primary persona — anchor for JTBD + journey." }
+      core_need:          { type: string, description: "JTBD core need + HMW framing anchor." }
+      primary_friction:   { type: array, items: { type: object }, description: "FP-1, FP-2 — pain points for HMW targets and journey pain points." }
+      decision_trigger:   { type: string, description: "User flow entry point." }
+      success_state:      { type: string, description: "What success looks like for the user." }
+      key_constraints:    { type: array, items: { type: string }, description: "Stack + Phase 4 pre-flight constraints." }
+      screen_map:         { type: array, items: { type: string }, description: "Seed list of screens for Phase 3." }
+      gap_fill_confidence: { type: string, enum: [high, medium, low] }
+
+  gap_filled_items:
+    type: array
+    description: Items marked as [assumed — gap-filled] that the designer should revisit.
+    items:
+      type: object
+      required: [field, value, rationale]
+      properties:
+        field:      { type: string }
+        value:      { type: string }
+        rationale:  { type: string, description: "What research supports this assumption." }
+        confidence: { type: string, enum: [high, medium, low] }

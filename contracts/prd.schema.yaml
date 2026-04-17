@@ -1,0 +1,170 @@
+# Schema for the PRD artifact Sprout consumes.
+#
+# PRDs are the primary input to most Sprout skills. They come in many shapes:
+#   - BMAD PRDs (11 sections, rich front-matter) — written by John.
+#   - Linear/Notion docs — less structured, heading-driven.
+#   - Plain markdown — minimal, from PMs without a framework.
+#
+# This schema is DELIBERATELY TOLERANT. The goal is to accept any reasonable
+# PRD and let skills degrade gracefully when optional structure is absent.
+# Skills SHOULD match sections by heading regex, not exact string.
+
+$schema: https://json-schema.org/draft-07/schema#
+$id: contracts/prd.schema.yaml
+title: PRD
+description: >
+  Product Requirements Document. Consumed by Sprout skills as the primary
+  source of product intent. Written by a PM agent (John in BMAD) or authored
+  by a human PM outside the mesh.
+
+type: object
+
+# Sprout treats the PRD as a markdown document with optional YAML front-matter.
+# This schema describes both layers.
+
+properties:
+
+  # ---------- Front-matter (YAML block at top of file) ----------
+
+  front_matter:
+    type: object
+    description: YAML front-matter at the top of the PRD file. Optional but preferred.
+    properties:
+
+      # BMAD-native fields (present in John's PRDs)
+      stepsCompleted:
+        type: array
+        items: { type: string }
+        description: BMAD workflow steps completed by John (e.g., ["step-01-init", "step-09-functional"]).
+
+      inputDocuments:
+        type: array
+        items: { type: string }
+        description: Paths or references to inputs consumed to produce this PRD.
+
+      briefCount:      { type: integer }
+      researchCount:   { type: integer }
+      projectDocsCount: { type: integer }
+      workflowType:    { type: string }
+      lastEdited:      { type: string, description: "ISO date YYYY-MM-DD." }
+
+      editHistory:
+        type: array
+        description: Change log entries.
+        items:
+          type: object
+          properties:
+            date:     { type: string }
+            changes:  { type: string }
+
+      # Classification block — BMAD-specific, highly useful for Sprout.
+      # When absent, Sprout falls back to inferring from body.
+      classification:
+        type: object
+        description: >
+          Machine-readable classification of the product. Drives Sprout's
+          design tone and framework choices.
+        properties:
+          projectType:    { type: string, examples: [saas_b2b, saas_b2c, internal-tooling, consumer-mobile] }
+          domain:         { type: string, examples: [fintech, hr-payroll, healthtech, devtools] }
+          complexity:     { type: string, enum: [low, medium, medium-high, high] }
+          projectContext: { type: string, enum: [greenfield, brownfield] }
+
+      # Generic fields any PRD may carry
+      title:    { type: string }
+      author:   { type: string }
+      date:     { type: string }
+
+    additionalProperties: true   # tolerate unknown fields
+
+  # ---------- Body sections (markdown headings) ----------
+
+  sections:
+    type: object
+    description: >
+      Logical sections detected by heading match in the PRD body. Sprout skills
+      match headings by regex (e.g., /^##?\s+Executive Summary/i) rather than
+      exact string. Missing sections are not an error — skills report degraded
+      quality when a section they need is absent.
+    properties:
+
+      executive_summary:
+        type: object
+        description: "Match: /Executive Summary/i"
+        properties:
+          problem:          { type: string, description: "The Problem — why this exists." }
+          what_building:    { type: string, description: "What We're Building." }
+          how_it_works:     { type: string }
+          why_special:      { type: string }
+
+      success_criteria:
+        type: object
+        description: "Match: /Success Criteria/i"
+        properties:
+          user_success:       { type: array, items: { type: object } }
+          business_success:   { type: array, items: { type: object } }
+          technical_success:  { type: array, items: { type: object } }
+
+      user_journeys:
+        type: array
+        description: "Match: /User Journeys/i. Each journey has a title, persona, narrative, capabilities_revealed."
+        items:
+          type: object
+          properties:
+            title:                  { type: string }
+            persona:                { type: string, description: "E.g., 'Josephine — mid-level PSI'" }
+            narrative:              { type: string }
+            capabilities_revealed:  { type: array, items: { type: string } }
+
+      domain_requirements:
+        type: object
+        description: "Match: /Domain-Specific Requirements/i"
+
+      innovation:
+        type: object
+        description: "Match: /Innovation/i"
+
+      platform_architecture:
+        type: object
+        description: "Match: /Platform and Architecture/i"
+
+      project_scoping:
+        type: object
+        description: "Match: /Project Scoping/i. Contains Bolt definitions."
+        properties:
+          mvp_strategy:    { type: string }
+          current_bolt:
+            type: object
+            properties:
+              name:         { type: string, examples: ["Bolt 1"] }
+              feature_set:  { type: array, items: { type: object } }
+              out_of_scope: { type: array, items: { type: object } }
+          future_bolts:    { type: array, items: { type: object } }
+
+      non_functional_requirements:
+        type: object
+        description: "Match: /Non-Functional Requirements/i"
+
+      functional_requirements:
+        type: array
+        description: "Match: /Functional Requirements/i. The capability contract — Sprout must implement exactly this set for the current scope."
+        items:
+          type: object
+          properties:
+            id:           { type: string, pattern: "^FR[0-9]+$", examples: [FR1, FR2, FR18] }
+            text:         { type: string }
+            group:        { type: string, description: "Optional grouping heading (e.g., 'Document Parsing and Extraction')." }
+            bolt:         { type: string, description: "Which Bolt this FR belongs to (if PRD uses Bolt-scoping)." }
+
+# ---------- Tolerance ----------
+
+# A PRD is considered minimally valid if ANY of these are present:
+#   - A body with at least one heading
+#   - front_matter with a `title` or `classification`
+#   - A Functional Requirements section
+#
+# Sprout skills declare their own preconditions on top of this schema (e.g.,
+# prd-gap-analyzer requires a Functional Requirements section; others only
+# need an Executive Summary).
+
+additionalProperties: true

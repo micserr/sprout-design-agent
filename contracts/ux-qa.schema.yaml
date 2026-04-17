@@ -1,0 +1,95 @@
+# Schema for the ux-qa artifact produced by the design-qa skill.
+
+$schema: https://json-schema.org/draft-07/schema#
+$id: contracts/ux-qa.schema.yaml
+title: UX QA Report
+description: >
+  Design QA findings across 4 pillars (visual consistency, token compliance,
+  accessibility, interaction readiness). Produced by design-qa. Consumed by
+  handoff, design-audit.
+
+type: object
+
+required: [front_matter, summary, findings]
+
+properties:
+
+  front_matter:
+    type: object
+    required: [inputDocuments, producedBy, skill]
+    properties:
+      inputDocuments: { type: array, items: { type: string } }
+      producedBy:     { type: string, const: "sprout-design-agent" }
+      skill:          { type: string, const: "design-qa" }
+      feature:        { type: string }
+      date:           { type: string }
+    additionalProperties: true
+
+  summary:
+    type: object
+    required: [handoff_status, counts]
+    properties:
+      handoff_status:
+        type: string
+        enum: [ready, conditionally-ready, not-ready]
+        description: >
+          ready = no Critical or Major findings.
+          conditionally-ready = only Minor findings remain.
+          not-ready = one or more Critical or Major findings.
+      counts:
+        type: object
+        properties:
+          critical: { type: integer, minimum: 0 }
+          major:    { type: integer, minimum: 0 }
+          minor:    { type: integer, minimum: 0 }
+          note:     { type: integer, minimum: 0 }
+      dark_mode_audited: { type: boolean, description: "When the profile supports dark mode, was it audited?" }
+
+  findings:
+    type: array
+    description: One entry per issue found.
+    items:
+      type: object
+      required: [id, severity, pillar, location, issue, fix]
+      properties:
+        id:
+          type: string
+          pattern: "^F-[0-9]+$"
+        severity:
+          type: string
+          enum: [critical, major, minor, note]
+        pillar:
+          type: string
+          enum: [visual-consistency, token-compliance, accessibility, interaction-readiness]
+        location:
+          type: string
+          description: File + line (or component name) where the issue lives.
+        issue:
+          type: string
+          description: Concrete description of the problem.
+        fix:
+          type: string
+          description: Specific fix — an action, not a direction.
+        mode:
+          type: string
+          enum: [light, dark, both]
+          description: Which mode the finding appears in (for dark-mode-supporting profiles).
+
+  fixes_applied:
+    type: array
+    description: Subset of findings the user chose to fix in this session.
+    items:
+      type: object
+      properties:
+        finding_id:   { type: string }
+        files_changed: { type: array, items: { type: string } }
+
+  recommendations:
+    type: array
+    description: Top 3 highest-impact fixes.
+    maxItems: 3
+    items:
+      type: object
+      properties:
+        action:   { type: string }
+        impact:   { type: string }

@@ -1,0 +1,116 @@
+# Schema for the ux-readiness artifact produced by prd-gap-analyzer.
+#
+# The readiness report answers one question: is this PRD ready for design work
+# to proceed? It's the narrowed "ready for DESIGN" lens, complementary to
+# John's `bmad-validate-prd` (which validates PRD completeness in general).
+#
+# Output paths (per profile):
+#   BMAD:    _bmad-output/planning-artifacts/ux/ux-readiness-{feature}.md
+#   Vanilla: docs/design/readiness-{feature}.md
+
+$schema: https://json-schema.org/draft-07/schema#
+$id: contracts/ux-readiness.schema.yaml
+title: UX Readiness Check
+description: >
+  Design-readiness verdict on a PRD. Produced by prd-gap-analyzer. Tells the
+  designer whether to proceed with design work, what's missing, and what
+  assumptions to carry forward if they proceed with caveats.
+
+type: object
+
+required: [front_matter, verdict, checks]
+
+properties:
+
+  front_matter:
+    type: object
+    required: [inputDocuments, producedBy, skill]
+    properties:
+      inputDocuments: { type: array, items: { type: string }, description: "Paths to source PRD (and Sally's UX spec if consumed)." }
+      producedBy:     { type: string, const: "sprout-design-agent" }
+      skill:          { type: string, const: "prd-gap-analyzer" }
+      classification: { type: object, description: "Copied from source PRD when present." }
+      stepsCompleted: { type: array, items: { type: string } }
+      editHistory:    { type: array, items: { type: object } }
+      feature:        { type: string, description: "Kebab-case feature slug." }
+      date:           { type: string, description: "ISO date YYYY-MM-DD." }
+    additionalProperties: true
+
+  verdict:
+    type: string
+    enum: [ready, conditional, blocked]
+    description: >
+      ready = all design-readiness checks pass; proceed to framing/journey/prototype.
+      conditional = proceed with explicit assumptions (listed under `assumptions_to_carry`).
+      blocked = one or more critical checks fail; PM input needed before design proceeds.
+
+  summary:
+    type: string
+    description: One-paragraph human-readable summary of the verdict.
+
+  checks:
+    type: array
+    description: Result of each "ready for DESIGN" check.
+    items:
+      type: object
+      required: [id, name, status]
+      properties:
+        id:
+          type: string
+          pattern: "^CHK-[0-9]+$"
+          examples: [CHK-01, CHK-02]
+        name:
+          type: string
+          description: Short name of the check.
+          examples:
+            - "Concrete user journeys with named personas"
+            - "FR → screen mappability"
+            - "Observable success criteria"
+            - "Specific classification fields"
+        status:
+          type: string
+          enum: [pass, partial, fail]
+        severity:
+          type: string
+          enum: [critical, moderate, low]
+          description: When status is not 'pass', how blocking this is for design work.
+        finding:
+          type: string
+          description: Concrete description of what's missing or partial.
+        fix:
+          type: string
+          description: What PM should do to resolve (for fail/partial checks).
+
+  assumptions_to_carry:
+    type: array
+    description: >
+      When verdict is 'conditional', the explicit assumptions the designer
+      will carry forward. Each has a rationale and a revisit trigger.
+    items:
+      type: object
+      required: [assumption, rationale]
+      properties:
+        assumption:       { type: string }
+        rationale:        { type: string }
+        revisit_if:       { type: string, description: "Condition under which this assumption should be re-confirmed with PM." }
+
+  clarifying_questions:
+    type: array
+    description: >
+      When verdict is 'blocked' or 'conditional', specific questions to PM.
+      Designers can route these to John (or whichever PM agent) instead of
+      guessing.
+    items:
+      type: object
+      required: [severity, question]
+      properties:
+        severity:    { type: string, enum: [critical, moderate, low] }
+        question:    { type: string }
+        affects:     { type: array, items: { type: string }, description: "Which future artifacts depend on this answer." }
+
+  next_recommended:
+    type: array
+    description: Skills the designer can reasonably run next given this verdict.
+    items:
+      type: string
+      examples: [prd-ux-validator, user-journey, prototype]

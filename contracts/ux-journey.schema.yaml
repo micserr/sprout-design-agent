@@ -1,0 +1,89 @@
+# Schema for the ux-journey artifact produced by user-journey skill.
+
+$schema: https://json-schema.org/draft-07/schema#
+$id: contracts/ux-journey.schema.yaml
+title: User Journey
+description: >
+  End-to-end user journey for the primary use case. Produced by the
+  user-journey skill. Consumed by prototype, design-audit.
+
+type: object
+
+required: [front_matter, journey_map, user_flow, top_pain_points]
+
+properties:
+
+  front_matter:
+    type: object
+    required: [inputDocuments, producedBy, skill]
+    properties:
+      inputDocuments: { type: array, items: { type: string } }
+      producedBy:     { type: string, const: "sprout-design-agent" }
+      skill:          { type: string, const: "user-journey" }
+      classification: { type: object }
+      feature:        { type: string }
+      date:           { type: string }
+    additionalProperties: true
+
+  persona:
+    type: object
+    description: Primary persona the journey is mapped for.
+    properties:
+      name:         { type: string }
+      role:         { type: string }
+      context:      { type: string }
+
+  journey_map:
+    type: array
+    description: Stage-by-stage journey. Columns are Stage | Actions | Thoughts | Emotions | Pain Points | Opportunities.
+    items:
+      type: object
+      required: [stage]
+      properties:
+        stage:          { type: string }
+        actions:        { type: string }
+        thoughts:       { type: string }
+        emotions:       { type: string }
+        pain_points:    { type: array, items: { type: string }, description: "Anchored on FP-n from the brief." }
+        opportunities:  { type: array, items: { type: string } }
+
+  user_flow:
+    type: object
+    description: Mermaid flowchart TD describing the critical path (8-12 nodes).
+    properties:
+      mermaid_source:  { type: string, description: "Raw mermaid diagram source." }
+      nodes_count:     { type: integer, minimum: 3 }
+      entry_point:     { type: string, description: "Label of the entry node (from decision_trigger)." }
+      drop_off_nodes:  { type: array, items: { type: string }, description: "Terminal nodes for abandonment paths." }
+
+  touchpoints:
+    type: array
+    description: Channels + interaction types at each stage.
+    items:
+      type: object
+      properties:
+        stage:       { type: string }
+        channels:    { type: array, items: { type: string } }
+        interactions: { type: array, items: { type: string } }
+
+  top_pain_points:
+    type: array
+    description: Top 3 pain points by frequency × impact. Each maps to an HMW.
+    maxItems: 3
+    items:
+      type: object
+      required: [rank, pain_point, impact, hmw_reference]
+      properties:
+        rank:           { type: integer, minimum: 1, maximum: 3 }
+        pain_point:     { type: string }
+        impact:         { type: string }
+        hmw_reference:  { type: string, description: "Which HMW from Phase 1 this maps to." }
+
+  screens_planned:
+    type: array
+    description: Screens the designer plans to build based on this journey.
+    items:
+      type: object
+      properties:
+        screen_name:     { type: string }
+        addresses_pain:  { type: array, items: { type: string } }

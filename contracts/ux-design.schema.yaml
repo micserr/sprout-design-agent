@@ -1,0 +1,63 @@
+# Schema for the UX Design Specification produced by Sally (bmad-create-ux-design).
+#
+# This is a BMAD-profile-specific input — vanilla-profile teams rarely have one.
+# Sprout skills declare it as an optional preferred input: when present, it's
+# the source of truth for design decisions; when absent, skills fall back to
+# the PRD.
+#
+# Written by Sally's 14-step workflow. Output path:
+#   _bmad-output/planning-artifacts/ux/ux-design-{feature}.md
+#
+# Reference: the real ux-design-policy-prep-tool.md in
+# Sprout-Solutions-Ph/implem-aidlc is the canonical example.
+
+$schema: https://json-schema.org/draft-07/schema#
+$id: contracts/ux-design.schema.yaml
+title: UX Design Specification
+description: >
+  Sally's curated UX design decisions for a feature. Consumed by Sprout skills
+  that prefer design-first intent over PRD requirements (user-journey,
+  prototype, design-qa, handoff).
+
+type: object
+
+properties:
+
+  front_matter:
+    type: object
+    properties:
+      stepsCompleted:
+        type: array
+        items: { type: integer }
+        description: Sally's workflow steps completed (e.g., [1, 2, 3, 4, 6, 7, 10, 11, 12, 13, 14]).
+      inputDocuments:
+        type: array
+        items: { type: string }
+        description: Paths to PRDs, prototype source files, and other context Sally consulted.
+    additionalProperties: true
+
+  sections:
+    type: object
+    description: Sections of the UX design spec (step-by-step output from Sally's workflow).
+    properties:
+
+      executive_summary:
+        type: object
+        properties:
+          project_vision:           { type: string }
+          target_users:             { type: array, items: { type: object } }
+          key_design_challenges:    { type: array, items: { type: string } }
+          design_opportunities:     { type: array, items: { type: string } }
+          considered_and_deferred:  { type: array, items: { type: object } }
+
+      discovery:                    { type: object, description: "Step 2 — discovery questions/answers." }
+      core_experience:              { type: object, description: "Step 3 — core experience." }
+      emotional_response:           { type: object, description: "Step 4 — emotional response targets." }
+      design_system:                { type: object, description: "Step 6 — design system decisions." }
+      defining_experience:          { type: object, description: "Step 7 — defining the experience." }
+      user_journeys:                { type: array,  items: { type: object }, description: "Step 10 — journeys (may overlap with PRD journeys)." }
+      component_strategy:           { type: object, description: "Step 11 — component strategy." }
+      ux_patterns:                  { type: object, description: "Step 12 — UX patterns." }
+      responsive_accessibility:     { type: object, description: "Step 13 — responsive + a11y." }
+
+additionalProperties: true

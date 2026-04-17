@@ -1,0 +1,85 @@
+# Schema for the ux-handoff artifact produced by the handoff skill.
+
+$schema: https://json-schema.org/draft-07/schema#
+$id: contracts/ux-handoff.schema.yaml
+title: UX Handoff Manifest
+description: >
+  Dev-ready manifest signaling that design work is complete and the
+  prototype is structured for a frontend developer to build from.
+  Produced by the handoff skill. Consumed by downstream agents (architect,
+  scrum master, developer) to know whether design is ready.
+
+type: object
+
+required: [front_matter, status, code_location]
+
+properties:
+
+  front_matter:
+    type: object
+    required: [inputDocuments, producedBy, skill]
+    properties:
+      inputDocuments: { type: array, items: { type: string } }
+      producedBy:     { type: string, const: "sprout-design-agent" }
+      skill:          { type: string, const: "handoff" }
+      feature:        { type: string }
+      date:           { type: string }
+    additionalProperties: true
+
+  status:
+    type: string
+    enum: [ready, ready-with-caveats, not-ready]
+    description: >
+      ready = no blockers; dev can build.
+      ready-with-caveats = minor items remain; listed in `caveats`.
+      not-ready = Critical QA issues or design gaps; dev should not start.
+
+  code_location:
+    type: string
+    description: Where prototype code lives (from profile's prototype.code_target).
+
+  artifacts_referenced:
+    type: array
+    description: Paths to every Sprout artifact that contributed to the design.
+    items: { type: string }
+
+  refactor_actions_taken:
+    type: array
+    description: What handoff pass did to prepare the code.
+    items:
+      type: string
+      examples:
+        - "Split UploadView.vue into UploadForm.vue + UploadPreview.vue"
+        - "Extracted mock data into composables/useMockExtraction.ts"
+        - "Typed defineProps/defineEmits on 12 components"
+        - "Removed 7 console.log statements and 3 TODO comments"
+
+  file_structure:
+    type: object
+    description: Summary of directory structure + conventions.
+    properties:
+      thin_app_entry:     { type: boolean, description: "App.vue (or equivalent) contains only layout + router." }
+      named_routes:       { type: boolean, description: "Routes use named imports/exports." }
+      composables_split:  { type: boolean, description: "Data/state logic lives in composables." }
+
+  caveats:
+    type: array
+    description: Items listed as ready-with-caveats. Dev should note but not block on these.
+    items:
+      type: object
+      properties:
+        note:       { type: string }
+        owner:      { type: string, description: "Who should resolve (designer, PM, etc.)." }
+        blocking:   { type: boolean, default: false }
+
+  design_issues_flagged:
+    type: array
+    description: >
+      Issues the handoff pass surfaced that belong back to the designer
+      (not to the developer). E.g., ambiguous interaction, missing state,
+      inconsistent spacing the QA didn't catch.
+    items:
+      type: object
+      properties:
+        issue:       { type: string }
+        recommendation: { type: string }

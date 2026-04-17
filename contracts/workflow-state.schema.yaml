@@ -1,0 +1,112 @@
+# Schema for the workflow-state ledger.
+#
+# The ledger is optional — it lives at the path the active profile declares in
+# `artifact_locations.workflow_state`. When the profile sets that to null
+# (e.g., vanilla profile), no ledger is maintained.
+#
+# When enabled, every Sprout skill invokes the workflow-state helper skill to
+# update the ledger after writing its output. The ledger is the authoritative
+# "what has this feature done so far" index.
+
+$schema: https://json-schema.org/draft-07/schema#
+$id: contracts/workflow-state.schema.yaml
+title: Workflow State Ledger
+description: >
+  Feature-scoped ledger tracking which Sprout artifacts exist, when they were
+  produced, what their source hashes were, and what should run next. Enables
+  drift detection and "what next" recommendations for the human orchestrator.
+
+type: object
+
+required: [feature, artifacts, schema_version]
+
+properties:
+
+  schema_version:
+    type: string
+    const: "1"
+    description: Ledger format version. Bumped only if the schema changes incompatibly.
+
+  feature:
+    type: string
+    description: Kebab-case feature slug this ledger tracks.
+    examples: [policy-prep-tool, checkout-flow]
+
+  bolt:
+    type: [integer, "null"]
+    description: Bolt number (BMAD profile). Null when profile doesn't use Bolt scoping.
+    examples: [1, 2, null]
+
+  source_prd:
+    type: [string, "null"]
+    description: Path to the PRD consumed (if any).
+
+  source_prd_hash:
+    type: [string, "null"]
+    description: SHA-256 hex of the PRD file at last read. Compared later to detect PM-side edits.
+
+  source_ux_design:
+    type: [string, "null"]
+    description: Path to Sally's UX spec consumed (BMAD profile only).
+
+  source_ux_design_hash:
+    type: [string, "null"]
+
+  artifacts:
+    type: array
+    description: Every Sprout artifact produced for this feature.
+    items:
+      type: object
+      required: [kind, skill, path, produced, agent]
+      properties:
+        kind:
+          type: string
+          examples: [ux-readiness, ux-brief, ux-journey, prototype-manifest, ux-qa, ux-animations, ux-feedback, ux-handoff, ux-audit]
+        skill:
+          type: string
+          description: Slug of the skill that produced this artifact.
+        path:
+          type: string
+          description: Where the artifact lives (resolved from profile at write time).
+        produced:
+          type: string
+          description: ISO date YYYY-MM-DD.
+        agent:
+          type: string
+          description: Agent identifier that produced it — for multi-agent setups.
+          default: sprout-design-agent
+        verdict:
+          type: [string, "null"]
+          description: Summary status the artifact reports (ready/conditional/blocked, ready/conditionally-ready/not-ready, coherent/drift/broken, etc.).
+        source_hashes:
+          type: object
+          description: Hashes of source artifacts at time of production. Used for drift detection.
+          additionalProperties:
+            type: string
+            description: SHA-256 hex keyed by source artifact kind or path.
+
+  next_recommended:
+    type: array
+    description: Skills the ledger suggests running next, given current state.
+    items: { type: string }
+
+  blocked:
+    type: array
+    description: Skills that can't run until preconditions are met.
+    items:
+      type: object
+      properties:
+        skill:    { type: string }
+        reason:   { type: string }
+
+  drift:
+    type: array
+    description: When an upstream artifact (PRD, ux-design, etc.) changed after a downstream artifact was produced, drift is recorded here.
+    items:
+      type: object
+      properties:
+        upstream_kind:       { type: string }
+        upstream_path:       { type: string }
+        affected_artifacts:  { type: array, items: { type: string } }
+        detected_at:         { type: string }
+        recommended_action:  { type: string, examples: ["Re-run prd-gap-analyzer", "Re-verify user-journey"] }

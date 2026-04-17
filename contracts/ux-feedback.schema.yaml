@@ -1,0 +1,73 @@
+# Schema for the ux-feedback artifact produced by the design-feedback skill.
+
+$schema: https://json-schema.org/draft-07/schema#
+$id: contracts/ux-feedback.schema.yaml
+title: UX Feedback Changelog
+description: >
+  Record of a feedback-ingestion pass — what feedback was parsed, how each
+  item was triaged, what was applied vs. deferred. Produced by design-feedback.
+  Consumed by design-audit for drift detection.
+
+type: object
+
+required: [front_matter, source_feedback, items]
+
+properties:
+
+  front_matter:
+    type: object
+    required: [inputDocuments, producedBy, skill]
+    properties:
+      inputDocuments: { type: array, items: { type: string }, description: "Feedback .md + prototype files touched." }
+      producedBy:     { type: string, const: "sprout-design-agent" }
+      skill:          { type: string, const: "design-feedback" }
+      feature:        { type: string }
+      date:           { type: string }
+    additionalProperties: true
+
+  source_feedback:
+    type: object
+    required: [path, shape]
+    properties:
+      path:   { type: string, description: "Path to the feedback .md that was ingested." }
+      shape:  { type: string, enum: [loose, schema, mixed] }
+      mode:   { type: string, enum: [apply, export], description: "Whether edits were applied or prompt-exported." }
+
+  items:
+    type: array
+    items:
+      type: object
+      required: [id, title, bucket]
+      properties:
+        id:        { type: integer }
+        title:     { type: string }
+        bucket:
+          type: string
+          enum: [auto-apply, clarify, direction-needed]
+        change_type:
+          type: string
+          enum: [remove, replace, add, reposition, restyle, revamp, unknown]
+        target_screen: { type: [string, "null"] }
+        resolution:
+          type: string
+          enum: [applied, deferred, clarified-then-applied]
+        files_changed: { type: array, items: { type: string } }
+        notes:         { type: string }
+
+  counts:
+    type: object
+    properties:
+      total:                 { type: integer }
+      applied:               { type: integer }
+      deferred:              { type: integer }
+      clarified_then_applied: { type: integer }
+
+  deferred_reasons:
+    type: array
+    description: For each deferred item, why it wasn't applied.
+    items:
+      type: object
+      properties:
+        id:         { type: integer }
+        reason:     { type: string }
+        blocking:   { type: boolean }
