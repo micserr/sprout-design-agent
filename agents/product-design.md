@@ -70,21 +70,51 @@ Use this mode when the user provides a PRD, Intent document, or product brief an
 
 ---
 
+## Mode 3: Mesh (skills as first-class callables)
+
+Use this mode when the user invokes a specific Sprout skill directly rather than the full workflow — e.g., "run prd-gap-analyzer on this PRD", "run design-feedback against this prototype", "just do design-qa". The user is operating as the orchestrator, dispatching individual skills as needed.
+
+**At session start (any mode):**
+
+1. **Resolve the active profile.** Check in order: `$REPO/.sprout/profile.yaml`, `$REPO/sprout-profile.yaml`, `~/.claude/sprout-profile.yaml`, then fall back to `profiles/vanilla.yaml`. State which profile is active in your first response if the user asks about workflow or invokes any skill.
+
+2. **Check the workflow-state ledger** for the current feature if one exists and the profile enables the ledger. Summarize what's been produced and what's next-recommended. Offer to run the next-recommended skill.
+
+**When the user invokes a single skill:**
+
+- Each Sprout skill has a `Contract:` block declaring its `reads`, `writes`, `preconditions`, and `postconditions`. Respect these — do NOT skip preconditions because the user seems to want speed.
+- If a precondition fails, stop and name the precondition that failed. Don't proceed with incomplete inputs.
+- If the skill writes to an artifact kind, resolve the path from the active profile's `artifact_locations` — never hardcode paths.
+- Call the `workflow-state` helper skill at the end of any skill that produces an artifact, so the ledger stays current. (No-op on profiles without a ledger.)
+
+**Mesh Mode coexists with Mode 2.** The linear Phase 0–6 workflow still works; Mesh Mode just exposes each phase's skill as independently invocable. Users can mix: run the full workflow for the first feature, then use Mesh Mode to iterate on individual skills as feedback lands.
+
+**Profile-specific coexistence:**
+- Under the BMAD profile, Sally (`bmad-create-ux-design`) produces `ux-design-{feature}.md`. Sprout skills prefer Sally's spec when it exists and fall back to the PRD when it doesn't. Don't duplicate Sally's work.
+- Under vanilla or other profiles with no coexistence agents, Sprout skills read the PRD directly.
+
+---
+
 ### Phase 0: Validate + Enrich
 
 Before any design work begins, validate the PRD and enrich it with secondary research.
 
-**Step 0.1 — Gap Analysis**
+**Step 0.1 — Design-Readiness Check**
 
-Read `skills/prd-gap-analyzer/SKILL.md` and run it against the provided PRD. Save the gap report.
+Read `skills/prd-gap-analyzer/SKILL.md` and run it against the provided PRD. The skill writes an output conforming to `contracts/ux-readiness.schema.yaml` at the path declared by the active profile (BMAD: `_bmad-output/planning-artifacts/ux/ux-readiness-{feature}.md`; vanilla: `docs/design/readiness-{feature}.md`).
 
-Read the DESIGN CONTEXT BRIEF from the output.
+Read the `verdict` field from the output.
 
-If `Handoff recommendation: needs-PM-input`:
-- Use `AskUserQuestion`: "The PRD is missing [Critical gap]. Secondary research can't fill this — it requires a product decision. Can you provide [specific answer needed]? Or should I proceed with this flagged as an explicit assumption?"
+If `verdict: blocked`:
+- Use `AskUserQuestion`: "The PRD has a critical design-readiness gap — [the critical check that failed]. Secondary research can't fill this; it requires a product decision. Can you provide [specific clarifying question from the output]? Or should I proceed with this flagged as an explicit assumption?"
 - Wait for response before continuing.
 
-If `Handoff recommendation: proceed-to-enrichment` or `proceed-directly`:
+If `verdict: conditional`:
+- Review the `assumptions_to_carry` list from the output.
+- Flag the highest-severity assumptions at the Phase 1 check-in so the designer can confirm/correct them before committing.
+- Continue to Step 0.2.
+
+If `verdict: ready`:
 - Continue to Step 0.2.
 
 **Step 0.2 — Context Enrichment**

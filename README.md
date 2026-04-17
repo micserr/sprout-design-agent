@@ -27,6 +27,24 @@ See [`PROMPTS.md`](PROMPTS.md) for ready-to-use prompts for every skill and work
 | `animations` | Micro-interactions, hover states, enter/exit transitions, easing, and icon state changes (optional phase — designer decides) | "add animations", "make it feel better", "feels off", "hover state", "transition", "easing", "scale on press" |
 | `handoff` | Developer handoff pass — splits oversized components, extracts composables, types props/emits, removes prototype artifacts, verifies file structure | "ready for handoff", "clean up the code", "handoff pass", "production ready", "prepare for dev" |
 
+### Internal helpers
+
+| Skill | What it does |
+|---|---|
+| `workflow-state` | Reads/writes the feature-scoped workflow ledger. Invoked by other skills; not called by humans directly. No-op on profiles without a ledger. |
+
+---
+
+## Profiles
+
+Sprout skills are SDLC-neutral — they read the **active profile** to know where to write, what front-matter shape to use, which other agents to coexist with, and where prototype code lives.
+
+Two profiles ship:
+
+- **`bmad`** — full BMAD mesh (implem-aidlc style). Outputs land in `_bmad-output/planning-artifacts/ux/`, Sally's UX spec is preferred input when present, feature-scoped ledger at `_bmad-output/state/`, prototype code goes to sibling `implem-prototype/` repo.
+- **`vanilla`** — no framework. Outputs land in `docs/design/`, no coexistence agents, no ledger, prototype code in-repo under `prototype/`.
+
+At install, pick your profile (`adapters/claude.sh` asks; `adapters/bmad.sh` auto-selects `bmad`). Override per-repo with `$REPO/.sprout/profile.yaml`. Teams on other SDLCs (Linear, Notion, Shape Up, custom) can author their own profile — see [`profiles/README.md`](profiles/README.md) or [`docs/profiles-guide.md`](docs/profiles-guide.md).
 
 ---
 
@@ -52,6 +70,8 @@ PM Agent Intent / PRD
 ```
 
 The agent checks in between every phase. It never auto-advances.
+
+**Mesh Mode:** each skill above is also independently callable — run just `prd-gap-analyzer` on a PRD, just `design-feedback` on a feedback doc, etc. Skills resolve paths from the active profile, so the same command produces BMAD-shaped artifacts in a BMAD repo and plain `docs/design/` markdown in a vanilla one. See the Mesh Mode section in `agents/product-design.md`.
 
 ### Design System Support
 

@@ -5,6 +5,23 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [Unreleased]
+
+### Added
+- **Profiles layer** — Sprout skills are now SDLC-neutral. Each team installs with a profile that declares artifact paths, front-matter shape, coexistence agents, prototype target, and naming conventions. Skills reference kinds (e.g., `ux-readiness`); profiles resolve kinds to paths.
+- `profiles/bmad.yaml` — full BMAD mesh (implem-aidlc style) with Sally + John coexistence, `_bmad-output/planning-artifacts/ux/` paths, BMAD front-matter, sibling-repo prototype, feature-scoped ledger.
+- `profiles/vanilla.yaml` — minimal `docs/design/` defaults, no coexistence, no ledger, in-repo prototype.
+- `profiles/README.md` — resolution order, extending profiles, when to author a custom one.
+- `contracts/` — 13 YAML schemas for profile + all artifact kinds (PRD, ux-design, ux-readiness, ux-brief, ux-journey, prototype-manifest, ux-qa, ux-animations, ux-feedback, ux-handoff, ux-audit, workflow-state). Schemas describe shape; paths come from profiles.
+- `skills/workflow-state/` — internal helper invoked by other skills to maintain the feature-scoped ledger with source-hash drift detection.
+- `docs/profiles-guide.md` — authoring custom profiles.
+- `docs/specs/2026-04-17-skill-native-mesh-design.md` — architecture spec.
+
+### Changed
+- `skills/prd-gap-analyzer` retrofitted with profile-aware Contract block. Lens narrowed from general PRD completeness to "ready for DESIGN" (5 specific checks). Output conforms to `contracts/ux-readiness.schema.yaml`. Calls workflow-state helper post-production. Complementary to BMAD's `bmad-validate-prd` rather than duplicative.
+- `agents/product-design.md` — new Mode 3 (Mesh) documenting skill-native invocation, profile resolution at session start, ledger-aware next-step recommendations. Step 0.1 updated to use new verdict values (ready/conditional/blocked).
+- Install adapters updated: `claude.sh` asks for profile at install; `bmad.sh` auto-selects `bmad`; `codex.sh` and `cursor.sh` register `workflow-state` skill.
+
 ## [1.3.0](https://github.com/micserr/sprout-design-agent/compare/v1.2.0...v1.3.0) (2026-03-31)
 
 

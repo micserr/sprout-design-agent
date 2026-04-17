@@ -11,6 +11,16 @@ BMAD_DIR="$TARGET_DIR/_bmad/product-design"
 
 mkdir -p "$BMAD_DIR/agents"
 
+# --- Profile selection ---
+# BMAD adapter auto-selects the bmad profile. Writes a sprout-profile.yaml
+# alongside the module so Sprout skills resolve the right paths.
+cat > "$BMAD_DIR/sprout-profile.yaml" <<'EOF'
+# Active Sprout profile for this BMAD module.
+# Override at $REPO/.sprout/profile.yaml if needed.
+extends: bmad
+EOF
+echo "  ✓ sprout-profile.yaml (extends: bmad)"
+
 # Strip YAML frontmatter from a markdown file
 strip_frontmatter() {
   local file="$1"
@@ -49,6 +59,7 @@ skills:
   - design-qa
   - animations
   - handoff
+  - workflow-state
 YAML
 echo "  ✓ module.yaml"
 
@@ -92,6 +103,7 @@ SKILLS=(
   "design-qa:Design QA"
   "animations:Animations"
   "handoff:Developer Handoff"
+  "workflow-state:Workflow State (helper)"
 )
 
 for entry in "${SKILLS[@]}"; do
