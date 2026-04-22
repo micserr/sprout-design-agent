@@ -51,6 +51,7 @@ create_symlink "$SCRIPT_DIR/skills/design-qa"          "$HOME/.claude/skills/des
 create_symlink "$SCRIPT_DIR/skills/animations"         "$HOME/.claude/skills/animations"
 create_symlink "$SCRIPT_DIR/skills/handoff"            "$HOME/.claude/skills/handoff"
 create_symlink "$SCRIPT_DIR/skills/workflow-state"     "$HOME/.claude/skills/workflow-state"
+create_symlink "$SCRIPT_DIR/skills/learnings"          "$HOME/.claude/skills/learnings"
 
 echo "Installing agent..."
 create_symlink "$SCRIPT_DIR/agents/product-design.md"  "$HOME/.claude/agents/product-design.md"

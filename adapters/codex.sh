@@ -66,6 +66,7 @@ SKILLS=(
   "animations:Animations"
   "handoff:Developer Handoff"
   "workflow-state:Workflow State (helper)"
+  "learnings:UX Learnings (helper)"
 )
 
 for entry in "${SKILLS[@]}"; do

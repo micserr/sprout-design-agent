@@ -52,21 +52,22 @@ echo "  ✓ product-design-agent.mdc"
 # --- Skill rules ---
 skill_desc() {
   case "$1" in
-    prd-gap-analyzer)   echo "Validates a PRD before design begins — scans for missing sections and produces a handoff brief." ;;
-    prd-ux-validator)   echo "Enriches a PRD with secondary research, fills gaps, and produces a prototype-ready design brief." ;;
+    prd-gap-analyzer)   echo "Mesh Mode screen spec generator — reads a product outcome and product unit, produces a ux-screen-spec (actors, screens, states, flow, open design decisions)." ;;
+    prd-ux-validator)   echo "Optional research enrichment — validates a PRD against secondary research. Not required in the core workflow." ;;
     secondary-research) echo "Free-form competitive and market research producing an 18-section design brief." ;;
     user-journey)       echo "Journey maps, user flow diagrams, pain points, and touchpoint summaries." ;;
-    prototype)          echo "Turns user flow and layout reference into runnable Vue 3 prototypes with real navigation and interactions." ;;
+    prototype)          echo "Turns a screen spec into a runnable Vue 3 prototype with real navigation, live state, and design system components." ;;
     design-tokens)      echo "Token architecture, semantic color families, typography, and dark mode guidance." ;;
-    design-qa)          echo "Design quality assurance against token, layout, and accessibility standards." ;;
+    design-qa)          echo "Pre-handoff QA across 4 pillars: visual consistency, token compliance, accessibility, interaction readiness." ;;
     animations)         echo "Animation and micro-interaction principles — hover states, transitions, easing, and motion details." ;;
-    handoff)            echo "Developer handoff pass — splits components, extracts composables, types props/emits, removes prototype artifacts." ;;
+    handoff)            echo "Developer handoff pass — product unit coverage check, component splits, composable extraction, props/emits typing, prototype artifact removal." ;;
     workflow-state)     echo "Internal helper — reads/writes the feature-scoped workflow ledger. Invoked by other skills, not by humans." ;;
+    learnings)          echo "Internal helper — reads/writes the team-wide UX Learnings file. Accumulates patterns, anti-patterns, and recurring QA findings across features." ;;
     *)                  echo "Product design skill." ;;
   esac
 }
 
-SKILLS=(prd-gap-analyzer prd-ux-validator secondary-research user-journey prototype design-tokens design-qa animations handoff workflow-state)
+SKILLS=(prd-gap-analyzer prd-ux-validator secondary-research user-journey prototype design-tokens design-qa animations handoff workflow-state learnings)
 
 for slug in "${SKILLS[@]}"; do
   skill_file="$SCRIPT_DIR/skills/$slug/SKILL.md"
