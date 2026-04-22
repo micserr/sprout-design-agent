@@ -5,6 +5,18 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.4.0](https://github.com/micserr/sprout-design-agent/compare/v1.3.0...v1.4.0) (2026-04-22)
+
+
+### Features
+
+* add artifact and workflow-state schemas ([a1f1c79](https://github.com/micserr/sprout-design-agent/commit/a1f1c799b86082cfe622b9abbaca7df1bdee066b))
+* add learnings system, simplify workflow to spec→prototype→QA→handoff, add handoff coverage check ([39c6e3a](https://github.com/micserr/sprout-design-agent/commit/39c6e3aa17e9d9b8924e94113768fc525ad29046))
+* add profile system foundation (contracts + BMAD + vanilla) ([c229f2d](https://github.com/micserr/sprout-design-agent/commit/c229f2deebc42ce4560674f9a3dcfb73f37e9d02))
+* add profiles layer, contracts, and Mesh Mode ([b5f9648](https://github.com/micserr/sprout-design-agent/commit/b5f9648ca3fd21848fc94d3be442daf2e152356c))
+* add workflow-state helper skill ([c09f362](https://github.com/micserr/sprout-design-agent/commit/c09f3628c56ac1a04f59fb27adbdb00cfe8d6c1f))
+* wire up Mesh Mode (agent + adapters + docs) ([145869d](https://github.com/micserr/sprout-design-agent/commit/145869d625c1148b37e4d8f4272be4945dc87a9e))
+
 ## [Unreleased]
 
 ### Added
