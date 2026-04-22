@@ -5,6 +5,15 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.4.1](https://github.com/micserr/sprout-design-agent/compare/v1.4.0...v1.4.1) (2026-04-22)
+
+
+### Bug Fixes
+
+* **adapters:** add learnings skill to all adapters, fix stale descriptions ([9cf8375](https://github.com/micserr/sprout-design-agent/commit/9cf8375c1ce9238878e5dac511a03edfcba25816))
+* **adapters:** add learnings skill to all adapters, update stale descriptions ([d066b8f](https://github.com/micserr/sprout-design-agent/commit/d066b8f08d7b93014260c2ec60c72db69d34496c))
+* **adapters:** add learnings skill to claude.sh install ([755dd85](https://github.com/micserr/sprout-design-agent/commit/755dd8540abc4f1277a4c8222488552d5d449d43))
+
 ## [1.4.0](https://github.com/micserr/sprout-design-agent/compare/v1.3.0...v1.4.0) (2026-04-22)
 
 
