@@ -1,0 +1,110 @@
+# Schema for the prototype-manifest artifact produced by the prototype skill.
+#
+# The manifest describes what was built. The actual prototype code lives
+# separately (sibling repo in BMAD profile, in-repo under prototype/ in vanilla).
+# The manifest is the machine-readable summary downstream skills consume.
+
+$schema: https://json-schema.org/draft-07/schema#
+$id: contracts/prototype-manifest.schema.yaml
+title: Prototype Manifest
+description: >
+  Summary of the interactive prototype: screens, routes, components, stack,
+  entry points, and edge-case coverage. Produced by the prototype skill.
+  Consumed by design-qa, design-audit, handoff, design-feedback.
+
+type: object
+
+required: [front_matter, stack, screens, routes]
+
+properties:
+
+  front_matter:
+    type: object
+    required: [inputDocuments, producedBy, skill]
+    properties:
+      inputDocuments: { type: array, items: { type: string } }
+      producedBy:     { type: string, const: "sprout-design-agent" }
+      skill:          { type: string, const: "prototype" }
+      classification: { type: object }
+      feature:        { type: string }
+      date:           { type: string }
+    additionalProperties: true
+
+  code_location:
+    type: string
+    description: >
+      Path to the directory where prototype code lives. Resolved from the
+      active profile's `prototype.code_target`. Example values:
+      `../implem-prototype/` (BMAD) or `prototype/` (vanilla).
+
+  stack:
+    type: object
+    required: [framework]
+    description: "Same values that go into the `// Stack: ...` header at the top of each file."
+    properties:
+      framework:        { type: string, examples: [Vue 3, React 19] }
+      tailwind_version: { type: string, examples: [v3, v4] }
+      design_system:    { type: string, examples: [Toge, shadcn, custom] }
+      dark_mode:        { type: boolean }
+      entry_point:      { type: string, description: "Main file path relative to code_location." }
+
+  screens:
+    type: array
+    description: Every screen in the prototype.
+    items:
+      type: object
+      required: [name, file]
+      properties:
+        name:           { type: string, description: "Human-readable name, e.g., 'AI Extraction Screen'." }
+        file:           { type: string, description: "Path relative to code_location." }
+        route:          { type: string, description: "Route path, e.g., '/upload'." }
+        journey_stage:  { type: string, description: "Which journey stage this screen serves." }
+        implements_fr:  { type: array, items: { type: string }, description: "FR ids from the PRD this screen implements." }
+        states_covered:
+          type: array
+          items: { type: string }
+          description: "Default, hover, loading, empty, error, etc."
+
+  routes:
+    type: array
+    description: Router config summary.
+    items:
+      type: object
+      properties:
+        path:       { type: string }
+        screen:     { type: string }
+        guards:     { type: array, items: { type: string } }
+
+  components:
+    type: array
+    description: Reusable components used in the prototype.
+    items:
+      type: object
+      properties:
+        name:       { type: string }
+        file:       { type: string }
+        source:     { type: string, enum: [design-system, custom, derived], description: "Where the component came from." }
+
+  coverage:
+    type: object
+    description: Coverage summary that `design-audit` can cross-check.
+    properties:
+      functional_requirements:
+        type: object
+        properties:
+          total_in_scope:   { type: integer, description: "FRs from the current Bolt." }
+          implemented:      { type: integer }
+          missing:          { type: array, items: { type: string }, description: "FR ids not implemented." }
+      journey_stages:
+        type: object
+        properties:
+          total:            { type: integer }
+          covered:          { type: integer }
+          missing:          { type: array, items: { type: string } }
+
+  bolt_scope:
+    type: object
+    description: When PRD uses Bolt scoping, assert the prototype respects the current-Bolt boundary.
+    properties:
+      current_bolt:         { type: string, examples: ["Bolt 1"] }
+      deferred_bolt_leaks:  { type: array, items: { type: string }, description: "Screens/components that shouldn't be here per Bolt scope — should be empty." }

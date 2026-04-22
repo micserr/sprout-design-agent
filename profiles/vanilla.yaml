@@ -1,0 +1,62 @@
+# Vanilla Profile
+#
+# For teams not using BMAD or a similar SDLC framework. Sprout runs solo.
+# Artifacts go next to the code under docs/design/. No coexistence agents,
+# no ledger, minimal front-matter. Prototype code lives in-repo under
+# prototype/. This profile is the fallback — if no other profile resolves,
+# Sprout uses this one.
+
+profile: vanilla
+display_name: "Vanilla (no framework)"
+description: >
+  Sprout runs standalone. No partner agents, no ledger, no feature taxonomy
+  enforced. Artifacts land in docs/design/ with minimal front-matter
+  (title, date, inputs). Prototype code lives in prototype/ in-repo.
+  The feature slug defaults to a kebab-case descriptor the user supplies
+  at invocation (or inferred from the source PRD's filename, when one exists).
+
+artifact_locations:
+  ux_screen_spec:      "docs/design/screen-spec-{feature}.md"
+  prototype_manifest:  "prototype/manifest.md"
+  ux_qa:               "docs/design/qa-{feature}-{date}.md"
+  ui_feedback:         "docs/design/ui-feedback-{feature}-{date}.md"
+  ux_handoff:          "docs/design/handoff-{feature}.md"
+  ux_audit:            "docs/design/audit-{feature}-{date}.md"
+  ux_learnings:        "docs/design/ux-learnings.md"           # team-wide; no {feature} — shared across all features
+  workflow_state:      null    # ledger disabled — skills skip ledger maintenance
+
+input_sources:
+  # PRD or equivalent — flexible path, not required, can be passed inline.
+  - kind: prd
+    path_pattern: null                    # no fixed location; user passes a path at invocation
+    schema: contracts/prd.schema.yaml
+    required: false
+    accepts_inline: true                  # user can paste PRD content directly in the conversation
+
+  # UX-design not a standard artifact in vanilla profile. Listed so skills
+  # that declare `reads.kind: ux-design` know it isn't expected here and
+  # fall back cleanly to PRD.
+  - kind: ux-design
+    path_pattern: null
+    schema: contracts/ux-design.schema.yaml
+    required: false
+    preferred_when_present: false
+
+front_matter:
+  required_fields:
+    - title
+    - date
+    - inputs
+  carry_forward_from_prd: []
+  style: minimal
+
+coexistence_agents: []    # no partner agents assumed
+
+prototype:
+  code_target: "prototype/"
+  manifest_in_planning: false    # manifest sits next to the code at prototype/manifest.md
+
+naming:
+  case: kebab-case
+  date_format: "YYYY-MM-DD"
+  feature_source: user-input    # ask the user for the slug, or derive from PRD filename if present

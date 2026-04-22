@@ -61,11 +61,12 @@ skill_desc() {
     design-qa)          echo "Design quality assurance against token, layout, and accessibility standards." ;;
     animations)         echo "Animation and micro-interaction principles — hover states, transitions, easing, and motion details." ;;
     handoff)            echo "Developer handoff pass — splits components, extracts composables, types props/emits, removes prototype artifacts." ;;
+    workflow-state)     echo "Internal helper — reads/writes the feature-scoped workflow ledger. Invoked by other skills, not by humans." ;;
     *)                  echo "Product design skill." ;;
   esac
 }
 
-SKILLS=(prd-gap-analyzer prd-ux-validator secondary-research user-journey prototype design-tokens design-qa animations handoff)
+SKILLS=(prd-gap-analyzer prd-ux-validator secondary-research user-journey prototype design-tokens design-qa animations handoff workflow-state)
 
 for slug in "${SKILLS[@]}"; do
   skill_file="$SCRIPT_DIR/skills/$slug/SKILL.md"

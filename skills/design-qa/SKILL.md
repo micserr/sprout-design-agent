@@ -47,6 +47,7 @@ This skill produces a structured **Design QA report** that evaluates a screen or
    > "Here are the QA findings. Which issues do you want me to fix? (all / just criticals / pick by number)"
    Fix the selected issues in the same session. After fixing, confirm what was changed with a brief list.
    **Critical issues block handoff** — if the user defers a Critical, note it explicitly in the summary.
+6. **Extract learnings.** After fixes are applied, call `skills/learnings/SKILL.md`. Pass the Findings Table. The skill extracts `qa-recurring` and `anti-pattern` entries from Critical and Major findings and appends or reinforces them in the team-wide learnings file. Report what was captured inline — no separate message needed.
 
 ---
 

@@ -180,7 +180,36 @@ prototype/
 
 ---
 
-## Step 8 — Final Checklist
+## Step 8 — Product Unit Coverage Check
+
+Before the code quality checklist, verify that the prototype covers everything the product unit required. This is the "did we build it all" gate.
+
+**Read the source product unit** (UAC, story doc, or feature spec) that was used in Phase 0 to generate the screen spec. Then trace each requirement against the prototype:
+
+| Requirement | Source | Screen / Component | Status |
+|---|---|---|---|
+| Actor: PSI can view payslip summary | UAC §2.1 | `screens/01-payslip-summary.vue` | ✅ implemented |
+| Actor: PSI can flag a discrepancy | UAC §2.3 | `screens/01-payslip-summary.vue` → `FlagDiscrepancyDrawer.vue` | ✅ implemented |
+| State: Empty state when no payslips exist | UAC §2.1 | `components/Payslip/PayslipList.vue` | ⚠️ missing |
+
+**Coverage rules:**
+
+- **Every named actor** in the product unit must have at least one screen in the prototype.
+- **Every functional requirement** scoped to the current Bolt/sprint must have a visible implementation (a screen, component, or state that demonstrates it).
+- **Every state** called out in the product unit (empty, error, loading, success, warning) must be designed and present.
+- **Open design decisions from the ux-screen-spec** that have been resolved must be implemented; those that were deferred must be flagged as `⏸️ deferred`.
+
+**Outcome:**
+
+- If any functional requirement is missing (not deferred): mark as `❌ gap`. Flag it in the check-in as a blocker — the prototype is incomplete and the gap must be resolved before handoff.
+- If any state is missing: mark as `⚠️ missing state`. Flag it as a non-blocking gap — include a recommendation for the developer.
+- If a requirement was intentionally deferred: mark as `⏸️ deferred` and note which sprint/Bolt it belongs to.
+
+Produce the Coverage Table as part of the check-in output.
+
+---
+
+## Step 9 — Code Quality Checklist
 
 Run through this before declaring handoff done:
 
@@ -196,14 +225,24 @@ Run through this before declaring handoff done:
 - [ ] `App.vue` is a thin shell
 - [ ] `router.js` uses named lazy routes
 - [ ] File structure matches the spec above
+- [ ] Product unit coverage check passed (no `❌ gap` items)
 
 ---
 
 ## Check-in
 
-After the pass, list:
-- Files changed and what was done (split / extracted / typed / cleaned)
-- Any design issues found that should go back to the designer before dev picks this up
+After the pass, present in order:
+
+1. **Coverage Table** — product unit requirements vs. prototype (from Step 8). Call out any `❌ gap` items as blockers.
+2. **Refactor summary** — files changed and what was done (split / extracted / typed / cleaned)
+3. **Design issues** — anything that should go back to the designer before dev picks this up
 
 Then use `AskUserQuestion`:
-> "Handoff pass complete. Here's what was refactored: [list]. Any of these changes need a second look before this goes to the dev team?"
+> "Handoff pass complete. [X/Y requirements covered — N gaps flagged / all requirements covered.] Here's what was refactored: [list]. Any of these changes need a second look before this goes to the dev team?"
+
+If there are `❌ gap` items, the question becomes:
+> "Handoff pass found [N] unimplemented requirements from the product unit: [list]. These need to be designed and implemented before this is dev-ready. Want me to address them now?"
+
+## Extract Learnings
+
+After the check-in, call `skills/learnings/SKILL.md` with the handoff output. Pass the list of splits, extractions, and structural decisions. The skill extracts `pattern` and `convention` entries — component boundaries that worked, composable patterns, structural conventions to repeat. Report what was captured inline.

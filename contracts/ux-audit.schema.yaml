@@ -1,0 +1,88 @@
+# Schema for the ux-audit artifact produced by the (future) design-audit skill.
+#
+# design-audit is registered in the first slice but its full behavior lands
+# in a follow-on PR. This schema defines the artifact shape so future builders
+# have a target to implement against.
+
+$schema: https://json-schema.org/draft-07/schema#
+$id: contracts/ux-audit.schema.yaml
+title: UX Coherence Audit
+description: >
+  Cross-artifact coherence report. Checks: FR coverage in prototype,
+  HMW ↔ journey mapping, Bolt scope respected, QA criticals resolved,
+  drift detection, Sally-prototype alignment (when applicable).
+  Produced by design-audit (future skill). Consumed by human review.
+
+type: object
+
+required: [front_matter, coherence_score, checks]
+
+properties:
+
+  front_matter:
+    type: object
+    required: [inputDocuments, producedBy, skill]
+    properties:
+      inputDocuments:
+        type: array
+        items: { type: string }
+        description: All Sprout + BMAD artifacts cross-checked (PRD, ux-design if present, ux-journey, prototype-manifest, ux-qa, ledger, etc.).
+      producedBy:     { type: string, const: "sprout-design-agent" }
+      skill:          { type: string, const: "design-audit" }
+      feature:        { type: string }
+      date:           { type: string }
+    additionalProperties: true
+
+  coherence_score:
+    type: object
+    required: [overall, breakdown]
+    properties:
+      overall:
+        type: string
+        enum: [coherent, drift-detected, broken]
+        description: >
+          coherent = all checks pass; artifacts are consistent.
+          drift-detected = one or more upstream artifacts changed after downstream was produced; re-runs needed.
+          broken = structural issue (missing FRs in prototype, QA criticals unfixed, Bolt scope violated).
+      breakdown:
+        type: object
+        properties:
+          fr_coverage:        { type: string, enum: [pass, partial, fail] }
+          hmw_to_journey:     { type: string, enum: [pass, partial, fail] }
+          bolt_scope:         { type: string, enum: [pass, fail, n/a], description: "n/a when profile doesn't use Bolt scoping." }
+          qa_criticals:       { type: string, enum: [pass, fail] }
+          drift:              { type: string, enum: [pass, fail] }
+          sally_alignment:    { type: string, enum: [pass, partial, fail, n/a], description: "n/a when Sally didn't run." }
+
+  checks:
+    type: array
+    description: One row per individual check run.
+    items:
+      type: object
+      required: [name, status]
+      properties:
+        name:           { type: string }
+        status:         { type: string, enum: [pass, partial, fail, n/a] }
+        detail:         { type: string }
+        artifacts_compared: { type: array, items: { type: string } }
+
+  gaps:
+    type: array
+    description: Specific gaps the audit found (human-readable).
+    items:
+      type: object
+      properties:
+        gap:        { type: string }
+        severity:   { type: string, enum: [critical, major, minor] }
+        fix:        { type: string }
+        owner:      { type: string, description: "Which skill to re-run, or whether PM input is needed." }
+
+  drift_report:
+    type: array
+    description: When ledger is enabled, list of upstream artifacts whose hash changed after downstream ran.
+    items:
+      type: object
+      properties:
+        upstream:           { type: string }
+        downstream_stale:   { type: array, items: { type: string } }
+        recommended_action: { type: string }

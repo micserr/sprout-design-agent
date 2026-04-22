@@ -13,47 +13,47 @@ Toge, here's the PRD: [file path or paste content]
 Run the full product design workflow.
 ```
 
-**Start with a gap check first, then hand off to the agent**
+**Generate a screen spec first (Mesh Mode Phase 0)**
 ```
-Run prd-gap-analyzer on [file path].
-Then pass the gap report to prd-ux-validator and produce the enriched design brief.
+Run prd-gap-analyzer on [file path to product outcome + product unit].
+Produce the screen spec.
 ```
 
-**Resume at a specific phase**
+**Resume at prototype**
 ```
 Skip to Phase 3. Here's the context:
 - Product: [product name]
-- Enriched brief: [file path to secondary-research output]
-- User journey already mapped: [paste or describe it]
+- Screen spec: [file path or paste content]
 - Stack: Vue 3 · Tailwind v4 · Toge
 
-Prototype the most critical screens.
+Prototype the screens from the spec.
 ```
 
 ---
 
-## PRD Pipeline (Individual Steps)
+## Pipeline (Individual Steps)
 
-### Step 1 — Gap Analysis
+### Step 1 — Screen Spec
 ```
-Analyze this PRD for gaps before we start design work:
-[file path or paste PRD content]
-```
+Product outcome: [file path or paste]
+Product unit: [file path or paste]
 
-### Step 2 — Context Enrichment
-```
-Run prd-ux-validator on this PRD.
-Gap report: [file path from step 1]
-Depth: standard
-Geography: Philippines
+Generate the screen spec.
 ```
 
-### Step 3 — Design Framing (from enriched brief)
+### Step 2 — Prototype
 ```
-Run Phase 1 Design Framing using the enriched brief at:
-[file path to secondary-research output]
+Screen spec: [file path from step 1]
+Stack: Vue 3 · Tailwind v4 · Toge · entry: prototype/main.js · dark mode: yes
 
-Extract JTBD statements, HMW statements, and reframe the success criteria as UX outcomes.
+Build the prototype from the screen spec.
+```
+
+### Step 3 — Design Framing (optional — run when design framing adds value)
+```
+Screen spec: [file path]
+
+Run Phase 1 Design Framing. Extract JTBD statements, HMW statements, and reframe success criteria as UX outcomes.
 ```
 
 ---
@@ -63,7 +63,7 @@ Extract JTBD statements, HMW statements, and reframe the success criteria as UX 
 ### User Journey
 ```
 Map the end-to-end user journey for [primary use case].
-Anchor pain points on: [FP-1 description] and [FP-2 description].
+Anchor pain points on the open design decisions from the screen spec.
 Include a journey map table and a Mermaid flow diagram. Focus on the critical path.
 ```
 

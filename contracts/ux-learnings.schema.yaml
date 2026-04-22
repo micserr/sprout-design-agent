@@ -1,0 +1,129 @@
+# Schema for the team-wide UX Learnings artifact
+#
+# ux-learnings is a single shared file per repo — NOT per-feature.
+# It accumulates design knowledge across all features over time.
+# Written by design-qa, handoff, and ui-feedback skills (and manually).
+# Read at session start to inform all design decisions in the current session.
+#
+# The file on disk is a markdown document with YAML front-matter (not a raw YAML file)
+# so it is both human-readable and AI-parseable as plain context.
+
+$schema: https://json-schema.org/draft-07/schema#
+$id: contracts/ux-learnings.schema.yaml
+title: Sprout UX Learnings
+description: >
+  Team-wide accumulated design knowledge — patterns, anti-patterns, component
+  preferences, conventions, and recurring QA findings. Grows across features.
+  Agent reads this at session start and applies relevant entries during design.
+
+type: object
+required: [version, last_updated, entry_count, entries]
+properties:
+
+  # Front-matter fields (appear in YAML front-matter of the .md file)
+  version:
+    type: integer
+    description: Monotonically increasing. Incremented on every write.
+    minimum: 1
+
+  last_updated:
+    type: string
+    format: date
+    description: Date of the most recent write (YYYY-MM-DD).
+
+  entry_count:
+    type: integer
+    description: Total number of active entries. Recomputed on every write.
+
+  # Body — array of learning entries
+  entries:
+    type: array
+    items:
+      type: object
+      required: [id, category, title, body, added_by, added_date]
+      properties:
+
+        id:
+          type: string
+          pattern: ^LRN-\d{3}$
+          description: Stable identifier (LRN-001, LRN-002, …). Never reused.
+          examples: [LRN-001, LRN-042]
+
+        category:
+          type: string
+          enum:
+            - pattern           # something that works well — repeat it
+            - anti-pattern      # something to avoid — costs were observed
+            - component-preference  # which Toge component to use for a use case
+            - convention        # team or product convention (naming, layout, etc.)
+            - qa-recurring      # finding that has appeared in QA more than once
+            - token-violation   # common token mistake — wrong primitive, missing token
+          description: >
+            Entry type. Controls where the entry appears in the rendered file
+            and how the agent weights it.
+
+        title:
+          type: string
+          maxLength: 80
+          description: Short imperative rule (≤12 words). Written as a decision rule.
+          examples:
+            - "Use Table + Drawer for dense data + detail view"
+            - "Never use modals for multi-step flows"
+            - "Use Select not RadioGroup for ≥4 options"
+
+        body:
+          type: string
+          description: >
+            Full rule statement. What to do or avoid, and why — grounded in
+            observed evidence, not opinion. 2–5 sentences max.
+
+        evidence:
+          type: array
+          description: Which feature/phase surfaced this learning.
+          items:
+            type: object
+            properties:
+              feature:  { type: string, description: "Feature slug (kebab-case)." }
+              phase:    { type: string, description: "Which phase produced this: design-qa, handoff, ui-feedback, manual." }
+              date:     { type: string, format: date }
+              note:     { type: string, description: "Optional — what specifically happened." }
+
+        applies_to:
+          type: array
+          description: Which phases or skills this learning is most relevant to.
+          items:
+            type: string
+            enum: [prototype, design-qa, handoff, ui-feedback, all]
+          default: [all]
+
+        added_by:
+          type: string
+          description: Skill or phase that created this entry.
+          examples: [design-qa, handoff, ui-feedback, manual]
+
+        added_date:
+          type: string
+          format: date
+
+        reinforced_count:
+          type: integer
+          minimum: 1
+          default: 1
+          description: >
+            How many times this learning has been observed. Incremented when the
+            same issue appears in a new feature instead of creating a duplicate.
+            Higher count = higher confidence.
+
+        status:
+          type: string
+          enum: [active, superseded, reverted]
+          default: active
+          description: >
+            active = applies now.
+            superseded = replaced by a newer learning (see superseded_by).
+            reverted = was tried and walked back.
+
+        superseded_by:
+          type: [string, "null"]
+          description: ID of the entry that supersedes this one. Only set when status = superseded.
+          pattern: ^LRN-\d{3}$

@@ -1,17 +1,25 @@
 ---
 name: prd-ux-validator
-description: Use when the user has a PRD and wants to validate it against secondary research before prototyping. Triggers on: "validate the PRD", "research against the PRD", "PRD + research brief", "validate and brief from PRD", "prd-ux-validator".
+description: >
+  Optional Mesh Mode skill for teams that want secondary research enrichment
+  before prototyping. Validates a PRD against targeted secondary research and
+  produces a research brief. Not required in the core spec → prototype → QA →
+  handoff pipeline — use when the product space is novel, high-stakes, or the
+  product unit lacks sufficient context. Triggers on: "validate the PRD",
+  "research against the PRD", "PRD + research brief", "enrich with research",
+  "prd-ux-validator".
 ---
 
 # PRD UX Validator
 
-Take a PRD, validate it against targeted secondary research, and produce a prototype-ready design brief. The brief is saved in the same format as `secondary-research` outputs so the prototype-agent can read it without changes.
+**Optional research enrichment skill.** Takes a PRD, validates it against targeted secondary research, and produces a research brief the team can use to inform the screen spec or prototype.
 
-**This skill is for Scenario A:** PRD already exists → validate UX assumptions → produce brief → prototype.
+> This skill is NOT required in the core workflow (spec → prototype → QA → handoff). Use it when the product unit alone isn't enough context — novel markets, high-stakes UX decisions, or when the PM has flagged open research questions.
 
-**Scenario B** (no PRD, derive from scratch) → use `secondary-research` skill instead.
+**Scenario A** (PRD exists, want research validation) → this skill.
+**Scenario B** (no PRD, derive context from scratch) → use `secondary-research` skill instead.
 
-The fundamental difference: secondary-research *derives* scope fields from research. This skill *audits* PRD scope against research and flags conflicts. PRD is authoritative for scope; research is authoritative for UX.
+The fundamental difference: `secondary-research` *derives* scope fields from research. This skill *audits* PRD scope against research and flags conflicts. PRD is authoritative for scope; research is authoritative for UX.
 
 ---
 

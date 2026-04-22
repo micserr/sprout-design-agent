@@ -1,0 +1,115 @@
+# Schema for the ux-screen-spec artifact produced by the design agent at Phase 0.
+#
+# The screen spec is the design agent's first output — a direct translation of
+# the PM's product outcome (why) + product unit (what) into a screen inventory,
+# states, flow, and open design decisions. Replaces ux-readiness + ux-brief for
+# teams that supply design-ready input documents (UAC-level specs, story docs).
+#
+# Output paths (per profile):
+#   BMAD:    _bmad-output/planning-artifacts/ux/ux-screen-spec-{feature}.md
+#   Vanilla: docs/design/screen-spec-{feature}.md
+
+$schema: https://json-schema.org/draft-07/schema#
+$id: contracts/ux-screen-spec.schema.yaml
+title: UX Screen Spec
+description: >
+  Design translation of a product outcome + product unit into a screen
+  inventory, states, flow, and open design decisions. Produced by the design
+  agent at Phase 0. Consumed by prototype, design-qa, and handoff.
+
+type: object
+
+required: [front_matter, feature, actors, screens]
+
+properties:
+
+  front_matter:
+    type: object
+    required: [inputDocuments, producedBy, skill]
+    properties:
+      inputDocuments: { type: array, items: { type: string }, description: "Paths to product outcome + product unit docs consumed." }
+      producedBy:     { type: string, const: "sprout-design-agent" }
+      skill:          { type: string, const: "product-design" }
+      feature:        { type: string, description: "Kebab-case feature slug." }
+      date:           { type: string, description: "ISO date YYYY-MM-DD." }
+      classification: { type: object, description: "Copied from source PRD when present." }
+      stepsCompleted: { type: array, items: { type: string } }
+      editHistory:    { type: array, items: { type: object } }
+    additionalProperties: true
+
+  feature:
+    type: string
+    description: Kebab-case feature slug.
+    examples: [client-policy-sign-off, checkout-flow]
+
+  actors:
+    type: array
+    description: Everyone who interacts with this feature and through what channel.
+    minItems: 1
+    items:
+      type: object
+      required: [name, role, channel]
+      properties:
+        name:    { type: string, examples: [Marco, Ana] }
+        role:    { type: string, examples: ["PSI", "HR Manager"] }
+        channel: { type: string, examples: ["web app", "shareable link", "email"] }
+
+  screens:
+    type: array
+    description: One entry per distinct actor × context combination.
+    minItems: 1
+    items:
+      type: object
+      required: [id, name, actor]
+      properties:
+        id:
+          type: string
+          pattern: "^S[0-9]+$"
+          examples: [S01, S02, S03]
+        name:
+          type: string
+          examples: ["PSI Client Card", "Client Sign-off View", "Sign-off Success", "Read-only Post-confirm"]
+        actor:
+          type: string
+          description: Name or role of the primary actor for this screen.
+        states:
+          type: array
+          description: Meaningful states this screen can be in.
+          items:
+            type: object
+            required: [name]
+            properties:
+              name:        { type: string, examples: ["Pending", "Signed Off", "Warning"] }
+              description: { type: string }
+        routes_to:
+          type: array
+          items: { type: string, description: "Screen ID this screen navigates to." }
+        notes:
+          type: string
+          description: Design notes specific to this screen.
+
+  flow:
+    type: string
+    description: Mermaid flowchart TD of screen-to-screen transitions. Critical path only.
+
+  open_design_decisions:
+    type: array
+    description: >
+      Items explicitly left to the designer (TBD markers, format choices, etc.)
+      plus gaps that require a design call. Each carries a proposed default.
+    items:
+      type: object
+      required: [id, question]
+      properties:
+        id:               { type: string, pattern: "^OD-[0-9]+$", examples: [OD-1, OD-2] }
+        question:         { type: string }
+        affects:          { type: array, items: { type: string }, description: "Screen IDs affected." }
+        proposed_default: { type: string, description: "Designer's starting assumption — confirmed or corrected at check-in." }
+        source:           { type: string, description: "Where this was flagged (e.g., 'OI-6 in product unit')." }
+
+  next_recommended:
+    type: array
+    description: Skills to run next given this screen spec.
+    items:
+      type: string
+      examples: [prototype, user-journey, design-qa]

@@ -1,0 +1,60 @@
+# Schema for the ux-animations artifact produced by the animations skill.
+
+$schema: https://json-schema.org/draft-07/schema#
+$id: contracts/ux-animations.schema.yaml
+title: UX Animations Plan
+description: >
+  Record of animation/micro-interaction decisions applied to the prototype.
+  Produced by the animations skill. Consumed by handoff + design-audit.
+
+type: object
+
+required: [front_matter, applied_per_screen]
+
+properties:
+
+  front_matter:
+    type: object
+    required: [inputDocuments, producedBy, skill]
+    properties:
+      inputDocuments: { type: array, items: { type: string } }
+      producedBy:     { type: string, const: "sprout-design-agent" }
+      skill:          { type: string, const: "animations" }
+      feature:        { type: string }
+      date:           { type: string }
+    additionalProperties: true
+
+  global_choices:
+    type: object
+    description: Decisions that apply across the prototype.
+    properties:
+      easing:              { type: string, examples: [ease-out, cubic-bezier(0.16,1,0.3,1)] }
+      duration_enter_ms:   { type: integer }
+      duration_exit_ms:    { type: integer }
+      press_scale:         { type: number, default: 0.96 }
+      motion_library:      { type: string, enum: [css-only, motion, framer-motion, none], description: "Detected from package.json." }
+
+  applied_per_screen:
+    type: array
+    items:
+      type: object
+      required: [screen]
+      properties:
+        screen:     { type: string }
+        file:       { type: string }
+        changes:
+          type: array
+          items:
+            type: object
+            properties:
+              element:            { type: string, description: "E.g., 'Primary button', 'Side drawer', 'Toast'." }
+              animation_type:     { type: string, examples: [hover, enter, exit, icon-state, active-press] }
+              properties_animated: { type: array, items: { type: string } }
+              duration_ms:        { type: integer }
+              easing:             { type: string }
+              notes:              { type: string }
+
+  performance_notes:
+    type: array
+    description: GPU-compositable property choices, will-change usage, etc.
+    items: { type: string }

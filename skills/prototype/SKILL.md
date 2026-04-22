@@ -14,7 +14,7 @@ This skill takes wireframe `.vue` files (from the wireframing skill) and produce
 interactive Vue 3 prototype. The output is a `prototype/` directory — multiple screens connected
 by real navigation, with actual design system components, live state, and meaningful interactions.
 
-**Input:** Wireframes in `wireframes/` + `DESIGN_SYSTEM` context + Phase 3 user flow diagram
+**Input:** Wireframes in `wireframes/` + `DESIGN_SYSTEM` context + screen spec flow
 **Output:** Runnable `prototype/` directory
 
 **Scope:**

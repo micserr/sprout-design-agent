@@ -5,6 +5,29 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [Unreleased]
+
+### Added
+- **Profiles layer** — Sprout skills are now SDLC-neutral. Each team installs with a profile that declares artifact paths, front-matter shape, coexistence agents, prototype target, and naming conventions. Skills reference kinds (e.g., `ux-readiness`); profiles resolve kinds to paths.
+- `profiles/bmad.yaml` — full BMAD mesh (implem-aidlc style) with Sally + John coexistence, `_bmad-output/planning-artifacts/ux/` paths, BMAD front-matter, sibling-repo prototype, feature-scoped ledger.
+- `profiles/vanilla.yaml` — minimal `docs/design/` defaults, no coexistence, no ledger, in-repo prototype.
+- `profiles/README.md` — resolution order, extending profiles, when to author a custom one.
+- `contracts/` — 14 YAML schemas for profile + all artifact kinds (PRD, ux-design, ux-readiness, ux-brief, ux-journey, prototype-manifest, ux-qa, ux-animations, ux-feedback, ux-handoff, ux-audit, ux-learnings, workflow-state). Schemas describe shape; paths come from profiles.
+- `skills/workflow-state/` — internal helper invoked by other skills to maintain the feature-scoped ledger with source-hash drift detection.
+- `skills/learnings/` — team-wide UX Learnings skill. Reads institutional design knowledge at session start; extracts and appends entries after design-qa and handoff passes. Human-callable for manual entries. Entries are structured by category (pattern, anti-pattern, component-preference, convention, qa-recurring, token-violation) with confidence tracking via `reinforced_count`.
+- `contracts/ux-learnings.schema.yaml` — schema for the team-wide learnings artifact (single file per repo, no `{feature}` placeholder).
+- `docs/profiles-guide.md` — authoring custom profiles.
+- `docs/specs/2026-04-17-skill-native-mesh-design.md` — architecture spec.
+
+### Changed
+- `skills/prd-gap-analyzer` retrofitted with profile-aware Contract block. Lens narrowed from general PRD completeness to "ready for DESIGN" (5 specific checks). Output conforms to `contracts/ux-readiness.schema.yaml`. Calls workflow-state helper post-production. Complementary to BMAD's `bmad-validate-prd` rather than duplicative.
+- `agents/product-design.md` — new Mode 3 (Mesh) documenting skill-native invocation, profile resolution at session start, ledger-aware next-step recommendations. Step 0.1 updated to use new verdict values (ready/conditional/blocked). Session start now loads UX Learnings as passive design context (step 3). Phase 4 and Phase 6 now call learnings skill to extract entries after each pass.
+- `skills/design-qa/SKILL.md` — step 6 added: extract learnings from findings after QA fixes are applied.
+- `skills/handoff/SKILL.md` — Extract Learnings section added after check-in.
+- `profiles/bmad.yaml` + `profiles/vanilla.yaml` — `ux_learnings` path added to `artifact_locations`.
+- `contracts/profile.schema.yaml` — `ux_learnings` property documented.
+- Install adapters updated: `claude.sh` asks for profile at install; `bmad.sh` auto-selects `bmad`; `codex.sh` and `cursor.sh` register `workflow-state` skill.
+
 ## [1.3.0](https://github.com/micserr/sprout-design-agent/compare/v1.2.0...v1.3.0) (2026-03-31)
 
 

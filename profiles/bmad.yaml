@@ -1,0 +1,87 @@
+# BMAD Profile
+#
+# For teams running the BMAD framework (implem-aidlc style). Sprout coexists
+# with Sally (UX designer) and consumes John's (PM) PRD. Outputs land in the
+# BMAD planning-artifacts tree. Full feature-scoped ledger. Prototype code
+# goes to a sibling repo.
+#
+# Reference: Sprout-Solutions-Ph/implem-aidlc/docs/pipeline-standard.md
+
+profile: bmad
+display_name: "BMAD (implem-aidlc)"
+description: >
+  Full BMAD mesh. Sprout skills read John's PRD or Sally's UX design spec
+  (preferring Sally when present), produce ux-* artifacts in
+  planning-artifacts/ux/, and maintain a workflow ledger in _bmad-output/state/.
+  Prototype code is written to the sibling implem-prototype repo; the manifest
+  lives in planning-artifacts/ux/prototype/.
+
+artifact_locations:
+  ux_screen_spec:      "_bmad-output/planning-artifacts/ux/ux-screen-spec-{feature}.md"
+  prototype_manifest:  "_bmad-output/planning-artifacts/ux/prototype/prototype-manifest-{feature}.md"
+  ux_qa:               "_bmad-output/planning-artifacts/ux/ux-qa-{feature}-{date}.md"
+  ui_feedback:         "_bmad-output/planning-artifacts/ux/ui-feedback-{feature}-{date}.md"
+  ux_handoff:          "_bmad-output/planning-artifacts/ux/ux-handoff-{feature}.md"
+  ux_audit:            "_bmad-output/planning-artifacts/ux/ux-audit-{feature}-{date}.md"
+  ux_learnings:        "_bmad-output/state/ux-learnings.md"   # team-wide; no {feature} — shared across all features
+  workflow_state:      "_bmad-output/state/ux-workflow-{feature}.yaml"
+
+input_sources:
+  # PRD from John — primary input, always required.
+  - kind: prd
+    path_pattern: "_bmad-output/planning-artifacts/prd/prd-{feature}.md"
+    schema: contracts/prd.schema.yaml
+    required: true
+
+  # Sally's UX design spec — optional, preferred when present.
+  # When a skill declares `reads.kind: ux-design`, Sprout uses this file if it
+  # exists. If absent, the skill falls back to the PRD directly.
+  - kind: ux-design
+    path_pattern: "_bmad-output/planning-artifacts/ux/ux-design-{feature}.md"
+    schema: contracts/ux-design.schema.yaml
+    required: false
+    preferred_when_present: true
+
+front_matter:
+  required_fields:
+    - stepsCompleted
+    - inputDocuments
+    - producedBy
+    - skill
+    - classification
+    - editHistory
+  carry_forward_from_prd:
+    - classification
+  style: bmad
+
+coexistence_agents:
+  - name: John
+    role: Product Manager
+    produces: [prd]
+
+  - name: Sally
+    role: UX Designer
+    produces: [ux-design]
+
+  - name: Mary
+    role: Business Analyst
+    produces: []    # Sprout doesn't consume Mary's research directly; John's PRD does.
+
+  - name: Winston
+    role: Architect
+    produces: []
+    consumes: [ux-handoff]
+
+  - name: Bob
+    role: Scrum Master
+    produces: []
+    consumes: [ux-handoff]
+
+prototype:
+  code_target: "../implem-prototype/"
+  manifest_in_planning: true
+
+naming:
+  case: kebab-case
+  date_format: "YYYY-MM-DD"
+  feature_source: prd-filename    # e.g., prd-policy-prep-tool.md → feature = policy-prep-tool

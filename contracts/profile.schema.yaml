@@ -1,0 +1,196 @@
+# Schema for profile files in ../profiles/
+#
+# A profile declares SDLC-specific packaging for Sprout skills: where artifacts
+# land, what front-matter shape they carry, which agents coexist, where
+# prototype code lives, and naming conventions. Skills are profile-neutral;
+# profiles are the adapter between universal skill logic and a specific team's
+# workflow.
+#
+# Profile resolution order (first match wins):
+#   1. $REPO/.sprout/profile.yaml       (repo override)
+#   2. $REPO/sprout-profile.yaml        (repo alternate)
+#   3. ~/.claude/sprout-profile.yaml    (user default, set at install)
+#   4. profiles/vanilla.yaml            (fallback — always works)
+#
+# A profile file is either:
+#   a) A full profile document (this schema)
+#   b) A one-line pointer: `extends: bmad` (for shipped profiles)
+#   c) A pointer + overrides: `extends: bmad` + `artifact_locations: {...}`
+
+$schema: https://json-schema.org/draft-07/schema#
+$id: contracts/profile.schema.yaml
+title: Sprout Profile
+description: SDLC-specific packaging for Sprout skills.
+
+type: object
+
+required:
+  - profile
+  - display_name
+  - artifact_locations
+  - input_sources
+  - front_matter
+  - naming
+
+properties:
+
+  profile:
+    type: string
+    description: Short identifier for the profile (e.g., "bmad", "vanilla", "linear").
+    pattern: ^[a-z0-9-]+$
+    examples: [bmad, vanilla, linear, notion, shape-up]
+
+  display_name:
+    type: string
+    description: Human-readable name shown in prompts and install flows.
+    examples: ["BMAD (implem-aidlc)", "Vanilla (no framework)"]
+
+  description:
+    type: string
+    description: One-paragraph description of the SDLC this profile targets.
+
+  extends:
+    type: string
+    description: >
+      Optional. Name of another profile to extend. Fields declared here override
+      fields from the extended profile. Use for custom team profiles built on
+      top of bmad.yaml or vanilla.yaml.
+    examples: [bmad, vanilla]
+
+  artifact_locations:
+    type: object
+    description: >
+      Path templates for each artifact kind this profile produces. Path templates
+      use `{feature}` for the feature slug and `{date}` for ISO date (YYYY-MM-DD).
+      All kinds listed here are accepted values for a skill's `writes.kind`.
+    properties:
+      ux_screen_spec:         { type: string, description: "Where the design agent writes the Phase 0 screen spec. Required." }
+      ux_journey:             { type: string, description: "Where user-journey writes. Optional — omit when input artifacts already contain the journey (e.g., UAC-level docs)." }
+      prototype_manifest:     { type: string, description: "Where prototype writes its manifest. Required." }
+      ux_qa:                  { type: string, description: "Where design-qa writes. Required." }
+      ui_feedback:            { type: string, description: "Where the agent writes the UI feedback triage record. Triggered on demand — not part of the linear workflow." }
+      ux_handoff:             { type: string, description: "Where handoff writes. Required." }
+      ux_audit:               { type: string, description: "Where design-audit writes. On-demand / trigger-based — not part of the linear workflow." }
+      ux_learnings:           { type: [string, "null"], description: "Where the team-wide learnings file lives. No {feature} placeholder — single shared file. Set to null to disable learnings for this profile." }
+      workflow_state:         { type: [string, "null"], description: "Where the ledger lives. Set to null to disable the ledger for this profile." }
+    required:
+      - ux_screen_spec
+      - prototype_manifest
+      - ux_qa
+      - ux_handoff
+
+  input_sources:
+    type: array
+    description: >
+      Declarations of where to find input artifacts the profile supports.
+      Each entry describes one input kind with its path pattern and schema.
+    items:
+      type: object
+      required: [kind, schema]
+      properties:
+        kind:
+          type: string
+          description: Artifact kind (must match a schema in contracts/).
+          examples: [prd, ux-design]
+        path_pattern:
+          type: [string, "null"]
+          description: >
+            Glob or format string pointing at the input artifact. `null` means
+            the profile doesn't expect this input at a fixed path — the skill
+            accepts it inline or as an explicit argument at invocation.
+        schema:
+          type: string
+          description: Relative path to the contracts/*.schema.yaml for this kind.
+        required:
+          type: boolean
+          default: false
+          description: Whether this input is mandatory for skills that read it.
+        preferred_when_present:
+          type: boolean
+          default: false
+          description: >
+            When true, skills prefer this input over another kind listed with
+            `fallback_for: <this kind>`. See the Sally coexistence pattern.
+        accepts_inline:
+          type: boolean
+          default: false
+          description: >
+            When true, the skill accepts the content pasted/inline at
+            invocation instead of a file path. Useful for non-framework teams.
+
+  front_matter:
+    type: object
+    description: Front-matter conventions for output artifacts.
+    required: [required_fields, style]
+    properties:
+      required_fields:
+        type: array
+        items: { type: string }
+        description: Fields every output artifact must carry.
+      carry_forward_from_prd:
+        type: array
+        items: { type: string }
+        description: Fields copied from the source PRD into every derived artifact (e.g., `classification`).
+        default: []
+      style:
+        type: string
+        enum: [bmad, minimal, custom]
+        description: >
+          bmad = full BMAD front-matter (stepsCompleted, inputDocuments, etc.).
+          minimal = title + date + inputs only.
+          custom = defined by `required_fields`.
+
+  coexistence_agents:
+    type: array
+    description: >
+      Other agents that produce artifacts Sprout skills may read. Skills use
+      this to decide input precedence (Sally's UX spec preferred over John's
+      PRD in the BMAD profile, for example).
+    default: []
+    items:
+      type: object
+      required: [name, role, produces]
+      properties:
+        name:       { type: string, description: "Persona name, e.g., Sally, John, Winston." }
+        role:       { type: string, description: "Short role description." }
+        produces:   { type: array, items: { type: string }, description: "Kinds this agent produces." }
+        consumes:   { type: array, items: { type: string }, default: [], description: "Kinds this agent reads (informational)." }
+
+  prototype:
+    type: object
+    description: Where prototype code lives (separate from the manifest which goes to artifact_locations.prototype_manifest).
+    required: [code_target]
+    properties:
+      code_target:
+        type: string
+        description: >
+          Relative path to the directory where `prototype` skill writes code.
+          Can point to a sibling repo (e.g., "../implem-prototype/") or
+          in-repo dir (e.g., "prototype/").
+      manifest_in_planning:
+        type: boolean
+        default: true
+        description: >
+          When true, the manifest lives at artifact_locations.prototype_manifest
+          (separate from the code). When false, the manifest is written next
+          to the code in code_target.
+
+  naming:
+    type: object
+    description: Naming convention for the `{feature}` slug used across path templates.
+    required: [case, date_format]
+    properties:
+      case:
+        type: string
+        enum: [kebab-case, snake_case, PascalCase]
+        description: Casing for feature slugs.
+        default: kebab-case
+      date_format:
+        type: string
+        description: Format string for `{date}` in path templates.
+        default: YYYY-MM-DD
+      feature_source:
+        type: string
+        enum: [prd-filename, prd-frontmatter, user-input, ticket-id]
+        description: How to derive the feature slug (inferred from PRD filename, pulled from PRD front-matter, asked at invocation, or from a ticket ID).
+        default: prd-filename

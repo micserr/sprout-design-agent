@@ -1,0 +1,85 @@
+# Schema for the ui-feedback artifact.
+#
+# ui-feedback is a lightweight, open-input artifact. Anyone — PM, stakeholder,
+# designer, or developer — can write a UI feedback doc. The design agent reads
+# it, analyzes the items, and applies non-strategic changes directly to the
+# prototype. Strategic changes (new screens, flow changes, scope additions)
+# are flagged for human decision before applying.
+#
+# Output paths (per profile):
+#   BMAD:    _bmad-output/planning-artifacts/ux/ui-feedback-{feature}-{date}.md
+#   Vanilla: docs/design/ui-feedback-{feature}-{date}.md
+
+$schema: https://json-schema.org/draft-07/schema#
+$id: contracts/ui-feedback.schema.yaml
+title: UI Feedback
+description: >
+  Record of a UI feedback ingestion pass. Input is free-form feedback from
+  any person. Output is a triage record: what was applied to the prototype,
+  what was deferred, and what requires a strategic decision before acting.
+
+type: object
+
+required: [front_matter, source_feedback, items]
+
+properties:
+
+  front_matter:
+    type: object
+    required: [inputDocuments, producedBy, skill]
+    properties:
+      inputDocuments: { type: array, items: { type: string }, description: "Source feedback doc(s) consumed." }
+      producedBy:     { type: string, const: "sprout-design-agent" }
+      skill:          { type: string, const: "product-design" }
+      feature:        { type: string }
+      date:           { type: string, description: "ISO date YYYY-MM-DD." }
+      stepsCompleted: { type: array, items: { type: string } }
+      editHistory:    { type: array, items: { type: object } }
+    additionalProperties: true
+
+  source_feedback:
+    type: object
+    description: Metadata about the feedback source.
+    properties:
+      author:       { type: string, description: "Who submitted the feedback." }
+      role:         { type: string, description: "Their role — PM, stakeholder, developer, etc." }
+      date:         { type: string }
+      format:       { type: string, description: "How feedback arrived — Slack message, doc, verbal notes, etc." }
+
+  items:
+    type: array
+    description: Each discrete feedback item triaged by the agent.
+    minItems: 1
+    items:
+      type: object
+      required: [id, feedback, classification, disposition]
+      properties:
+        id:
+          type: string
+          pattern: "^FB-[0-9]+$"
+          examples: [FB-1, FB-2]
+        feedback:
+          type: string
+          description: The original feedback verbatim or closely paraphrased.
+        screen:
+          type: string
+          description: Screen ID or name this feedback targets.
+        classification:
+          type: string
+          enum: [ui, strategic]
+          description: >
+            ui = non-strategic visual/interaction change; agent applies directly.
+            strategic = new screen, flow change, or scope addition; requires human decision.
+        disposition:
+          type: string
+          enum: [applied, deferred, escalated]
+          description: >
+            applied = change made to prototype.
+            deferred = noted but not actioned this pass.
+            escalated = strategic — flagged for human decision before acting.
+        change_made:
+          type: string
+          description: What was changed in the prototype (when disposition is applied).
+        escalation_question:
+          type: string
+          description: The specific question to the human when disposition is escalated.
