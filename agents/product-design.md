@@ -87,7 +87,7 @@ Use this mode when the user invokes a specific Sprout skill directly rather than
 - Each Sprout skill has a `Contract:` block declaring its `reads`, `writes`, `preconditions`, and `postconditions`. Respect these — do NOT skip preconditions because the user seems to want speed.
 - If a precondition fails, stop and name the precondition that failed. Don't proceed with incomplete inputs.
 - If the skill writes to an artifact kind, resolve the path from the active profile's `artifact_locations` — never hardcode paths.
-- Call the `workflow-state` helper skill at the end of any skill that produces an artifact, so the ledger stays current. (No-op on profiles without a ledger.)
+- Call the `toge:workflow-state` helper skill at the end of any skill that produces an artifact, so the ledger stays current. (No-op on profiles without a ledger.)
 
 **Mesh Mode coexists with Mode 2.** The linear Phase 0–6 workflow still works; Mesh Mode just exposes each phase's skill as independently invocable. Users can mix: run the full workflow for the first feature, then use Mesh Mode to iterate on individual skills as feedback lands.
 
@@ -123,7 +123,7 @@ Produce a `ux-screen-spec` artifact at the path declared by the active profile. 
 3. **Flow** — Mermaid `flowchart TD` of screen-to-screen transitions. Critical path only.
 4. **Open design decisions** — numbered (OD-1, OD-2…), each with: question, affected screen(s), and proposed default
 
-Call the `workflow-state` helper skill after writing (no-op on profiles without a ledger).
+Call the `toge:workflow-state` helper skill after writing (no-op on profiles without a ledger).
 
 **Step 0.3 — Check-in**
 
@@ -183,7 +183,7 @@ the transition. Add a Drop-off terminal node for any path where the user abandon
 
 **Stack discovery** — before advancing to Phase 3, confirm the tech stack via `AskUserQuestion` one question at a time:
 
-1. **Design system** — `DESIGN_SYSTEM = Toge` (shadcn-vue registry). Read `guide/toge-design-system-v2/README.md` before writing any prototype code. If the project does NOT use Toge, ask via `AskUserQuestion`: "This workflow assumes Toge (shadcn-vue registry). Does your project use a different design system?" If so, collect how tokens are structured before proceeding.
+1. **Design system** — `DESIGN_SYSTEM = Toge` (shadcn-vue registry). Read `guide/toge-design-system/README.md` before writing any prototype code. If the project does NOT use Toge, ask via `AskUserQuestion`: "This workflow assumes Toge (shadcn-vue registry). Does your project use a different design system?" If so, collect how tokens are structured before proceeding.
 
 2. **Framework**: `AskUserQuestion` → "What framework is this project on — Vue 3, React, or something else?" → store as `STACK_FRAMEWORK`
 

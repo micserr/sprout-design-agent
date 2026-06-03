@@ -1,5 +1,5 @@
 ---
-name: handoff
+name: toge:handoff
 description: >
   Developer handoff pass — cleans and restructures prototype code for production readiness.
   Splits oversized components, extracts composables, types all props/emits, removes prototype

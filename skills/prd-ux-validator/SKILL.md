@@ -1,5 +1,5 @@
 ---
-name: prd-ux-validator
+name: toge:prd-ux-validator
 description: >
   Optional Mesh Mode skill for teams that want secondary research enrichment
   before prototyping. Validates a PRD against targeted secondary research and
@@ -17,9 +17,9 @@ description: >
 > This skill is NOT required in the core workflow (spec → prototype → QA → handoff). Use it when the product unit alone isn't enough context — novel markets, high-stakes UX decisions, or when the PM has flagged open research questions.
 
 **Scenario A** (PRD exists, want research validation) → this skill.
-**Scenario B** (no PRD, derive context from scratch) → use `secondary-research` skill instead.
+**Scenario B** (no PRD, derive context from scratch) → use `toge:secondary-research` skill instead.
 
-The fundamental difference: `secondary-research` *derives* scope fields from research. This skill *audits* PRD scope against research and flags conflicts. PRD is authoritative for scope; research is authoritative for UX.
+The fundamental difference: `toge:secondary-research` *derives* scope fields from research. This skill *audits* PRD scope against research and flags conflicts. PRD is authoritative for scope; research is authoritative for UX.
 
 ---
 
@@ -27,7 +27,7 @@ The fundamental difference: `secondary-research` *derives* scope fields from res
 
 Ask the user for these if not already provided:
 - **PRD** — file path or pasted content (required)
-- **gap-report** — file path to a `prd-gap-analyzer` output (optional but recommended). If provided, skip Phase 1 PRD EXTRACT and use the DESIGN CONTEXT BRIEF block from the gap report instead. Map the "Gaps to fill" list directly as the research agenda for Phase 2.
+- **gap-report** — file path to a `toge:prd-gap-analyzer` output (optional but recommended). If provided, skip Phase 1 PRD EXTRACT and use the DESIGN CONTEXT BRIEF block from the gap report instead. Map the "Gaps to fill" list directly as the research agenda for Phase 2.
 - **depth** — `quick` | `standard` | `deep` (default: `standard`)
 - **geography / market** — specific country, region, or market context (required; default to global if explicitly confirmed)
 

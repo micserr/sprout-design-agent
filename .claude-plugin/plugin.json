@@ -1,0 +1,22 @@
+{
+  "$schema": "https://json.schemastore.org/claude-code-plugin-manifest.json",
+  "name": "toge",
+  "displayName": "Toge Design Agent",
+  "version": "1.4.1",
+  "description": "Product design workflow for Toge (shadcn-vue) — screen specs, prototyping, design QA, animations, and developer handoff.",
+  "author": {
+    "name": "micserr",
+    "url": "https://github.com/micserr/sprout-design-agent"
+  },
+  "homepage": "https://github.com/micserr/sprout-design-agent",
+  "repository": "https://github.com/micserr/sprout-design-agent",
+  "keywords": [
+    "design",
+    "product-design",
+    "ux",
+    "prototype",
+    "vue3",
+    "toge",
+    "design-system"
+  ]
+}

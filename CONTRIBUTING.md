@@ -23,7 +23,7 @@ Pattern: `<type>/<short-kebab-description>`
 |---|---|---|
 | `feat/` | New skill, agent feature, or capability | `feat/add-design-qa-skill` |
 | `fix/` | Bug fix | `fix/prototype-path-resolution` |
-| `docs/` | Documentation only | `docs/update-toge-v2-install-guide` |
+| `docs/` | Documentation only | `docs/update-toge-install-guide` |
 | `chore/` | Tooling, deps, config, adapters | `chore/add-cursor-adapter` |
 | `refactor/` | Restructure without behavior change | `refactor/skill-frontmatter-cleanup` |
 | `perf/` | Performance improvement | `perf/reduce-agent-context-size` |
@@ -81,18 +81,18 @@ feat(agent): add Phase 6 UI polish to orchestrator workflow
 fix: resolve symlink collision when re-running install.sh
 
 # Docs update
-docs: rewrite Toge v2 installation guide from official source
+docs: rewrite Toge installation guide from official source
 
 # Chore
 chore: add ui-polish to claude adapter symlinks
 
 # Breaking change (footer)
-feat: rename guide/toge-design-system to guide/toge-design-system-v2
+feat: rename guide/toge-design-system-v2 to guide/toge-design-system
 
 BREAKING CHANGE: guide directory paths have changed — update any local references
 
 # Breaking change (inline)
-feat!: drop Sprout Legacy naming in favor of Toge v1
+feat!: remove the wireframing phase from the orchestrator workflow
 ```
 
 ---
@@ -123,7 +123,7 @@ This repo uses [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) format.
 - `ui-polish` skill — Phase 6 of the design agent workflow
 
 ### Changed
-- Toge v2 installation guide rewritten from official source
+- Toge installation guide rewritten from official source
 ```
 
 Do not dump `git log` output into the changelog. Write for humans.
@@ -139,7 +139,7 @@ Match Conventional Commits exactly — this feeds the changelog:
 ```
 feat(agent): add Phase 6 UI polish to orchestrator workflow
 fix: resolve Windows path issue with relative skills
-docs: update Toge v2 installation guide
+docs: update Toge installation guide
 ```
 
 ### Rules

@@ -1,22 +1,8 @@
-# Toge v2 Design System
+# Toge Design System
 
 ## Overview
 
-Toge v2 is the Vue 3 design system for **Prometheus Tower** products at Sprout. It builds on [shadcn-vue](https://www.shadcn-vue.com/) primitives with Sprout branding and tokens, and delivers components via a **shadcn-vue registry** hosted on Azure. Instead of installing a central npm package, components are pulled directly into your project — you own the source and can customize it.
-
-This is the current workflow. Use it for new Prometheus Tower projects.
-
----
-
-## How It's Different from Toge v1
-
-| | Toge v1 | Toge v2 |
-|---|---|---|
-| **Delivery** | npm package (`design-system-next`) | CLI registry pull |
-| **Components** | Pre-built, locked in node_modules | Copied into your project |
-| **Customization** | Via props and tokens only | Edit the source files directly |
-| **Updates** | `npm update` | Re-pull component from registry |
-| **Ownership** | Centrally managed | You own the code |
+Toge is the Vue 3 design system for **Prometheus Tower** products at Sprout. It builds on [shadcn-vue](https://www.shadcn-vue.com/) primitives with Sprout branding and tokens, and delivers components via a **shadcn-vue registry** hosted on Azure. Instead of installing a central npm package, components are pulled directly into your project — you own the source and can customize it.
 
 ---
 
@@ -252,5 +238,3 @@ npx shadcn-vue@latest add --overwrite https://toge-ds.azurewebsites.net/r/ui/tog
 4. **Component URL pattern:** `{REGISTRY_BASE}/{namespace}/{slug}.json`
 5. **`toge-styles` auto-installs** as a dependency of every component — no need to install it separately
 6. **Namespace → team mapping:** `ui/` → Base primitives · `fintech/` → Fintech blocks · `sidekick/` → Sidekick AI blocks
-
-For existing projects already on `design-system-next`, see [`../toge-design-system-v1/README.md`](../toge-design-system-v1/README.md).

@@ -1,5 +1,5 @@
 ---
-name: learnings
+name: toge:learnings
 description: >
   Reads and writes the team-wide UX Learnings file — the agent's institutional
   memory. Accumulates patterns, anti-patterns, component preferences, conventions,

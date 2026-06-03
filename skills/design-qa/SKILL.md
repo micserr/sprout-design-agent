@@ -11,7 +11,7 @@ description: >
 
 This skill produces a structured **Design QA report** that evaluates a screen or component against four pillars: **Visual Consistency**, **Design Token Compliance**, **Accessibility**, and **Interaction Readiness**. The output is a prioritized list of findings with severity ratings and actionable fixes — not a vague critique.
 
-**REQUIRED:** Before running the Token Compliance pillar, invoke the `toge:design-tokens` skill and read the token tables directly. Do not rely on memory — token names change between versions. Validate every finding against the actual token source (`guide/toge-design-system-v2/tokens/style.css` for Toge v2, `node_modules/design-system-next` for Toge v1).
+**REQUIRED:** Before running the Token Compliance pillar, invoke the `toge:design-tokens` skill and read the token tables directly. Do not rely on memory — token names change between versions. Validate every finding against the actual token source (`guide/toge-design-system/tokens/style.css`).
 
 ---
 

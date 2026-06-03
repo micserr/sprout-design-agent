@@ -34,7 +34,7 @@ Before reading wireframes or writing any code, verify the project environment us
 | 2 | **Source scanning completeness** | Does the bundler scan every directory containing component files? Verify that `wireframes/`, `prototype/`, and any directory outside the default source root is included in `@source` directives (v4) or `content` globs (v3). Add missing entries before proceeding. |
 | 3 | **Package compatibility** | Are all design system packages compatible with the confirmed framework and CSS version? Check for peer dependency conflicts (e.g. a design system that pins `tailwindcss@^3` installed alongside v4). Uninstall incompatible packages before proceeding. |
 | 4 | **Explicit dependencies** | Are routing and state management packages explicitly declared in `package.json`? Never assume transitive dependencies — if the prototype needs `vue-router` or `pinia`, they must be listed directly. Install any missing explicit deps before proceeding. |
-| 5 | **Toge sanity check** | This skill assumes Toge (shadcn-vue registry). Verify `components.json` exists and has `registries["@toge"]`. If missing or the registry is absent, surface a warning via `AskUserQuestion` before continuing. **Never call `mcp__design-system-toge__*` tools** — MCP reflects Toge v1 and returns wrong data for Toge. Use CLI installer and installed files in `src/components/ui/` only. |
+| 5 | **Toge sanity check** | This skill assumes Toge (shadcn-vue registry). Verify `components.json` exists and has `registries["@toge"]`. If missing or the registry is absent, surface a warning via `AskUserQuestion` before continuing. **Never call `mcp__design-system-toge__*` tools** — the MCP server returns stale, incorrect data for Toge. Use the CLI installer and installed files in `src/components/ui/` only. |
 | 6 | **Design system components installed** | Before writing any prototype code, verify that design system component files exist in the project (e.g., `src/components/ui/` for Toge). If they don't exist, run the bulk installer first. Then read the installed component files to understand actual prop signatures, variants, and slot names. Component discovery must happen before the first line of prototype code is written. |
 
 **If any check fails: stop immediately. Do not generate any files.**
@@ -78,18 +78,35 @@ wireframe doesn't appear in the flow, flag it — it may be a secondary state of
 
 ## Step 2 — Read the Design System Guide
 
-This skill uses **Toge** (shadcn-vue registry). Read `guide/toge-design-system-v2/README.md` before writing any component.
+This skill uses **Toge** (shadcn-vue registry). Read `guide/toge-design-system/README.md` before writing any component.
 
 - Components are pulled via `npx shadcn-vue@latest add https://toge-ds.azurewebsites.net/r/ui/[component].json`
 - Import from `@/components/ui/[component-name]`
-- Do NOT call `mcp__design-system-toge__*` tools — MCP reflects Toge v1 and returns wrong data. Use only the installed files in `src/components/ui/` and `guide/toge-design-system-v2/`.
+- Do NOT call `mcp__design-system-toge__*` tools — the MCP server returns stale, incorrect data for Toge. Use only the installed files in `src/components/ui/` and `guide/toge-design-system/`.
 
 **Hard rule:** Never use raw hex colors or grayscale placeholders from the wireframe.
 Every color in the prototype must come from the design system.
 
-**Token enforcement:** Read `guide/toge-design-system-v2/tokens/token-mapping.yaml` before writing any component. Every default Tailwind color class (`bg-gray-*`, `text-gray-*`, `bg-red-*`, `bg-emerald-*`, `bg-blue-*`, `bg-yellow-*`, `bg-orange-*`) is a violation — replace it with the mapped token before committing output. The design system clears all default Tailwind colors (`--color-*: initial`) so these classes silently render nothing at runtime.
+**Token enforcement:** Read `guide/toge-design-system/tokens/token-mapping.yaml` before writing any component. Every default Tailwind color class (`bg-gray-*`, `text-gray-*`, `bg-red-*`, `bg-emerald-*`, `bg-blue-*`, `bg-yellow-*`, `bg-orange-*`) is a violation — replace it with the mapped token before committing output. The design system clears all default Tailwind colors (`--color-*: initial`) so these classes silently render nothing at runtime.
 
 **Known naming collision — read before writing any text class:** Do not combine `text-base` with another font-size utility on the same element. The design system defines `.text-base` as `color: var(--text-base)` in `@layer components`, but Tailwind also defines `text-base` as `font-size: 1rem` in `@layer utilities`. The utilities layer wins for `font-size`, so `text-xs text-base` silently becomes 1rem. Use `text-base` alone when 1rem font-size is acceptable, or use `text-strong` / `text-weak` when a specific font-size is also needed.
+
+### Using Toge components
+
+Toge components are installed in `src/components/ui/`. Before using one, **read its source file** (Step 0, check 6) to get the real variants, sizes, props, and sub-component names — never reconstruct the API from memory. The names below are illustrative; the installed source is authoritative.
+
+**Drive appearance through props, not utilities.**
+- Style a component through its own `variant` and `size` props — `<TogeButton variant="destructive" size="sm">`, `<TogeBadge variant="outline">`. Do not reach for Tailwind utilities that fight the component's built-in styles (e.g., re-coloring a button with `bg-*` instead of choosing the right `variant`).
+- Reserve utility classes for *layout around* the component — margin, width, grid placement — not for restyling its internals.
+- For a legitimate one-off tweak, pass the component's `class` prop (Toge merges it via `cn`). Never wrap a component in extra `<div>`s to force a style, and never fork its internals inline.
+
+**Use the full compound component, not a monolith.** Toge components ship as a set of sub-components meant to be used together — don't dump everything into the root element:
+- `Card` → `CardHeader` / `CardTitle` / `CardDescription` / `CardContent` / `CardFooter`
+- `Dialog` → `DialogTrigger` / `DialogContent` / `DialogHeader` / `DialogTitle` / `DialogDescription` / `DialogFooter`
+- `Form` → `FormField` / `FormItem` / `FormLabel` / `FormControl` / `FormMessage`
+- `Select` → `SelectTrigger` / `SelectValue` / `SelectContent` / `SelectItem`
+
+Put content in the documented slot rather than bypassing it with raw markup. For triggers, wrap the opener in the `*Trigger` and use `asChild` to pass your own `<TogeButton>` instead of nesting a button inside a button. Import each sub-component using the exact export names from the installed module's index.
 
 ---
 
@@ -172,6 +189,25 @@ Work through screens in flow order (start → end). For each screen:
 - Grayscale placeholder blocks → actual design system components
 - `bg-gray-*` color blocks → design system token classes
 - Dashed border boxes → real content (charts can stay as styled placeholders if complex)
+
+**Reach for an installed Toge primitive before hand-building.** Match each placeholder to the component that already solves it:
+
+| UI need | Toge component |
+|---|---|
+| Confirm a destructive action | `Alert Dialog` |
+| Modal / focused task overlay | `Dialog` |
+| Side panel / contextual drawer | `Sheet` or `Drawer` |
+| Menu of actions from a trigger | `Dropdown Menu` |
+| Pick one option from a list | `Select` (or `Combobox` when searchable) |
+| Tabular data | `Data Table` (sortable/filterable) or `Table` (static) |
+| On/off setting | `Switch` |
+| Status / category label | `Badge` |
+| Inline contextual message | `Alert` |
+| Transient notification | `Sonner` (toast) |
+| Loading placeholder | `Skeleton` or `Progress` |
+| Hover / focus info | `Tooltip` or `Hover Card` |
+
+See the full component list in `guide/toge-design-system/README.md`. If no primitive fits, compose one from existing components; only hand-build from raw markup as a last resort, and flag it at check-in. Never rebuild a primitive that already exists in `src/components/ui/`.
 
 **Phase 4 is not complete if any of these exist:**
 - Any `bg-gray-*` class used as a placeholder fill
@@ -266,6 +302,7 @@ to read and build production code from.
 | Props typed | `defineProps` with JSDoc types or TypeScript interface |
 | Events declared | `defineEmits(['event-name'])` for every custom event |
 | No inline styles | Tailwind classes + design system tokens only |
+| Components via props, not utilities | Style Toge components through their `variant`/`size` props and `class` prop (merged via `cn`) — never restyle internals with conflicting utilities, and never rebuild a primitive that exists in `src/components/ui/`. Use the full compound component (e.g. `CardHeader`/`CardContent`), not the root element alone. |
 | No hardcoded data | Mock data lives in composables, never inline in templates |
 | Composables return reactive state | `return { items, isLoading, selectedItem }` — not raw arrays |
 | Stores are lean | Pinia stores hold only **cross-screen state** — any value read or written by 2+ screens. Local UI state (open/closed, selected tab, form field value) stays in the screen component as `ref`. When in doubt, keep it local until a second screen needs it. |

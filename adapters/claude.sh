@@ -1,12 +1,14 @@
 #!/usr/bin/env bash
-# Installs product-design skills and agent into Claude Code (~/.claude/)
+# Configures the Sprout profile for Claude Code and prints the toge plugin install steps.
+# Claude Code installs via the plugin marketplace now — not via symlinks. The actual
+# install runs inside Claude Code (`/plugin ...`), so this script can only set the
+# profile, clean up pre-plugin symlinks, and show the commands to run.
 
 set -euo pipefail
 
 SCRIPT_DIR=$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)
 
-mkdir -p "$HOME/.claude/skills"
-mkdir -p "$HOME/.claude/agents"
+mkdir -p "$HOME/.claude"
 
 # --- Profile selection ---
 PROFILE_FILE="$HOME/.claude/sprout-profile.yaml"
@@ -32,29 +34,47 @@ EOF
   echo ""
 fi
 
-create_symlink() {
-  local target="$1"
-  local link="$2"
-  [ -L "$link" ] && rm "$link"
-  ln -s "$target" "$link"
-  echo "  ✓ $(basename "$link")"
-}
+# --- Clean up stale symlinks from the pre-plugin install ---
+# Older versions symlinked individual skills into ~/.claude/skills/. The plugin now
+# provides these under the /toge: namespace, so remove any symlink that points back
+# into this repo to avoid duplicate skills (e.g. /prototype AND /toge:prototype).
+removed_any=false
+for name in prd-gap-analyzer prd-ux-validator secondary-research user-journey \
+            prototype design-tokens design-qa animations handoff workflow-state learnings; do
+  link="$HOME/.claude/skills/$name"
+  if [ -L "$link" ]; then
+    dest=$(readlink "$link" || true)
+    case "$dest" in
+      "$SCRIPT_DIR"/*)
+        rm "$link"
+        echo "  ✓ removed stale symlink: skills/$name"
+        removed_any=true
+        ;;
+    esac
+  fi
+done
+agent_link="$HOME/.claude/agents/product-design.md"
+if [ -L "$agent_link" ]; then
+  dest=$(readlink "$agent_link" || true)
+  case "$dest" in
+    "$SCRIPT_DIR"/*)
+      rm "$agent_link"
+      echo "  ✓ removed stale symlink: agents/product-design.md"
+      removed_any=true
+      ;;
+  esac
+fi
+if [ "$removed_any" = true ]; then
+  echo ""
+fi
 
-echo "Installing skills..."
-create_symlink "$SCRIPT_DIR/skills/prd-gap-analyzer"   "$HOME/.claude/skills/prd-gap-analyzer"
-create_symlink "$SCRIPT_DIR/skills/prd-ux-validator"   "$HOME/.claude/skills/prd-ux-validator"
-create_symlink "$SCRIPT_DIR/skills/secondary-research" "$HOME/.claude/skills/secondary-research"
-create_symlink "$SCRIPT_DIR/skills/user-journey"       "$HOME/.claude/skills/user-journey"
-create_symlink "$SCRIPT_DIR/skills/prototype"          "$HOME/.claude/skills/prototype"
-create_symlink "$SCRIPT_DIR/skills/design-tokens"      "$HOME/.claude/skills/design-tokens"
-create_symlink "$SCRIPT_DIR/skills/design-qa"          "$HOME/.claude/skills/design-qa"
-create_symlink "$SCRIPT_DIR/skills/animations"         "$HOME/.claude/skills/animations"
-create_symlink "$SCRIPT_DIR/skills/handoff"            "$HOME/.claude/skills/handoff"
-create_symlink "$SCRIPT_DIR/skills/workflow-state"     "$HOME/.claude/skills/workflow-state"
-create_symlink "$SCRIPT_DIR/skills/learnings"          "$HOME/.claude/skills/learnings"
+cat <<'EOF'
+Claude Code installs the toge plugin from its marketplace. Inside Claude Code, run:
 
-echo "Installing agent..."
-create_symlink "$SCRIPT_DIR/agents/product-design.md"  "$HOME/.claude/agents/product-design.md"
+  /plugin marketplace add micserr/sprout-design-agent
+  /plugin install toge@sprout
 
-echo ""
-echo "Done. Restart Claude Code to load the new skills and agent."
+Then restart Claude Code. Every skill is available under the /toge: namespace
+(type /toge: to list them — e.g. /toge:prototype, /toge:design-qa), along with
+the product-design agent. Update later with: /plugin update toge@sprout
+EOF
