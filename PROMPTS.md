@@ -15,7 +15,7 @@ Run the full product design workflow.
 
 **Generate a screen spec first (Mesh Mode Phase 0)**
 ```
-Run prd-gap-analyzer on [file path to product outcome + product unit].
+Run toge:prd-gap-analyzer on [file path to product outcome + product unit].
 Produce the screen spec.
 ```
 

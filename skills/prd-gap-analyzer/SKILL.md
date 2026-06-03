@@ -1,5 +1,5 @@
 ---
-name: prd-gap-analyzer
+name: toge:prd-gap-analyzer
 description: >
   Mesh Mode screen spec generator. Reads a product outcome (the why) and a
   product unit (the what — UAC, story doc, feature spec) and produces a
@@ -38,9 +38,9 @@ postconditions:
 
 ## Overview
 
-Receive a product outcome (why) and product unit (what) and produce a **ux-screen-spec**: actors, screen inventory with states, screen-to-screen flow, and open design decisions. The screen spec is the direct input to the `prototype` skill.
+Receive a product outcome (why) and product unit (what) and produce a **ux-screen-spec**: actors, screen inventory with states, screen-to-screen flow, and open design decisions. The screen spec is the direct input to the `toge:prototype` skill.
 
-**This skill is the Mesh Mode entry point for Phase 0.** When running the full workflow, the design agent runs Phase 0 inline. When operating in Mesh Mode — running individual skills directly — invoke this skill first to produce the screen spec, then pass it to `prototype`.
+**This skill is the Mesh Mode entry point for Phase 0.** When running the full workflow, the design agent runs Phase 0 inline. When operating in Mesh Mode — running individual skills directly — invoke this skill first to produce the screen spec, then pass it to `toge:prototype`.
 
 ---
 
@@ -86,7 +86,7 @@ Each check produces one entry in the `checks` array of the output. Each entry ha
 
 **Severity default:** fail → critical; partial → moderate.
 
-**Why it matters:** design-framing (JTBD, HMW) and `user-journey` depend on being able to anchor on a specific person in a specific situation. Generic "the user" leads to generic designs.
+**Why it matters:** design-framing (JTBD, HMW) and `toge:user-journey` depend on being able to anchor on a specific person in a specific situation. Generic "the user" leads to generic designs.
 
 ---
 
@@ -114,7 +114,7 @@ Each check produces one entry in the `checks` array of the output. Each entry ha
 
 **Severity default:** fail → critical; partial → moderate.
 
-**Why it matters:** `prototype` needs a concrete list of user capabilities to wire up. If FRs don't describe user-observable behavior, the prototype becomes speculation.
+**Why it matters:** `toge:prototype` needs a concrete list of user capabilities to wire up. If FRs don't describe user-observable behavior, the prototype becomes speculation.
 
 **Bolt-scoping note:** when the PRD uses Bolt-scoping (BMAD profile), this check applies to the current Bolt's FRs only. FRs explicitly deferred to future Bolts are not counted.
 
@@ -263,7 +263,7 @@ For vanilla-profile outputs, use the minimal front-matter style: `title`, `date`
 
 ## After Producing the Artifact
 
-1. **Call `workflow-state` helper (`init` + `record`)** if the active profile has `workflow_state` declared. Pass:
+1. **Call `toge:workflow-state` helper (`init` + `record`)** if the active profile has `workflow_state` declared. Pass:
    - `feature` — the slug
    - `source_prd` — path to the PRD
    - `source_prd_hash` — SHA-256 of the PRD content
@@ -273,7 +273,7 @@ For vanilla-profile outputs, use the minimal front-matter style: `title`, `date`
 2. **Report back to the user:**
    - The output artifact path.
    - The verdict and a one-line rationale.
-   - Always: "Screen spec written. Next recommended: run `prototype`."
+   - Always: "Screen spec written. Next recommended: run `toge:prototype`."
    - Flag any open design decisions that require a designer call before prototyping.
 
 ---

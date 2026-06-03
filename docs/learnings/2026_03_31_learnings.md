@@ -4,15 +4,13 @@ Gaps in agent behavior encountered during this session. Use these to improve ski
 
 ---
 
-## 1. Toge v1 vs Toge v2 — agent called MCP tools for the wrong design system
+## 1. Toge — agent called MCP tools instead of the CLI registry
 
-**What happened:** When the user said "use Toge v2," the agent called `mcp__design-system-toge__get_tokens` and `mcp__design-system-toge__list_components`. The user rejected both calls and had to clarify.
+**What happened:** When the user said "use Toge," the agent called `mcp__design-system-toge__get_tokens` and `mcp__design-system-toge__list_components`. The user rejected both calls and had to clarify.
 
-**Root cause:** The agent treated MCP as the universal entry point for Toge regardless of version.
+**Root cause:** The agent treated MCP as the universal entry point for Toge.
 
-**Rule:** Check `package.json` before calling any design system MCP tool.
-- `@toge-design-system/toge` or `design-system-next` → Toge v1 → MCP tools appropriate
-- Toge v2 (shadcn-vue registry) → install via CLI only, do NOT call MCP
+**Rule:** Never call the design system MCP tools for Toge. Toge (shadcn-vue registry) is installed via CLI only — read tokens from `guide/toge-design-system/tokens/style.css` and component APIs from the installed files in `src/components/ui/`.
 
 ---
 
@@ -96,13 +94,13 @@ Gaps in agent behavior encountered during this session. Use these to improve ski
 
 ---
 
-## 10. Toge v1 installer called during Phase 4 setup
+## 10. Wrong install path used during Phase 4 setup
 
-**What happened:** Even after being corrected in-session, the agent defaulted back to MCP or v1 install paths when setting up design system dependencies during Phase 4.
+**What happened:** Even after being corrected in-session, the agent defaulted back to MCP when setting up design system dependencies during Phase 4.
 
-**Root cause:** The agent did not re-check `package.json` when resuming work in a new phase.
+**Root cause:** The agent did not re-confirm the install path when resuming work in a new phase.
 
-**Rule:** Before any `npx` or install command involving Toge, check `package.json`. If `design-system-next` or `@toge-design-system/toge` is absent, use the v2 bulk installer CLI only. Never call MCP tools for Toge v2 under any circumstances.
+**Rule:** Before any `npx` or install command involving Toge, use the Toge bulk installer CLI only. Never call MCP tools for Toge under any circumstances.
 
 ---
 
@@ -130,10 +128,10 @@ Gaps in agent behavior encountered during this session. Use these to improve ski
 
 | Priority | Gap | Rule |
 |---|---|---|
-| P0 | MCP called for Toge v2 | Gate on package.json — v2 = CLI only |
+| P0 | MCP called for Toge | Toge = CLI installer only, never MCP |
 | P0 | Phase 4 not high-fidelity | Require full placeholder replacement before wiring |
 | P0 | Tab nav survives into Phase 4 | Delete tab nav at Phase 4 entry; rebuild as single canvas |
-| P0 | Toge v1 installer called in Phase 4 | Re-check package.json before any install command |
+| P0 | Wrong install path in Phase 4 | Use the Toge bulk installer CLI for every install |
 | P0 | Components not installed before prototyping | Bulk install + read component files before first prototype line |
 | P1 | Interactive CLI pipe failures | Stop after one retry, hand off to user |
 | P1 | UIFork misused as navigation router | Use state-driven rendering for sequential flows |

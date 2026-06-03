@@ -1,5 +1,5 @@
 ---
-name: secondary-research
+name: toge:secondary-research
 description: Use when the user asks for competitive analysis, landscape analysis, desk research, market research, or a UX design brief on any topic. Triggers on: "research X", "competitive analysis of X", "landscape of X", "desk research on X", "what's out there for X", "brief on X".
 ---
 

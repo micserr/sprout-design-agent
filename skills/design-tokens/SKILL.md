@@ -19,7 +19,7 @@ For the full token list, see the references folder:
 - [`references/bridge-dark-mode.yaml`](references/bridge-dark-mode.yaml) — bridge layer, light/dark resolved values
 
 **When in doubt about a token value or whether it exists, read the authoritative source first:**
-- **Authoritative source:** `guide/toge-design-system-v2/tokens/style.css`
+- **Authoritative source:** `guide/toge-design-system/tokens/style.css`
 - **This skill's reference copy:** `references/style.css` (may lag behind the project's installed version — prefer the project source)
 
 Do not rely on memory for token names. Read the file.

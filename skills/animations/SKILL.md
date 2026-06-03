@@ -1,5 +1,5 @@
 ---
-name: animations
+name: toge:animations
 description: Animation and micro-interaction principles from Emil Kowalski and Jakub Krehel. Use when adding animations, hover states, enter/exit transitions, icon state changes, button feedback, or any motion detail to a prototype. Triggers on "add animations", "make it feel better", "feels off", "hover state", "transition", "easing", "scale on press", "micro-interactions".
 ---
 

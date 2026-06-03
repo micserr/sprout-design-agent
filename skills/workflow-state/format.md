@@ -6,7 +6,7 @@ Reference examples of the ledger at various points in a feature's life. The auth
 
 ## Fresh ledger (after `init` only)
 
-Just after `prd-gap-analyzer` runs on a new PRD, before it records its artifact:
+Just after `toge:prd-gap-analyzer` runs on a new PRD, before it records its artifact:
 
 ```yaml
 schema_version: "1"
@@ -105,7 +105,7 @@ The ledger doesn't automatically re-run anything. It surfaces the drift so the h
 
 ## Vanilla profile
 
-When the active profile sets `artifact_locations.workflow_state: null`, no ledger file is written. `workflow-state` operations return `{status: skipped, reason: "ledger disabled"}` and every Sprout skill proceeds without any ledger-keeping.
+When the active profile sets `artifact_locations.workflow_state: null`, no ledger file is written. `toge:workflow-state` operations return `{status: skipped, reason: "ledger disabled"}` and every Sprout skill proceeds without any ledger-keeping.
 
 ---
 

@@ -1,5 +1,5 @@
 ---
-name: workflow-state
+name: toge:workflow-state
 description: >
   Internal helper skill used by other Sprout skills to read and update the
   feature-scoped workflow-state ledger. Not invoked by humans directly.
@@ -90,11 +90,11 @@ Called by every Sprout skill after it writes an artifact. Appends an entry to `a
 2. Load the ledger (call `init` if absent).
 3. Look for an existing entry with the same `kind` + `skill`. If found, update it (don't duplicate). Else append.
 4. Update `next_recommended:` based on a small decision table:
-   - After `ux-screen-spec` → recommend `prototype`.
-   - After `user-journey` (optional) → recommend `prototype`.
-   - After `prototype-manifest` → recommend `design-qa`, `animations`.
-   - After `ux-qa` handoff_status=ready → recommend `animations` (optional) or `handoff`.
-   - After `handoff` status=ready → no next; downstream agents take over.
+   - After `ux-screen-spec` → recommend `toge:prototype`.
+   - After `toge:user-journey` (optional) → recommend `toge:prototype`.
+   - After `prototype-manifest` → recommend `toge:design-qa`, `toge:animations`.
+   - After `ux-qa` handoff_status=ready → recommend `toge:animations` (optional) or `toge:handoff`.
+   - After `toge:handoff` status=ready → no next; downstream agents take over.
 5. Write the file. Return `{status: ok}`.
 
 ### `detect-drift`

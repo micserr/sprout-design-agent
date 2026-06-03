@@ -39,6 +39,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - `contracts/ux-learnings.schema.yaml` — schema for the team-wide learnings artifact (single file per repo, no `{feature}` placeholder).
 - `docs/profiles-guide.md` — authoring custom profiles.
 - `docs/specs/2026-04-17-skill-native-mesh-design.md` — architecture spec.
+- **Claude Code plugin packaging** — `.claude-plugin/plugin.json` (plugin name `toge`) and `.claude-plugin/marketplace.json` (marketplace `sprout`) turn the repo into an installable plugin. All skills are now namespaced under `/toge:` and discoverable by typing `/toge:` (e.g. `/toge:prototype`, `/toge:design-qa`); the `product-design` agent ships with it. `skills/` and `agents/` are auto-discovered from the repo root.
 
 ### Changed
 - `skills/prd-gap-analyzer` retrofitted with profile-aware Contract block. Lens narrowed from general PRD completeness to "ready for DESIGN" (5 specific checks). Output conforms to `contracts/ux-readiness.schema.yaml`. Calls workflow-state helper post-production. Complementary to BMAD's `bmad-validate-prd` rather than duplicative.
@@ -48,6 +49,21 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - `profiles/bmad.yaml` + `profiles/vanilla.yaml` — `ux_learnings` path added to `artifact_locations`.
 - `contracts/profile.schema.yaml` — `ux_learnings` property documented.
 - Install adapters updated: `claude.sh` asks for profile at install; `bmad.sh` auto-selects `bmad`; `codex.sh` and `cursor.sh` register `workflow-state` skill.
+
+### Removed
+- **Toge v1 design system** — the legacy `design-system-next` npm-package guide and all v1-specific process. The agent now targets the Toge shadcn-vue registry exclusively.
+
+### Changed
+- **Renamed `guide/toge-design-system-v2/` → `guide/toge-design-system/`** (the version suffix is no longer meaningful). Updated all path references across the agent, `toge:prototype`/`toge:design-qa`/`toge:design-tokens` skills, token files, and READMEs.
+- MCP guard rules reworded to drop the "reflects Toge v1" rationale — the rule (never call `mcp__design-system-toge__*`; use the CLI installer and installed files) is unchanged.
+- **Unified the `toge:` skill-name prefix across all 11 skills.** Previously only `toge:prototype`, `toge:design-qa`, `toge:design-tokens`, and `toge:user-journey` were namespaced; `animations`, `handoff`, `learnings`, `prd-gap-analyzer`, `prd-ux-validator`, `secondary-research`, and `workflow-state` now carry the prefix too. Skill directory names are unchanged.
+- **Claude Code install switched from symlinks to the plugin marketplace.** Install with `/plugin marketplace add micserr/sprout-design-agent` then `/plugin install toge@sprout`; update with `/plugin update toge@sprout`. `adapters/claude.sh` now sets the profile, removes stale symlinks from prior installs, and prints the `/plugin` flow instead of symlinking. The Codex, Cursor, and BMAD adapters are unchanged.
+- release-please now keeps `.claude-plugin/plugin.json`'s version in sync on release via `extra-files`.
+
+BREAKING CHANGE: Claude Code now distributes these skills as the `toge` plugin. Skills are invoked under the `/toge:` namespace (e.g. `/toge:prototype` instead of `/prototype`) and installed via `/plugin` rather than the `install.sh` symlink path. Existing users must remove the old `~/.claude/skills/*` symlinks (run `./install.sh` → Claude Code option to clean them up) and install the plugin.
+- `toge:prototype` skill — added Toge component implementation guidelines: a component-selection map (UI need → primitive) in Step 4, plus props/variants-over-utilities and compound-component/slot usage rules in Step 2 and the Code Quality table.
+
+BREAKING CHANGE: guide directory paths have changed (`guide/toge-design-system-v2/` → `guide/toge-design-system/`) and the Toge v1 guide has been removed — update any local references.
 
 ## [1.3.0](https://github.com/micserr/sprout-design-agent/compare/v1.2.0...v1.3.0) (2026-03-31)
 
