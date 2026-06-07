@@ -241,6 +241,8 @@ Work through screens in flow order (start → end). For each screen:
 | Loading placeholder | `Skeleton` or `Progress` |
 | Hover / focus info | `Tooltip` or `Hover Card` |
 
+**Table rule:** if a table is placed as the primary content of a page (a page-level table, not a small inline/embedded summary), always use `Data Table` **with its toolbar** — even before it obviously needs filtering. Reserve plain `Table` for small, static, embedded tables (e.g. a few rows inside a card). Never hand-build a search box + filter dropdowns floating above a plain `Table`.
+
 See the full component list in `guide/toge-design-system/README.md`. If no primitive fits, compose one from existing components; only hand-build from raw markup as a last resort, and flag it at check-in. Never rebuild a primitive that already exists in `src/components/ui/`.
 
 **Phase 4 is not complete if any of these exist:**
