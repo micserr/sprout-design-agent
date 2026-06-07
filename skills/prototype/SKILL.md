@@ -35,7 +35,7 @@ Before reading wireframes or writing any code, verify the project environment us
 | 3 | **Package compatibility** | Are all design system packages compatible with the confirmed framework and CSS version? Check for peer dependency conflicts (e.g. a design system that pins `tailwindcss@^3` installed alongside v4). Uninstall incompatible packages before proceeding. |
 | 4 | **Explicit dependencies** | Are routing and state management packages explicitly declared in `package.json`? Never assume transitive dependencies — if the prototype needs `vue-router` or `pinia`, they must be listed directly. Install any missing explicit deps before proceeding. |
 | 5 | **Toge sanity check** | This skill assumes Toge (shadcn-vue registry). Verify `components.json` exists and has `registries["@toge"]`. If missing or the registry is absent, surface a warning via `AskUserQuestion` before continuing. **Never call `mcp__design-system-toge__*` tools** — the MCP server returns stale, incorrect data for Toge. Use the CLI installer and installed files in `src/components/ui/` only. |
-| 6 | **Design system components installed** | Before writing any prototype code, verify that design system component files exist in the project (e.g., `src/components/ui/` for Toge). If they don't exist, run the bulk installer first. Then read the installed component files to understand actual prop signatures, variants, and slot names. Component discovery must happen before the first line of prototype code is written. |
+| 6 | **Design system components installed** | No prototype code may be written against a component whose source isn't installed and read. Verify component sources exist in the project (`src/components/ui/toge-[name]/` for Toge); install any that are missing from the registry per the **Install discipline** in Step 2 (per-component, never bulk), then read each file to learn its real props, variants, sizes, and sub-component/slot names. Component discovery must happen before the first line of prototype code is written. |
 
 **If any check fails: stop immediately. Do not generate any files.**
 
@@ -94,6 +94,17 @@ Every color in the prototype must come from the design system.
 ### Using Toge components
 
 Toge components are installed in `src/components/ui/`. Before using one, **read its source file** (Step 0, check 6) to get the real variants, sizes, props, and sub-component names — never reconstruct the API from memory. The names below are illustrative; the installed source is authoritative.
+
+#### Install discipline — per-component, continuously, read before write
+
+Install Toge components **one at a time, only as the flow needs them** — never bulk-install the whole registry. The registry is **remote** (base URL `https://toge-ds.azurewebsites.net/r`); the CLI *pulls* from it *into this project* at `src/components/ui/toge-[name]/`. Nothing is ever written back to the registry, and components are not staged inside `toge-ds-components` — they land in *your* project.
+
+1. **Plan the set up front.** From the wireframes + flow (Step 1), list every Toge component the whole prototype needs — the *component manifest*. Match each UI need to a slug using the catalog in `guide/toge-design-system/README.md` (each row states when to pick a component over its sibling).
+2. **Install the manifest in one batch**, then read each installed source before writing screens.
+3. **Continuous gate — any screen, any time.** Before writing *any* `<Toge*>` tag, including on screens added later in the session, check `src/components/ui/`. If the component's source isn't there, install it from the registry (`npx shadcn-vue@latest add https://toge-ds.azurewebsites.net/r/ui/[component].json`) and read it *before* using it. The pre-flight check in Step 0 only covers the first pass — this gate covers everything after.
+4. **Verify existence against the directory, not the README.** After installing, treat `src/components/ui/` as the source of truth for what exists. The README is for *selecting* a component; the installed directory is for *confirming* it is present.
+
+**Hard rule — no read, no tag.** Never emit a `<Toge*>` tag whose installed source file you have not read **this session**. Props, variants, sizes, and sub-component names come from the source file — never from memory, and never from `mcp__design-system-toge__*` (stale, incorrect). If you have not read it, you may not write it.
 
 **Drive appearance through props, not utilities.**
 - Style a component through its own `variant` and `size` props — `<TogeButton variant="destructive" size="sm">`, `<TogeBadge variant="outline">`. Do not reach for Tailwind utilities that fight the component's built-in styles (e.g., re-coloring a button with `bg-*` instead of choosing the right `variant`).
