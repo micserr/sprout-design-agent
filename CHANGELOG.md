@@ -5,6 +5,25 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.0.0](https://github.com/micserr/sprout-design-agent/compare/v1.4.1...v2.0.0) (2026-06-07)
+
+
+### ⚠ BREAKING CHANGES
+
+* Claude Code distributes these skills as the "toge" plugin. Skills are invoked under the /toge: namespace (e.g. /toge:prototype, not /prototype) and installed via /plugin instead of install.sh symlinks. The guide directory moved from guide/toge-design-system-v2/ to guide/toge-design-system/. Remove old ~/.claude/skills/* symlinks to avoid duplicates.
+
+### Features
+
+* **guide:** enrich toge component catalog with selection guidance ([a784db9](https://github.com/micserr/sprout-design-agent/commit/a784db9cba54825f2e48f26e227e74ddfe412b2a))
+* **guide:** enrich toge component catalog with selection guidance ([cfa941b](https://github.com/micserr/sprout-design-agent/commit/cfa941bcf2db20af293ae5b2e71e2ceef1a5e8d6))
+* package as toge Claude Code plugin; drop Toge v1; unify toge: prefix ([38ae773](https://github.com/micserr/sprout-design-agent/commit/38ae773fe61e8a3f4fdcee040a50d97bd8679035))
+
+
+### Bug Fixes
+
+* **prototype:** make per-component install discipline continuous ([bbda530](https://github.com/micserr/sprout-design-agent/commit/bbda530321b45e1dfbf024cdb5e9e4a8d6a0ae20))
+* **prototype:** make per-component install discipline continuous ([d78ebf6](https://github.com/micserr/sprout-design-agent/commit/d78ebf6dd8f5d8eb5c35e548caebae3d45b484ae))
+
 ## [1.4.1](https://github.com/micserr/sprout-design-agent/compare/v1.4.0...v1.4.1) (2026-04-22)
 
 
