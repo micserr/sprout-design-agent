@@ -200,6 +200,8 @@ import { RouterView } from 'vue-router'
 </template>
 ```
 
+**Sidebar rule:** whenever the prototype has a persistent app navigation shell — whether you're building it from scratch or replacing/overriding an existing layout — the sidenav is always `Sidebar` (`toge-sidebar`), never a hand-built nav rail. It is the app shell's primary navigation (`TogeSidebarProvider` + `TogeSidebarInset` for main content → `TogeSidebar collapsible="icon"` → Header / Content with `TogeSidebarGroup` > `TogeSidebarMenuButton` / Footer). Read the installed source for its real sub-component names before wiring it.
+
 ---
 
 ## Step 4 — Implement Each Screen
@@ -230,6 +232,7 @@ Work through screens in flow order (start → end). For each screen:
 | Confirm a destructive action | `Alert Dialog` |
 | Modal / focused task overlay | `Dialog` |
 | Side panel / contextual drawer | `Sheet` or `Drawer` |
+| App navigation / persistent left nav rail | `Sidebar` (`toge-sidebar`) — the app shell; never hand-build a sidenav |
 | Menu of actions from a trigger | `Dropdown Menu` |
 | Pick one option from a list | `Select` (or `Combobox` when searchable) |
 | Static tabular data (no interaction) | `Table` |
