@@ -2,7 +2,7 @@
   "$schema": "https://json.schemastore.org/claude-code-plugin-manifest.json",
   "name": "toge",
   "displayName": "Toge Design Agent",
-  "version": "1.4.1",
+  "version": "2.0.0",
   "description": "Product design workflow for Toge (shadcn-vue) — screen specs, prototyping, design QA, animations, and developer handoff.",
   "author": {
     "name": "micserr",
