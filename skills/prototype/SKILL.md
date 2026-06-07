@@ -251,6 +251,34 @@ Work through screens in flow order (start → end). For each screen:
 
 **Sheet rule:** any side panel that slides in from a screen edge (filters, detail panel, contextual editor) is always `Sheet` (`toge-sheet`) — never a hand-built sliding `<div>` with translate transitions. Use `Drawer` only for touch-first/bottom sheets, and `Dialog` for a centered modal.
 
+**Form fields rule:** whenever you build a form — on a page, in a panel, or in a card — every field is a Toge form-family primitive. Never hand-build an `<input>`, `<select>`, `<textarea>`, checkbox, or radio with raw HTML or styled `<div>`s. For multi-field forms wrap them in `toge-form` (`TogeForm` + `TogeFormField`/`Item`/`Label`/`Control`/`Description`/`Message`) so validation, `aria-invalid`, and error copy are wired automatically; pair every field with `toge-label`. Match each field to the primitive:
+
+| Field captures | Toge component |
+|---|---|
+| Short free-form text (name, title) | `toge-input` |
+| Multi-line text / notes | `toge-textarea` |
+| Email address | `toge-email-input` |
+| URL | `toge-url-input` |
+| Phone number (with country code) | `toge-phone-number-input` |
+| Bounded number with steppers | `toge-number-field` |
+| Fixed-length code (OTP, 2FA, PIN) | `toge-pin-input` |
+| Text field with icons/prefix/suffix/inline buttons | `toge-input-group` |
+| Live in-page search field | `toge-search-input` |
+| Command palette (⌘K) | `toge-command` |
+| Pick one from a static list (~3–25) | `toge-select` |
+| Native/mobile-rendered select | `toge-native-select` |
+| Searchable single-select (10+/async, typeahead) | `toge-combobox` |
+| Free-form multi-value chips (emails, tags) | `toge-tags-input` |
+| One of 2–5 visible options | `toge-radio-group` |
+| Binary choice / multi-select list | `toge-checkbox` |
+| Instant on/off setting | `toge-switch` |
+| Single date | `toge-date-picker` |
+| Time (HH MM AM/PM) | `toge-time-picker` |
+| File upload (drag-and-drop) | `toge-file-upload` |
+| Field label | `toge-label` |
+
+(See the **Form Handling** subsection below for validation, submission, and error-display patterns once the fields are in place.)
+
 See the full component list in `guide/toge-design-system/README.md`. If no primitive fits, compose one from existing components; only hand-build from raw markup as a last resort, and flag it at check-in. Never rebuild a primitive that already exists in `src/components/ui/`.
 
 **Phase 4 is not complete if any of these exist:**
