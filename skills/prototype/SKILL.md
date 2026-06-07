@@ -282,6 +282,66 @@ Work through screens in flow order (start → end). For each screen:
 
 **Accordion rule:** any expand/collapse UI made of stacked sections (FAQs, grouped settings, disclosure lists) is always `Accordion` (`toge-accordion`) — never a hand-built toggle with `v-if`/`v-show` and rotating chevrons. For a *single* standalone show/hide region, use `Collapsible` (`toge-collapsible`).
 
+**Every other UI need maps to a primitive too — never hand-build these.** The tables above cover the most common needs; the groups below cover the rest of the registry by usage. If your need matches a row, install and use that component. Sibling hints (→) point to the component to pick instead when the need is slightly different.
+
+*Actions & triggers*
+
+| UI need | Toge component |
+|---|---|
+| Trigger an action or submit | `Button` (`toge-button`) — style via its `variant`/`size` props, not utilities |
+| Joined set of related buttons (split button, connected toolbar) | `Button Group` (`toge-button-group`) |
+| Single two-state toolbar toggle (bold, mute) | `Toggle` (`toge-toggle`) → on/off *setting* = `Switch` |
+| Set of toggle buttons (alignment, view density) | `Toggle Group` (`toge-toggle-group`) → swap *views* = `Tabs` |
+| Persistent action docked to a screen edge | `Floating Action` (`toge-floating-action`) |
+
+*Navigation*
+
+| UI need | Toge component |
+|---|---|
+| Switch between sibling views/panels in place | `Tabs` (`toge-tabs`) |
+| Location trail in a hierarchy | `Breadcrumb` (`toge-breadcrumb`) |
+| Top-level site/app nav with flyout panels | `Navigation Menu` (`toge-navigation-menu`) |
+| App menu bar with cascading menus (File / Edit / View) | `Menubar` (`toge-menubar`) |
+| Split a long list across pages | `Pagination` (`toge-pagination`) |
+| App-shell ⌘K spotlight search | `Global Search` (`platform/global-search`) — composes Dialog + Command |
+
+*Overlays & menus*
+
+| UI need | Toge component |
+|---|---|
+| Click-triggered floating panel (mini-form, picker) | `Popover` (`toge-popover`) → hover-only preview = `Hover Card` |
+| Right-click / long-press menu | `Context Menu` (`toge-context-menu`) |
+| Layered side panels (drill-down / sub-nav) | `Stacked Sheet` (`toge-stacked-sheet`) → single panel = `Sheet` |
+
+*Selection & dates* (text/number/choice fields are in the **Form fields rule** above)
+
+| UI need | Toge component |
+|---|---|
+| Grid of selectable option cards (label + description) | `Choicebox` (`toge-choicebox`) |
+| Drag-to-set a number along a track | `Slider` (`toge-slider`) → typed bounded number = `Number Field` |
+| Always-visible inline single-date grid | `Calendar` (`toge-calendar`) → compact trigger+popover = `Date Picker` |
+| Always-visible inline start–end range grid | `Range Calendar` (`toge-range-calendar`) |
+
+*Layout & containers*
+
+| UI need | Toge component |
+|---|---|
+| Group related content into a surface | `Card` (`toge-card`) — use header/content/footer slots |
+| Swipeable set of slides | `Carousel` (`toge-carousel`) |
+| Lock media to a fixed width:height ratio | `Aspect Ratio` (`toge-aspect-ratio`) |
+| Divider line between content | `Separator` (`toge-separator`) → draggable split = `Resizable` |
+| Resizable split panes | `Resizable` (`toge-resizable`) |
+| Custom styled scroll region | `Scroll Area` (`toge-scroll-area`) |
+| Multi-step flow / wizard indicator | `Stepper` (`toge-stepper`) → simple completion = `Progress` |
+
+*Feedback & AI surfaces*
+
+| UI need | Toge component |
+|---|---|
+| AI/agent-styled banner (glowing halo) | `Agent Banner` (`toge-agent-banner`) → standard notice = `Alert` |
+| Conversational / AI message thread | `Chat` (`toge-chat`) + composer `Chat Input` (`toge-chat-input`) |
+| Show an AI agent's reasoning steps | `Chat Thought Process` (`toge-chat-thought-process`) |
+
 See the full component list in `guide/toge-design-system/README.md`. If no primitive fits, compose one from existing components; only hand-build from raw markup as a last resort, and flag it at check-in. Never rebuild a primitive that already exists in `src/components/ui/`.
 
 **Phase 4 is not complete if any of these exist:**
