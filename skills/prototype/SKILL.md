@@ -200,6 +200,8 @@ import { RouterView } from 'vue-router'
 </template>
 ```
 
+**Sidebar rule:** whenever the prototype has a persistent app navigation shell — whether you're building it from scratch or replacing/overriding an existing layout — the sidenav is always `Sidebar` (`toge-sidebar`), never a hand-built nav rail. It is the app shell's primary navigation (`TogeSidebarProvider` + `TogeSidebarInset` for main content → `TogeSidebar collapsible="icon"` → Header / Content with `TogeSidebarGroup` > `TogeSidebarMenuButton` / Footer). Read the installed source for its real sub-component names before wiring it.
+
 ---
 
 ## Step 4 — Implement Each Screen
@@ -229,16 +231,127 @@ Work through screens in flow order (start → end). For each screen:
 |---|---|
 | Confirm a destructive action | `Alert Dialog` |
 | Modal / focused task overlay | `Dialog` |
-| Side panel / contextual drawer | `Sheet` or `Drawer` |
+| Side panel that slides in from an edge | `Sheet` (`toge-sheet`) — never hand-build a sliding panel; use `Drawer` only for touch-first/bottom sheets |
+| App navigation / persistent left nav rail | `Sidebar` (`toge-sidebar`) — the app shell; never hand-build a sidenav |
 | Menu of actions from a trigger | `Dropdown Menu` |
 | Pick one option from a list | `Select` (or `Combobox` when searchable) |
-| Tabular data | `Data Table` (sortable/filterable) or `Table` (static) |
+| Static tabular data (no interaction) | `Table` |
+| Table with search, filters, sorting, or pagination | `Data Table` **with its built-in toolbar** — never hand-build a search box + filter dropdowns floating above a plain `Table` |
 | On/off setting | `Switch` |
+| User or company/entity avatar | `Avatar` (`toge-avatar`) — never hand-build an initials circle or `<img>` wrapper |
 | Status / category label | `Badge` |
 | Inline contextual message | `Alert` |
 | Transient notification | `Sonner` (toast) |
 | Loading placeholder | `Skeleton` or `Progress` |
+| Expand/collapse stacked sections | `Accordion` (`toge-accordion`) — never hand-build; a single show/hide region is `Collapsible` |
 | Hover / focus info | `Tooltip` or `Hover Card` |
+
+**Table rule:** if a table is placed as the primary content of a page (a page-level table, not a small inline/embedded summary), always use `Data Table` **with its toolbar** — even before it obviously needs filtering. Reserve plain `Table` for small, static, embedded tables (e.g. a few rows inside a card). Never hand-build a search box + filter dropdowns floating above a plain `Table`.
+
+**Avatar rule:** any avatar — a user *or* a company/entity — is always `Avatar` (`toge-avatar`), using its built-in initials fallback (and optional status dot). Never hand-build an initials circle (`<div class="rounded-full">`) or a bare `<img>` wrapper.
+
+**Sheet rule:** any side panel that slides in from a screen edge (filters, detail panel, contextual editor) is always `Sheet` (`toge-sheet`) — never a hand-built sliding `<div>` with translate transitions. Use `Drawer` only for touch-first/bottom sheets, and `Dialog` for a centered modal.
+
+**Form fields rule:** whenever you build a form — on a page, in a panel, or in a card — every field is a Toge form-family primitive. Never hand-build an `<input>`, `<select>`, `<textarea>`, checkbox, or radio with raw HTML or styled `<div>`s. For multi-field forms wrap them in `toge-form` (`TogeForm` + `TogeFormField`/`Item`/`Label`/`Control`/`Description`/`Message`) so validation, `aria-invalid`, and error copy are wired automatically; pair every field with `toge-label`. Match each field to the primitive:
+
+| Field captures | Toge component |
+|---|---|
+| Short free-form text (name, title) | `toge-input` |
+| Multi-line text / notes | `toge-textarea` |
+| Email address | `toge-email-input` |
+| URL | `toge-url-input` |
+| Phone number (with country code) | `toge-phone-number-input` |
+| Bounded number with steppers | `toge-number-field` |
+| Fixed-length code (OTP, 2FA, PIN) | `toge-pin-input` |
+| Text field with icons/prefix/suffix/inline buttons | `toge-input-group` |
+| Live in-page search field | `toge-search-input` |
+| Command palette (⌘K) | `toge-command` |
+| Pick one from a static list (~3–25) | `toge-select` |
+| Native/mobile-rendered select | `toge-native-select` |
+| Searchable single-select (10+/async, typeahead) | `toge-combobox` |
+| Free-form multi-value chips (emails, tags) | `toge-tags-input` |
+| One of 2–5 visible options | `toge-radio-group` |
+| Binary choice / multi-select list | `toge-checkbox` |
+| Instant on/off setting | `toge-switch` |
+| Single date | `toge-date-picker` |
+| Time (HH MM AM/PM) | `toge-time-picker` |
+| File upload (drag-and-drop) | `toge-file-upload` |
+| Field label | `toge-label` |
+
+(See the **Form Handling** subsection below for validation, submission, and error-display patterns once the fields are in place.)
+
+**Accordion rule:** any expand/collapse UI made of stacked sections (FAQs, grouped settings, disclosure lists) is always `Accordion` (`toge-accordion`) — never a hand-built toggle with `v-if`/`v-show` and rotating chevrons. For a *single* standalone show/hide region, use `Collapsible` (`toge-collapsible`).
+
+**Every other UI need maps to a primitive too — never hand-build these.** The tables above cover the most common needs; the groups below cover the rest of the registry by usage. If your need matches a row, install and use that component. Sibling hints (→) point to the component to pick instead when the need is slightly different.
+
+*Actions & triggers*
+
+| UI need | Toge component |
+|---|---|
+| Trigger an action or submit | `Button` (`toge-button`) — style via its `variant`/`size` props, not utilities |
+| Joined set of related buttons (split button, connected toolbar) | `Button Group` (`toge-button-group`) |
+| Single two-state toolbar toggle (bold, mute) | `Toggle` (`toge-toggle`) → on/off *setting* = `Switch` |
+| Set of toggle buttons (alignment, view density) | `Toggle Group` (`toge-toggle-group`) → swap *views* = `Tabs` |
+| Persistent action docked to a screen edge | `Floating Action` (`toge-floating-action`) |
+
+*Navigation*
+
+| UI need | Toge component |
+|---|---|
+| Switch between sibling views/panels in place | `Tabs` (`toge-tabs`) |
+| Location trail in a hierarchy | `Breadcrumb` (`toge-breadcrumb`) |
+| Top-level site/app nav with flyout panels | `Navigation Menu` (`toge-navigation-menu`) |
+| App menu bar with cascading menus (File / Edit / View) | `Menubar` (`toge-menubar`) |
+| Split a long list across pages | `Pagination` (`toge-pagination`) |
+| App-shell ⌘K spotlight search | `Global Search` (`platform/global-search`) — composes Dialog + Command |
+
+*Overlays & menus*
+
+| UI need | Toge component |
+|---|---|
+| Click-triggered floating panel (mini-form, picker) | `Popover` (`toge-popover`) → hover-only preview = `Hover Card` |
+| Right-click / long-press menu | `Context Menu` (`toge-context-menu`) |
+| Layered side panels (drill-down / sub-nav) | `Stacked Sheet` (`toge-stacked-sheet`) → single panel = `Sheet` |
+
+*Selection & dates* (text/number/choice fields are in the **Form fields rule** above)
+
+| UI need | Toge component |
+|---|---|
+| Grid of selectable option cards (label + description) | `Choicebox` (`toge-choicebox`) |
+| Drag-to-set a number along a track | `Slider` (`toge-slider`) → typed bounded number = `Number Field` |
+| Always-visible inline single-date grid | `Calendar` (`toge-calendar`) → compact trigger+popover = `Date Picker` |
+| Always-visible inline start–end range grid | `Range Calendar` (`toge-range-calendar`) |
+
+*Layout & containers*
+
+| UI need | Toge component |
+|---|---|
+| Group related content into a surface | `Card` (`toge-card`) — use header/content/footer slots |
+| Swipeable set of slides | `Carousel` (`toge-carousel`) |
+| Lock media to a fixed width:height ratio | `Aspect Ratio` (`toge-aspect-ratio`) |
+| Divider line between content | `Separator` (`toge-separator`) → draggable split = `Resizable` |
+| Resizable split panes | `Resizable` (`toge-resizable`) |
+| Custom styled scroll region | `Scroll Area` (`toge-scroll-area`) |
+| Multi-step flow / wizard indicator | `Stepper` (`toge-stepper`) → simple completion = `Progress` |
+
+*Feedback & AI surfaces*
+
+| UI need | Toge component |
+|---|---|
+| AI/agent-styled banner (glowing halo) | `Agent Banner` (`toge-agent-banner`) → standard notice = `Alert` |
+| Conversational / AI message thread | `Chat` (`toge-chat`) + composer `Chat Input` (`toge-chat-input`) |
+| Show an AI agent's reasoning steps | `Chat Thought Process` (`toge-chat-thought-process`) |
+
+*Product blocks (app-specific — use only when building that exact surface, otherwise compose from the primitives above)*
+
+| UI need | Toge block |
+|---|---|
+| Display ReadyWage information in a card | `ReadyWage Card` (`fintech/readywage-card`) |
+| Sidekick AI banner (title + markdown body + optional close) | `Sidekick Banner` (`sidekick/sidekick-banner`) |
+| Showcase the Sidekick Central AI suite | `Sidekick Central Card` (`sidekick/sidekick-central-card`) |
+| Sidekick chat surface | `Sidekick Chat` (`sidekick/sidekick-chat`) |
+
+> Note: `toge-styles` is the token/theme layer, not a selectable component — it auto-installs as a dependency of every component. There's nothing to pick; just ensure its `style.css` is imported.
 
 See the full component list in `guide/toge-design-system/README.md`. If no primitive fits, compose one from existing components; only hand-build from raw markup as a last resort, and flag it at check-in. Never rebuild a primitive that already exists in `src/components/ui/`.
 
