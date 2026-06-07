@@ -35,7 +35,7 @@ Before reading wireframes or writing any code, verify the project environment us
 | 3 | **Package compatibility** | Are all design system packages compatible with the confirmed framework and CSS version? Check for peer dependency conflicts (e.g. a design system that pins `tailwindcss@^3` installed alongside v4). Uninstall incompatible packages before proceeding. |
 | 4 | **Explicit dependencies** | Are routing and state management packages explicitly declared in `package.json`? Never assume transitive dependencies — if the prototype needs `vue-router` or `pinia`, they must be listed directly. Install any missing explicit deps before proceeding. |
 | 5 | **Toge sanity check** | This skill assumes Toge (shadcn-vue registry). Verify `components.json` exists and has `registries["@toge"]`. If missing or the registry is absent, surface a warning via `AskUserQuestion` before continuing. **Never call `mcp__design-system-toge__*` tools** — the MCP server returns stale, incorrect data for Toge. Use the CLI installer and installed files in `src/components/ui/` only. |
-| 6 | **Design system components installed** | No prototype code may be written against a component whose source isn't installed and read. Verify component sources exist in the project (`src/components/ui/toge-[name]/` for Toge); install any that are missing from the registry per the **Install discipline** in Step 2 (per-component, never bulk), then read each file to learn its real props, variants, sizes, and sub-component/slot names. Component discovery must happen before the first line of prototype code is written. |
+| 6 | **Full component catalog enumerated** | Before writing any prototype code OR hand-building any component, enumerate the **complete** Toge catalog from the registry's `items[].name` (see **Check 6 — enumeration detail** below) and verify which sources are already installed in `src/components/ui/`. Read each installed component's source for its real prop signatures, variants, sizes, and slot names. **A primitive that exists in the catalog must never be hand-built.** Discovery must happen before the first line of prototype code. |
 
 **If any check fails: stop immediately. Do not generate any files.**
 
@@ -57,6 +57,25 @@ Only proceed after the user confirms. When proceeding, add a comment at the top 
 Do not advance to Step 1 until all applicable checks pass and any fixes are confirmed.
 
 **Interactive CLI scripts (readline/promises):** If a setup script uses Node's `readline/promises` and piped input (`printf "...\n" | node script.mjs`) fails silently after one attempt, stop immediately. Do not retry the same pipe pattern. Tell the user: "This script requires a TTY — run it interactively with `! node /path/to/script.mjs`."
+
+### Check 6 — enumeration detail (do this exactly)
+
+The authoritative source is the registry's top-level `items[].name` list. Enumerate it with:
+
+```bash
+curl -s https://toge-ds.azurewebsites.net/registry.json \
+  | python3 -c "import sys,json;[print(i['name'],'—',i.get('description','')) for i in json.load(sys.stdin)['items']]"
+```
+
+This returns ~69 UI components (`ui/toge-*`) plus block components (`platform/*`, `fintech/*`, `sidekick/*`) — ~74 items total. Item paths are prefixed `toge-`: `https://toge-ds.azurewebsites.net/r/ui/toge-<name>.json`. The registry index is at `/registry.json` (**not** `/r/registry.json`).
+
+**⚠️ Anti-pattern — do NOT do this.** Never derive the component list by grepping `registryDependencies` URLs (e.g. `grep -oE 'r/ui/toge-[a-z-]+\.json'`). Those arrays contain only components that happen to be *dependencies of other components* — roughly the ~29 transitively-referenced ones — and silently hide the rest, including `toge-sidebar`, `toge-sonner`, `toge-progress`, `toge-select`, `toge-switch`, `toge-radio-group`, `toge-alert`, `toge-alert-dialog`, `toge-data-table`, `toge-stepper`, `toge-combobox`, `toge-drawer`, `toge-dropdown-menu`, and `toge-breadcrumb`. **Always read `items[].name`.**
+
+**Decision rule once the catalog is in hand:**
+- **Primitive** (button, input, select, toast, progress, sidebar, dialog, table, switch, alert, tabs, tooltip…) → MUST be installed from the registry if it exists. Reimplementing one is a pre-flight failure.
+- **Composed app component** (one that *combines* Toge primitives for app-specific logic — e.g. `EmployeeAvatar`, `StatusBadge`, `RatingScale`) → legitimately custom. Custom is fine when it **composes** primitives; never when it **reimplements** one.
+
+If a primitive you need is missing from the catalog, only then compose from existing primitives, and flag it at check-in. The `guide/toge-design-system/README.md` catalog is for *selecting* a component (it states when to pick one over its sibling); `items[].name` is the source of truth for *what exists*.
 
 ---
 
@@ -99,12 +118,15 @@ Toge components are installed in `src/components/ui/`. Before using one, **read 
 
 Install Toge components **one at a time, only as the flow needs them** — never bulk-install the whole registry. The registry is **remote** (base URL `https://toge-ds.azurewebsites.net/r`); the CLI *pulls* from it *into this project* at `src/components/ui/toge-[name]/`. Nothing is ever written back to the registry, and components are not staged inside `toge-ds-components` — they land in *your* project.
 
-1. **Plan the set up front.** From the wireframes + flow (Step 1), list every Toge component the whole prototype needs — the *component manifest*. Match each UI need to a slug using the catalog in `guide/toge-design-system/README.md` (each row states when to pick a component over its sibling).
-2. **Install the manifest in one batch**, then read each installed source before writing screens.
-3. **Continuous gate — any screen, any time.** Before writing *any* `<Toge*>` tag, including on screens added later in the session, check `src/components/ui/`. If the component's source isn't there, install it from the registry (`npx shadcn-vue@latest add https://toge-ds.azurewebsites.net/r/ui/[component].json`) and read it *before* using it. The pre-flight check in Step 0 only covers the first pass — this gate covers everything after.
-4. **Verify existence against the directory, not the README.** After installing, treat `src/components/ui/` as the source of truth for what exists. The README is for *selecting* a component; the installed directory is for *confirming* it is present.
+1. **Enumerate the full catalog first.** Get the *authoritative* component list from the registry's `items[].name` per **Step 0 — Check 6 enumeration detail** (never from `registryDependencies` — that hides most of the catalog and is exactly how primitives like `toge-sidebar`, `toge-sonner`, and `toge-progress` get reinvented).
+2. **Plan the set up front.** From the wireframes + flow (Step 1), list every Toge component the whole prototype needs — the *component manifest* — matching each UI need to a slug from the enumerated catalog (cross-check `guide/toge-design-system/README.md` for which component to pick over its sibling).
+3. **Install the manifest in one batch**, then read each installed source before writing screens.
+4. **Continuous gate — any screen, any time.** Before writing *any* `<Toge*>` tag, including on screens added later in the session, check `src/components/ui/`. If the component's source isn't there, install it from the registry (`npx shadcn-vue@latest add https://toge-ds.azurewebsites.net/r/ui/[component].json`, or the `@toge` alias: `npx shadcn-vue@latest add @toge/toge-[name]`) and read it *before* using it. The pre-flight check in Step 0 only covers the first pass — this gate covers everything after.
+5. **Verify existence against the directory, not the README.** After installing, treat `src/components/ui/` as the source of truth for what exists. The README is for *selecting* a component; the installed directory is for *confirming* it is present.
 
 **Hard rule — no read, no tag.** Never emit a `<Toge*>` tag whose installed source file you have not read **this session**. Props, variants, sizes, and sub-component names come from the source file — never from memory, and never from `mcp__design-system-toge__*` (stale, incorrect). If you have not read it, you may not write it.
+
+**Hard rule — never reinvent a catalog component.** Before hand-building any *primitive* (button, input, select, toast, progress, sidebar, dialog, table, switch, alert, tabs, tooltip, stepper, combobox, drawer…), confirm it is absent from the *full* catalog (`items[].name`), not just from `src/components/ui/` — a primitive missing locally usually means it was never installed, not that it doesn't exist. If a matching primitive exists in the registry, install it; do not reimplement it. Hand-building is legitimate only for *composed app components* that combine Toge primitives for app-specific logic (e.g. an `EmployeeAvatar`, `StatusBadge`, `RatingScale`) — never for a primitive the registry already ships.
 
 **Drive appearance through props, not utilities.**
 - Style a component through its own `variant` and `size` props — `<TogeButton variant="destructive" size="sm">`, `<TogeBadge variant="outline">`. Do not reach for Tailwind utilities that fight the component's built-in styles (e.g., re-coloring a button with `bg-*` instead of choosing the right `variant`).
