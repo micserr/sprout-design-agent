@@ -238,6 +238,7 @@ Work through screens in flow order (start → end). For each screen:
 | Static tabular data (no interaction) | `Table` |
 | Table with search, filters, sorting, or pagination | `Data Table` **with its built-in toolbar** — never hand-build a search box + filter dropdowns floating above a plain `Table` |
 | On/off setting | `Switch` |
+| User or company/entity avatar | `Avatar` (`toge-avatar`) — never hand-build an initials circle or `<img>` wrapper |
 | Status / category label | `Badge` |
 | Inline contextual message | `Alert` |
 | Transient notification | `Sonner` (toast) |
@@ -245,6 +246,8 @@ Work through screens in flow order (start → end). For each screen:
 | Hover / focus info | `Tooltip` or `Hover Card` |
 
 **Table rule:** if a table is placed as the primary content of a page (a page-level table, not a small inline/embedded summary), always use `Data Table` **with its toolbar** — even before it obviously needs filtering. Reserve plain `Table` for small, static, embedded tables (e.g. a few rows inside a card). Never hand-build a search box + filter dropdowns floating above a plain `Table`.
+
+**Avatar rule:** any avatar — a user *or* a company/entity — is always `Avatar` (`toge-avatar`), using its built-in initials fallback (and optional status dot). Never hand-build an initials circle (`<div class="rounded-full">`) or a bare `<img>` wrapper.
 
 See the full component list in `guide/toge-design-system/README.md`. If no primitive fits, compose one from existing components; only hand-build from raw markup as a last resort, and flag it at check-in. Never rebuild a primitive that already exists in `src/components/ui/`.
 
