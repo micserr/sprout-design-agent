@@ -231,7 +231,7 @@ Work through screens in flow order (start → end). For each screen:
 |---|---|
 | Confirm a destructive action | `Alert Dialog` |
 | Modal / focused task overlay | `Dialog` |
-| Side panel / contextual drawer | `Sheet` or `Drawer` |
+| Side panel that slides in from an edge | `Sheet` (`toge-sheet`) — never hand-build a sliding panel; use `Drawer` only for touch-first/bottom sheets |
 | App navigation / persistent left nav rail | `Sidebar` (`toge-sidebar`) — the app shell; never hand-build a sidenav |
 | Menu of actions from a trigger | `Dropdown Menu` |
 | Pick one option from a list | `Select` (or `Combobox` when searchable) |
@@ -248,6 +248,8 @@ Work through screens in flow order (start → end). For each screen:
 **Table rule:** if a table is placed as the primary content of a page (a page-level table, not a small inline/embedded summary), always use `Data Table` **with its toolbar** — even before it obviously needs filtering. Reserve plain `Table` for small, static, embedded tables (e.g. a few rows inside a card). Never hand-build a search box + filter dropdowns floating above a plain `Table`.
 
 **Avatar rule:** any avatar — a user *or* a company/entity — is always `Avatar` (`toge-avatar`), using its built-in initials fallback (and optional status dot). Never hand-build an initials circle (`<div class="rounded-full">`) or a bare `<img>` wrapper.
+
+**Sheet rule:** any side panel that slides in from a screen edge (filters, detail panel, contextual editor) is always `Sheet` (`toge-sheet`) — never a hand-built sliding `<div>` with translate transitions. Use `Drawer` only for touch-first/bottom sheets, and `Dialog` for a centered modal.
 
 See the full component list in `guide/toge-design-system/README.md`. If no primitive fits, compose one from existing components; only hand-build from raw markup as a last resort, and flag it at check-in. Never rebuild a primitive that already exists in `src/components/ui/`.
 
