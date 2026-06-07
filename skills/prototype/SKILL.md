@@ -232,7 +232,8 @@ Work through screens in flow order (start → end). For each screen:
 | Side panel / contextual drawer | `Sheet` or `Drawer` |
 | Menu of actions from a trigger | `Dropdown Menu` |
 | Pick one option from a list | `Select` (or `Combobox` when searchable) |
-| Tabular data | `Data Table` (sortable/filterable) or `Table` (static) |
+| Static tabular data (no interaction) | `Table` |
+| Table with search, filters, sorting, or pagination | `Data Table` **with its built-in toolbar** — never hand-build a search box + filter dropdowns floating above a plain `Table` |
 | On/off setting | `Switch` |
 | Status / category label | `Badge` |
 | Inline contextual message | `Alert` |
