@@ -342,6 +342,17 @@ Work through screens in flow order (start → end). For each screen:
 | Conversational / AI message thread | `Chat` (`toge-chat`) + composer `Chat Input` (`toge-chat-input`) |
 | Show an AI agent's reasoning steps | `Chat Thought Process` (`toge-chat-thought-process`) |
 
+*Product blocks (app-specific — use only when building that exact surface, otherwise compose from the primitives above)*
+
+| UI need | Toge block |
+|---|---|
+| Display ReadyWage information in a card | `ReadyWage Card` (`fintech/readywage-card`) |
+| Sidekick AI banner (title + markdown body + optional close) | `Sidekick Banner` (`sidekick/sidekick-banner`) |
+| Showcase the Sidekick Central AI suite | `Sidekick Central Card` (`sidekick/sidekick-central-card`) |
+| Sidekick chat surface | `Sidekick Chat` (`sidekick/sidekick-chat`) |
+
+> Note: `toge-styles` is the token/theme layer, not a selectable component — it auto-installs as a dependency of every component. There's nothing to pick; just ensure its `style.css` is imported.
+
 See the full component list in `guide/toge-design-system/README.md`. If no primitive fits, compose one from existing components; only hand-build from raw markup as a last resort, and flag it at check-in. Never rebuild a primitive that already exists in `src/components/ui/`.
 
 **Phase 4 is not complete if any of these exist:**
