@@ -5,6 +5,14 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.0.1](https://github.com/micserr/sprout-design-agent/compare/v2.0.0...v2.0.1) (2026-06-07)
+
+
+### Bug Fixes
+
+* **prototype:** enforce full-catalog enumeration in Step 0 ([#31](https://github.com/micserr/sprout-design-agent/issues/31)) ([eddad7b](https://github.com/micserr/sprout-design-agent/commit/eddad7b3ddbf9005952593af10f9bc4c52f4e47b))
+* **prototype:** exhaustive Toge component-selection rules in Step 4 ([#34](https://github.com/micserr/sprout-design-agent/issues/34)) ([d103e46](https://github.com/micserr/sprout-design-agent/commit/d103e4637dc30c83e45c28fc194885f3aa89ee62))
+
 ## [2.0.0](https://github.com/micserr/sprout-design-agent/compare/v1.4.1...v2.0.0) (2026-06-07)
 
 
