@@ -75,6 +75,6 @@ Claude Code installs the toge plugin from its marketplace. Inside Claude Code, r
   /plugin install toge@sprout
 
 Then restart Claude Code. Every skill is available under the /toge: namespace
-(type /toge: to list them — e.g. /toge:prototype, /toge:design-qa), along with
+(type /toge: to list them — e.g. /toge:user-journey, /toge:design-qa), along with
 the product-design agent. Update later with: /plugin update toge@sprout
 EOF

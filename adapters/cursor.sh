@@ -56,7 +56,6 @@ skill_desc() {
     prd-ux-validator)   echo "Optional research enrichment — validates a PRD against secondary research. Not required in the core workflow." ;;
     secondary-research) echo "Free-form competitive and market research producing an 18-section design brief." ;;
     user-journey)       echo "Journey maps, user flow diagrams, pain points, and touchpoint summaries." ;;
-    prototype)          echo "Turns a screen spec into a runnable Vue 3 prototype with real navigation, live state, and design system components." ;;
     design-tokens)      echo "Token architecture, semantic color families, typography, and dark mode guidance." ;;
     design-qa)          echo "Pre-handoff QA across 4 pillars: visual consistency, token compliance, accessibility, interaction readiness." ;;
     animations)         echo "Animation and micro-interaction principles — hover states, transitions, easing, and motion details." ;;
@@ -67,7 +66,7 @@ skill_desc() {
   esac
 }
 
-SKILLS=(prd-gap-analyzer prd-ux-validator secondary-research user-journey prototype design-tokens design-qa animations handoff workflow-state learnings)
+SKILLS=(prd-gap-analyzer prd-ux-validator secondary-research user-journey design-tokens design-qa animations handoff workflow-state learnings)
 
 for slug in "${SKILLS[@]}"; do
   skill_file="$SCRIPT_DIR/skills/$slug/SKILL.md"

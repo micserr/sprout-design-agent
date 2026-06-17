@@ -21,7 +21,6 @@ See [`PROMPTS.md`](PROMPTS.md) for ready-to-use prompts for every skill and work
 | Skill | What it does | Trigger phrases |
 |---|---|---|
 | `toge:user-journey` | Journey maps and user flow diagrams | "user journey", "user flow", "map the flow", "journey map" |
-| `toge:prototype` | Builds an interactive Vue 3 prototype from a user flow and layout reference — typography and surfaces built-in | "prototype", "make it interactive", "clickable prototype", "wire the screens" |
 | `toge:design-tokens` | Token architecture, semantic color families, typography, dark mode | "what token should I use", "design token", "which color for", "semantic color" |
 | `toge:design-qa` | Pre-handoff QA across 4 pillars: visual consistency, token compliance, accessibility, interaction readiness | "design qa", "review this design", "audit the UI", "is this ready for handoff" |
 | `toge:animations` | Micro-interactions, hover states, enter/exit transitions, easing, and icon state changes (optional phase — designer decides) | "add animations", "make it feel better", "feels off", "hover state", "transition", "easing", "scale on press" |
@@ -33,6 +32,14 @@ See [`PROMPTS.md`](PROMPTS.md) for ready-to-use prompts for every skill and work
 |---|---|
 | `toge:workflow-state` | Reads/writes the feature-scoped workflow ledger. Invoked by other skills; not called by humans directly. No-op on profiles without a ledger. |
 | `toge:learnings` | Reads/writes the team-wide UX Learnings file. Read at session start as passive design context. Invoked automatically after design-qa and handoff to capture patterns, anti-patterns, and recurring QA findings. Human-callable for manual entries: "remember this", "add to learnings", "what have we learned". |
+
+### Archived skills
+
+Temporarily out of rotation — not auto-discovered by the plugin and not exposed under `/toge:`. See [`archive/`](archive/).
+
+| Skill | What it did | Status |
+|---|---|---|
+| `prototype` | Built an interactive Vue 3 prototype from a user flow and layout reference | Archived 2026-06-17 — returning in a future release |
 
 ---
 
@@ -62,14 +69,16 @@ Product Outcome (why) + Product Unit (what)
   → Phase 1: Design Framing                   [optional]
       JTBD statements · HMW statements · Problem statement · Success criteria
   → Phase 2: User Journey                     [optional]
-  → Phase 3: Interactive Prototype            [required]
+  → Phase 3: Interactive Prototype            [archived — skill temporarily out of rotation]
       Typography + surfaces + real navigation + edge states
   → Phase 4: Design QA                        [required]
   → Phase 5: Animations                       [optional — designer decides]
   → Phase 6: Developer Handoff                [required]
 ```
 
-The agent checks in between every phase. It never auto-advances. For UAC-level inputs or tight feature specs, Phases 1 and 2 can be skipped — go directly from Phase 0 to Phase 3.
+The agent checks in between every phase. It never auto-advances. For UAC-level inputs or tight feature specs, Phases 1 and 2 can be skipped.
+
+> **Phase 3 (Prototype) is currently archived** — the `toge:prototype` skill is temporarily out of rotation (see [`archive/`](archive/)). Phases 4 (Design QA) and 6 (Handoff) still run against an existing prototype.
 
 **Mesh Mode:** each skill is independently callable — run just `toge:prd-gap-analyzer` to produce a screen spec, just `toge:design-qa` on a prototype, just `toge:handoff` on existing code. Skills resolve paths from the active profile, so the same command produces BMAD-shaped artifacts in a BMAD repo and plain `docs/design/` markdown in a vanilla one. See the Mesh Mode section in `agents/product-design.md`.
 
@@ -82,7 +91,7 @@ The agent uses **Toge** (shadcn-vue registry) exclusively. See `guide/toge-desig
 ## Requirements
 
 - Claude Code installed
-- For the **prototype** skill output: a Vue 3 project with Tailwind CSS and Toge (shadcn-vue registry)
+- For prototype output (when the **prototype** skill is restored from `archive/`): a Vue 3 project with Tailwind CSS and Toge (shadcn-vue registry)
 
 ---
 
@@ -97,7 +106,7 @@ Sprout ships as a Claude Code **plugin**. Inside Claude Code, add the marketplac
 /plugin install toge@sprout
 ```
 
-Restart Claude Code. Every skill is then available under the `/toge:` namespace — type `/toge:` to list them (e.g. `/toge:prototype`, `/toge:design-qa`) — along with the `product-design` agent.
+Restart Claude Code. Every skill is then available under the `/toge:` namespace — type `/toge:` to list them (e.g. `/toge:user-journey`, `/toge:design-qa`) — along with the `product-design` agent.
 
 > **Migrating from the old symlink install?** Earlier versions symlinked skills into `~/.claude/skills/` (invoked as `/prototype`, `/design-qa`, …). Remove those first so you don't get duplicates: run `./install.sh` → option 1, which cleans up the stale symlinks for you, then install the plugin as above.
 
