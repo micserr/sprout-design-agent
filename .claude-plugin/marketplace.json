@@ -10,7 +10,7 @@
     {
       "name": "toge",
       "source": "./",
-      "description": "Product design workflow for Toge (shadcn-vue) — screen specs, prototyping, design QA, animations, and developer handoff.",
+      "description": "Product design workflow for Toge (shadcn-vue) — screen specs, design QA, animations, and developer handoff.",
       "homepage": "https://github.com/micserr/sprout-design-agent",
       "keywords": [
         "design",

@@ -210,6 +210,8 @@ Store all 5 vars and carry them forward explicitly into Phase 4.
 
 ### Phase 3: Prototype
 
+> **⚠️ Archived (temporarily out of rotation).** The `toge:prototype` skill has been moved to `archive/prototype/SKILL.md` and is not exposed under `/toge:`. Skip this phase unless it has been restored. If a prototype already exists, proceed to Phase 4 (Design QA) against it. To run this phase, first restore the skill: `git mv archive/prototype skills/prototype`.
+
 **Before starting**, check `PROTOTYPE_REFERENCE_FOUND`:
 
 - If `yes`: State which existing screens were scanned and which patterns were extracted. Proceed directly — use `PROTOTYPE_REFERENCE` as the layout baseline for all new screens. Do not ask for a wireframe unless the user volunteers one.
@@ -223,7 +225,7 @@ Store all 5 vars and carry them forward explicitly into Phase 4.
 1. **Delete tab navigation** — if any tabbed multi-screen layout exists from prior work, remove the tab switcher entirely before building. Phase 3 is a single unified experience with real `vue-router` routing.
 2. **Verify components are installed** — confirm Toge component files exist in `src/components/ui/` before writing prototype code. If not installed, run the bulk installer and read the component files first.
 
-Read `skills/prototype/SKILL.md` and follow it exactly.
+Read `archive/prototype/SKILL.md` and follow it exactly (the skill is archived — see the note above).
 
 **Pre-flight failure handling (Step 0):** If any pre-flight check fails, stop immediately. Do not generate any files. Use `AskUserQuestion` to surface:
 - What was found (e.g., "Missing `@source` directive in your CSS config")

@@ -25,7 +25,7 @@ Good taste is a trained instinct. Develop it by studying great work, reverse-eng
 | [Animations](animations.md) | Animation decisions, easing, duration, enter/exit, icon animations, scale on press, springs |
 | [Performance](performance.md) | GPU-compositable properties, transition specificity, `will-change` usage |
 
-> Typography and surfaces are applied during the Prototype phase — see `skills/prototype/SKILL.md` Prototype Conventions.
+> Typography and surfaces are applied during the Prototype phase — see `archive/prototype/SKILL.md` Prototype Conventions (the prototype skill is temporarily archived).
 
 ---
 

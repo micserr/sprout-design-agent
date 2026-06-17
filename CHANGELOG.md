@@ -55,6 +55,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Changed
+- **Archived the `toge:prototype` skill (temporary).** Moved `skills/prototype/` → `archive/prototype/` so the Claude Code plugin no longer auto-discovers it and it is not exposed under `/toge:`. Phase 3 of the orchestrator workflow is flagged archived; Phases 4 (Design QA) and 6 (Handoff) still run against an existing prototype. Updated `README.md`, `PROMPTS.md`, the agent's Phase 3 reference, and the Codex/Cursor/BMAD adapter skill lists; dropped "prototyping" from the plugin descriptions. Added `archive/README.md` with restore steps (`git mv archive/prototype skills/prototype`). Returning in a future release.
+
 ### Added
 - **Profiles layer** — Sprout skills are now SDLC-neutral. Each team installs with a profile that declares artifact paths, front-matter shape, coexistence agents, prototype target, and naming conventions. Skills reference kinds (e.g., `ux-readiness`); profiles resolve kinds to paths.
 - `profiles/bmad.yaml` — full BMAD mesh (implem-aidlc style) with Sally + John coexistence, `_bmad-output/planning-artifacts/ux/` paths, BMAD front-matter, sibling-repo prototype, feature-scoped ledger.

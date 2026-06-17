@@ -54,7 +54,6 @@ skills:
   - prd-ux-validator
   - secondary-research
   - user-journey
-  - prototype
   - design-tokens
   - design-qa
   - animations
@@ -99,7 +98,6 @@ SKILLS=(
   "prd-ux-validator:PRD UX Validator"
   "secondary-research:Secondary Research"
   "user-journey:User Journey"
-  "prototype:Prototyping"
   "design-tokens:Design Tokens"
   "design-qa:Design QA"
   "animations:Animations"

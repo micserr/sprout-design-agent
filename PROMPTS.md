@@ -2,6 +2,8 @@
 
 Ready-to-use prompts for every skill and workflow. Copy, fill in the brackets, and paste into Claude Code.
 
+> **Note:** the `toge:prototype` skill is **temporarily archived** (see [`archive/`](archive/)). The prototype prompts below are kept for when it returns, but the skill is not currently available under `/toge:`.
+
 ---
 
 ## Full Workflow (Product Design Agent)
@@ -19,7 +21,7 @@ Run toge:prd-gap-analyzer on [file path to product outcome + product unit].
 Produce the screen spec.
 ```
 
-**Resume at prototype**
+**Resume at prototype** _(archived — skill currently out of rotation)_
 ```
 Skip to Phase 3. Here's the context:
 - Product: [product name]
@@ -41,7 +43,7 @@ Product unit: [file path or paste]
 Generate the screen spec.
 ```
 
-### Step 2 — Prototype
+### Step 2 — Prototype _(archived — skill currently out of rotation)_
 ```
 Screen spec: [file path from step 1]
 Stack: Vue 3 · Tailwind v4 · Toge · entry: prototype/main.js · dark mode: yes
@@ -67,7 +69,7 @@ Anchor pain points on the open design decisions from the screen spec.
 Include a journey map table and a Mermaid flow diagram. Focus on the critical path.
 ```
 
-### Prototype
+### Prototype _(archived — skill currently out of rotation)_
 ```
 Turn the wireframes in wireframes/ into a fully interactive prototype.
 Stack: Vue 3 · Tailwind v4 · Toge · entry: prototype/main.js · dark mode: yes
