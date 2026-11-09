@@ -58,6 +58,7 @@ skill_desc() {
     user-journey)       echo "Journey maps, user flow diagrams, pain points, and touchpoint summaries." ;;
     design-tokens)      echo "Token architecture, semantic color families, typography, and dark mode guidance." ;;
     design-qa)          echo "Pre-handoff QA across 4 pillars: visual consistency, token compliance, accessibility, interaction readiness." ;;
+    convert-to-v2)      echo "Converts a legacy parity audit (audit.json) into a Sprout HR v2 Toge prototype: keeps every feature, redesigns the UX, writes the Before and after back into the audit." ;;
     animations)         echo "Animation and micro-interaction principles — hover states, transitions, easing, and motion details." ;;
     handoff)            echo "Developer handoff pass — product unit coverage check, component splits, composable extraction, props/emits typing, prototype artifact removal." ;;
     workflow-state)     echo "Internal helper — reads/writes the feature-scoped workflow ledger. Invoked by other skills, not by humans." ;;
@@ -66,7 +67,7 @@ skill_desc() {
   esac
 }
 
-SKILLS=(prd-gap-analyzer prd-ux-validator secondary-research user-journey design-tokens design-qa animations handoff workflow-state learnings)
+SKILLS=(prd-gap-analyzer prd-ux-validator secondary-research user-journey design-tokens design-qa convert-to-v2 animations handoff workflow-state learnings)
 
 for slug in "${SKILLS[@]}"; do
   skill_file="$SCRIPT_DIR/skills/$slug/SKILL.md"

@@ -56,6 +56,7 @@ skills:
   - user-journey
   - design-tokens
   - design-qa
+  - convert-to-v2
   - animations
   - handoff
   - workflow-state
@@ -100,6 +101,7 @@ SKILLS=(
   "user-journey:User Journey"
   "design-tokens:Design Tokens"
   "design-qa:Design QA"
+  "convert-to-v2:Convert Legacy Audit to v2 Prototype"
   "animations:Animations"
   "handoff:Developer Handoff"
   "workflow-state:Workflow State (helper)"
