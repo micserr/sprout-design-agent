@@ -24,7 +24,7 @@ properties:
     properties:
       inputDocuments: { type: array, items: { type: string } }
       producedBy:     { type: string, const: "sprout-design-agent" }
-      skill:          { type: string, const: "prototype" }
+      skill:          { type: string, enum: ["prototype", "convert-to-v2"] }
       classification: { type: object }
       feature:        { type: string }
       date:           { type: string }
@@ -101,6 +101,40 @@ properties:
           total:            { type: integer }
           covered:          { type: integer }
           missing:          { type: array, items: { type: string } }
+
+  parity:
+    type: object
+    description: >
+      Parity ledger written by convert-to-v2 when the prototype rebuilds a legacy page from a
+      parity audit. One row per obligation in the audit (user action, rule, field, state,
+      interaction, permission, exit, open decision, prototype change). Optional for other prototypes.
+    properties:
+      audit:  { type: string, description: "Path to the audit.json the ledger was built from." }
+      totals:
+        type: object
+        properties:
+          rows:      { type: integer }
+          parity:    { type: integer }
+          improved:  { type: integer }
+          open:      { type: integer }
+          added:     { type: integer }
+          dropped:   { type: integer }
+          missing:   { type: integer, description: "Must be 0 at handoff." }
+          regressed: { type: integer, description: "Must be 0 at handoff." }
+      rows:
+        type: array
+        items:
+          type: object
+          required: [id, kind, status]
+          properties:
+            id:        { type: string, examples: ["lp-list.u3", "R13", "F:Leave types list/Import Credits", "S:Plan form/error"] }
+            kind:      { type: string, enum: [use, rule, field, state, interaction, permission, exit, decision, prototype-change, addition] }
+            text:      { type: string }
+            decision:  { type: string, enum: [carry, fix, drop, decide], description: "The audit's parity.decision." }
+            lands:     { type: string, description: "Screen and component in v2 where this row is satisfied." }
+            treatment: { type: string, enum: [same, redesigned, fixed, dropped, open, added] }
+            status:    { type: string, enum: [parity, improved, open, added, dropped, missing, regressed] }
+            note:      { type: string }
 
   bolt_scope:
     type: object

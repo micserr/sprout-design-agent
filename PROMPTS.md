@@ -76,6 +76,16 @@ Stack: Vue 3 · Tailwind v4 · Toge · entry: prototype/main.js · dark mode: ye
 Wire all screens together with real navigation. Add edge states where the journey map flagged pain points.
 ```
 
+### Convert to v2 (legacy audit → prototype)
+```
+Convert this audit to v2: [path to audit folder, e.g. _bmad-output/planning-artifacts/audit/maintenance/company/leave-policy]
+Keep every feature; redesign the UX with Toge. Show me the redesign plan before building.
+```
+
+```
+Re-run convert-to-v2 on [audit folder]: the gap check added prototype changes. Update the prototype and the After.
+```
+
 ### Design Tokens
 ```
 What token should I use for [describe the use case — e.g., "a card background", "error text", "a subtle divider"]?

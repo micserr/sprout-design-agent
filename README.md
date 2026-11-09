@@ -16,6 +16,12 @@ See [`PROMPTS.md`](PROMPTS.md) for ready-to-use prompts for every skill and work
 | `toge:prd-ux-validator` | Optional research enrichment — validates a PRD against secondary research and produces a research brief. Not required in the core workflow; use for novel markets or high-stakes UX decisions. | "validate the PRD", "research against the PRD", "enrich with research" |
 | `toge:secondary-research` | Free-form competitive and market research — produces an 18-section research brief for use when no PRD exists | "research X", "competitive analysis", "landscape of X", "desk research on X" |
 
+### Legacy → v2 migration
+
+| Skill | What it does | Trigger phrases |
+|---|---|---|
+| `toge:convert-to-v2` | Turns a legacy parity audit (`audit.json` + `shots/` from the `legacy-parity-audit` skill) into a Sprout HR v2 prototype in Toge. Builds a parity ledger of every user action, field, rule, state and permission; redesigns the UX/UI with the designer's approval; builds the room in the prototype repo; checks every ledger row; writes the Before and after back into the audit. No feature is dropped; additions are flagged for approval. | "convert to v2", "build the After", "prototype this audit", "migrate <page> to the new design system" |
+
 ### Design Workflow
 
 | Skill | What it does | Trigger phrases |

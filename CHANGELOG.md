@@ -55,6 +55,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+- `toge:convert-to-v2` skill — turns a legacy parity audit (`audit.json` + `shots/`) into a Sprout HR v2 prototype built with Toge. Parity on features, freedom on experience: builds a numbered parity ledger from the audit, gets the designer's approval on a redesign plan, builds the room in the prototype repo, checks every ledger row (no `missing` or `regressed` allowed), then writes `after-*` screenshots and a `before_after` block back into the audit and rebuilds the report. `references/redesign-rules.md` draws the line between redesign, deletion and addition; `references/before-after.md` documents the output shape.
+- `contracts/prototype-manifest.schema.yaml` — optional `parity` block (the convert-to-v2 ledger).
+
 ### Changed
 - **Archived the `toge:prototype` skill (temporary).** Moved `skills/prototype/` → `archive/prototype/` so the Claude Code plugin no longer auto-discovers it and it is not exposed under `/toge:`. Phase 3 of the orchestrator workflow is flagged archived; Phases 4 (Design QA) and 6 (Handoff) still run against an existing prototype. Updated `README.md`, `PROMPTS.md`, the agent's Phase 3 reference, and the Codex/Cursor/BMAD adapter skill lists; dropped "prototyping" from the plugin descriptions. Added `archive/README.md` with restore steps (`git mv archive/prototype skills/prototype`). Returning in a future release.
 
