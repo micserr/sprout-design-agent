@@ -117,7 +117,7 @@ properties:
           parity:    { type: integer }
           improved:  { type: integer }
           open:      { type: integer }
-          added:     { type: integer }
+          orphans:   { type: integer, description: "Things on the v2 screens with no ledger row. Must be 0 at handoff." }
           dropped:   { type: integer }
           missing:   { type: integer, description: "Must be 0 at handoff." }
           regressed: { type: integer, description: "Must be 0 at handoff." }
@@ -128,12 +128,14 @@ properties:
           required: [id, kind, status]
           properties:
             id:        { type: string, examples: ["lp-list.u3", "R13", "F:Leave types list/Import Credits", "S:Plan form/error"] }
-            kind:      { type: string, enum: [use, rule, field, state, interaction, permission, exit, decision, prototype-change, addition] }
+            kind:      { type: string, enum: [use, rule, field, option-list, state, interaction, permission, entry, exit, data, message, decision, prototype-change] }
             text:      { type: string }
             decision:  { type: string, enum: [carry, fix, drop, decide], description: "The audit's parity.decision." }
             lands:     { type: string, description: "Screen and component in v2 where this row is satisfied." }
-            treatment: { type: string, enum: [same, redesigned, fixed, dropped, open, added] }
-            status:    { type: string, enum: [parity, improved, open, added, dropped, missing, regressed] }
+            treatment: { type: string, enum: [same, redesigned, fixed, dropped, open] }
+            status:    { type: string, enum: [parity, improved, "improved (proposed)", open, dropped, missing, regressed] }
+            options:   { type: array, items: { type: string }, description: "option-list rows: every option in legacy order, word for word. Empty when unknown." }
+            source:    { type: string, description: "Where the options or value came from, e.g. 'spec.fields Tracking days limits', 'R13', 'shot c-tracking-days.jpg'. 'unknown' when no source lists them." }
             note:      { type: string }
 
   bolt_scope:
