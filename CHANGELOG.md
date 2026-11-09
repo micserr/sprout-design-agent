@@ -5,6 +5,19 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.1.0](https://github.com/micserr/sprout-design-agent/compare/v2.0.1...v2.1.0) (2026-11-09)
+
+
+### Features
+
+* add convert-to-v2 skill for legacy audit to v2 prototype ([#38](https://github.com/micserr/sprout-design-agent/issues/38)) ([712a8a2](https://github.com/micserr/sprout-design-agent/commit/712a8a273e3d68f29e7ca2c6eab7ca12cdf77d7b))
+
+
+### Bug Fixes
+
+* **convert-to-v2:** enforce strict parity on data and features ([#39](https://github.com/micserr/sprout-design-agent/issues/39)) ([304c18f](https://github.com/micserr/sprout-design-agent/commit/304c18f65cc1d5eebf98621c2812a30302072f56))
+* sync plugin.json version to 2.0.1 ([#35](https://github.com/micserr/sprout-design-agent/issues/35)) ([d3adb46](https://github.com/micserr/sprout-design-agent/commit/d3adb46945deade8e108c4f849185ebf53e3df05))
+
 ## [2.0.1](https://github.com/micserr/sprout-design-agent/compare/v2.0.0...v2.0.1) (2026-06-07)
 
 
