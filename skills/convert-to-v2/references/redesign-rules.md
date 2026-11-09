@@ -1,48 +1,75 @@
 # Redesign rules: what may change and what may not
 
-The audit's parity notes are **strict** (no new controls, options, steps or copy) because PM and engineering read them as requirements. This skill relaxes exactly one thing: **the experience**. The feature set stays strict.
+This is a **parity migration**. The data and the features are fixed by the audit; only the UX and UI are redesigned.
 
-Test for every decision: *After this change, can every user still do everything the ledger says, with the same outcome, under the same rules and permissions?* If yes, it's a redesign. If no, it's a deletion. If they can now do something they couldn't, it's an addition.
+Test for every decision:
+1. *Can every user still do everything in the ledger, with the same data, rules, messages and outcome?* If no, it's a **deletion**: not allowed.
+2. *Does the screen now show or do anything that isn't a ledger row?* If yes, it's an **addition**: not allowed.
+3. If both answers pass, it's a **redesign**: allowed.
 
-## Free to change (redesign)
+## May change (UX and UI)
 
 | Area | Examples |
 |---|---|
-| Layout and information architecture | Split one long page into sections or tabs; join two legacy pages into a list + detail view; move actions into a page header or row menu |
-| Flow | Page → side sheet or dialog; full-page form → stepped form; inline editing instead of a separate edit page; fewer clicks to the same outcome |
-| Disclosure | Show branching questions progressively, collapse advanced settings — as long as every branch is still reachable and its answers kept |
-| Components | Any Toge component that does the job: text links → buttons or menu items; jqGrid → `TogeDataTable`; bootbox → `TogeAlertDialog`; collapse rows → accordion or expandable table rows |
-| Visual design | Typography, spacing, color (semantic tokens), icons, density, empty/loading illustrations, dark mode |
-| Microcopy | Labels, headings, helper text, toasts and errors rewritten to the prototype repo's voice and four-part structures, **keeping the meaning**. Title-case inconsistencies, typos and jargon get fixed |
-| Feedback for actions that already exist | Loading spinners on existing saves, success toasts for existing saves, inline validation of existing rules, disabled states that explain an existing gate |
-| Accessibility | Labels, focus order, keyboard access, contrast, touch targets — always allowed |
-| Responsive behaviour | Reflow for 820 and 390 in whatever way serves the content |
+| Layout | Where things sit on the page, columns vs stacked, spacing, density, alignment |
+| Grouping and order of presentation | Group related existing fields into sections, cards or tabs; put the main action first. Order that carries meaning (e.g. a ranked list, Active before Inactive) stays |
+| Navigation between the same steps | A separate page becomes a side panel, dialog, tab or inline edit, reaching the same fields and actions. Every legacy way in (menu, links from other pages, URL variants) still lands on the same content |
+| Disclosure | Show dependent questions only when their trigger is chosen — the same trigger legacy uses — and keep every branch reachable |
+| Component choice | The Toge component that does the same job: text link → button or row menu item; jqGrid → `TogeDataTable`; bootbox → `TogeAlertDialog`; collapse row → accordion. Turn off any default behaviour legacy didn't have |
+| Visual design | Typography, color (semantic tokens), icons beside an existing label or status (the text stays), borders, surfaces, dark mode |
+| Responsive behaviour | How the same content reflows at 820 and 390 |
+| Accessibility | Labels wired to inputs, focus order, keyboard access, contrast, touch targets, aria attributes. These don't add visible content |
+| Loading indicators | A spinner or skeleton while an existing call runs, with no new text |
+| Structural labels | A section heading, tab name or page title the new layout needs, **taken from words already in the audit** (the legacy section names, question text, page title) and approved in the plan |
 
-These are recorded as `changes` rows in the After, so the PM sees each one; they don't need approval up front unless they're big (a flow change across pages goes in the Step 2 plan).
+Every one of these is recorded as a `changes` row in the After, so the PM can see it.
 
-## Not allowed (deletion)
+## May not change
 
-- Dropping a user action, field, option, enum value, state, permission gate or exit.
-- Changing a rule's outcome, a default value, a limit, an order that carries meaning, or which roles see what.
+**Features and behaviour**
+- Removing or hiding any user action, field, option, enum value, state, permission gate or exit.
+- Changing a rule's condition or outcome, a default, a limit, a calculation, or who can see what.
+- Changing when a control is enabled, disabled, shown or hidden (e.g. disabling Save until the form is valid).
+- Changing value formats (dates, numbers, units) or the order records are listed in.
+- Removing a feature on a `drop` proposal before the audit is validated.
 - Merging options that lead to different outcomes ("Hiring Anniversary" and "Start of Year" can't become one "Annual").
-- Hiding something behind a path the user can't find. Progressive disclosure must be discoverable from the place the legacy page showed it.
-- "Fixing" a bug whose parity decision is `carry`. Legacy behaviour wins until the PM marks it `fix`; mention the bug in the row's note.
-- Deciding a `decide` item. Build the legacy behaviour, mark the row `open`; you may show an alternative as a UIFork variant if the designer asks.
+- Hiding something where users can't find it. Disclosure must open from the same choice legacy uses.
+- Fixing a bug whose decision is `carry`. Only `fix` decisions change behaviour, and only as their `parity.changes` say.
+- Deciding a `decide` item. Build legacy behaviour and mark it `open`.
 
-## Allowed only with approval (addition)
+**Data**
+- Showing data the legacy page doesn't show, even if it loads it.
+- New columns, counts, totals, badges, status labels, dates, avatars or summaries.
+- Mock records, values or variety beyond what the audit shows.
+- Dropdown, select, radio, checkbox-group or filter options the audit doesn't list. That includes lists filled from company data (Department, Employment Status, Position) that the audit didn't capture. Show what the audit shows (often just "All") and mark the rest unknown.
 
-Anything that gives users a new capability or new data: bulk actions, new filters or sorts on data legacy didn't let you filter, duplicate/"copy from", new statuses, search where there was none, new confirmations that change what the user must do, new settings, cross-page shortcuts.
+**Content**
+- New messages of any kind: confirmations, warnings, success toasts, empty-state text, error text, inline hints, helper text, tooltips, placeholders, onboarding, descriptions.
+- Rewording legacy labels or messages, except a `fix` change or a typo/casing problem an audit finding points out.
 
-Process: list it in the Step 2 plan under "Additions", the designer approves or cuts it, and an approved addition gets its own `before_after` row (`status: added`, title "Not in legacy: …", note with feasibility: low / medium / high and what it would need from the backend). Shell features the prototype already has (⌘K, Ask Sidekick, the sidebar) are not your additions; reuse them, and note on the row if the page now appears in them.
+**New capability**
+- Search, filters, sorting, bulk actions, duplicate/"copy from", export, undo, unsaved-changes warnings, keyboard shortcuts, new confirmations, new settings.
 
-## Grey areas — how to call them
+Ideas in any of these categories go in the report under **Ideas outside parity**. They are not built and not written into the audit.
+
+## Calls on common grey areas
 
 | Situation | Call |
 |---|---|
-| A confirm dialog before a destructive action legacy did without one | Addition (it adds a step). Propose it; it's usually approved |
-| Unsaved-changes warning | Addition |
-| Showing a count or status legacy computed but only showed elsewhere on the page | Redesign (same data, new place) |
-| Showing data legacy loaded but never displayed | Addition |
-| Inline validation of a rule legacy only checked on Save | Redesign (same rule, earlier feedback), as long as Save still enforces it |
-| Replacing a free-text date with a date picker with the same limits | Redesign |
-| A legacy control that never worked (dead button, hidden picker) | Keep it in the ledger as `open` with the audit's finding; don't build a working version unless the parity decision says `fix` |
+| Legacy has a confirm before Deactivate | Keep it, as a Toge alert dialog with the legacy text |
+| Legacy deletes without confirming | No confirmation. Note it under Ideas outside parity |
+| Legacy validates only on Save | Validate on Save. Earlier (inline) validation only if the designer approves it as a timing change in the plan; same rule, same message |
+| Legacy shows an error state as "Not handled" | Don't design an error state for it. It's in the ledger as `S:…/error` = not handled |
+| Toge table shows "Showing 1–10 of 30" by default | Remove it unless legacy shows the same; legacy "10 a page" paging is kept |
+| A legacy control never worked (dead button, hidden picker) | Keep its ledger row with the audit's finding; build it the way the audit says it behaves, or leave it `open` if the audit says it's a `decide` |
+| A count legacy shows in one place, needed in another place by the new layout | Allowed only if it's the same value moved, not shown twice; record it as a UI change |
+| An icon for a text label | The legacy text stays visible; an icon may sit beside it. No tooltip |
+| A filter dropdown (Department, Employment Status…) whose values the audit didn't capture | Keep the control with only the default the audit shows ("All"). Mark it `// UNKNOWN`, list it for a re-audit, and don't fill it with sample departments |
+| The audit lists the options but not their order | Use the order in the screenshot; if there's no screenshot, the order the audit lists them in, and note it |
+| A plain legacy dropdown | Toge `Select`, not a combobox: a combobox adds search |
+| Toge table defaults (sort arrows, rows-per-page selector, "Showing 1–10 of 30", row checkboxes) | Off, unless the legacy grid had the same |
+| Toge default strings ("Select an option", "Pick a date", "No results found.") | Replace with the legacy text for that spot, or remove |
+| Marking required fields with an asterisk | Allowed when the audit says the field is required. It's a visual cue for an existing rule; record it as a UI change |
+| A form split into tabs, with an error on a tab that isn't open | Open the tab with the first error. No error summary or count |
+| A Toge dialog needs a title or description and legacy had none | Use the legacy dialog's own heading text; leave the description out (or screen-reader-only with legacy text). Don't write one |
+| Prototype shell (sidebar, ⌘K, Ask Sidekick) | Not part of this page and not your addition. Only add the page's nav entry at `meta.where` |

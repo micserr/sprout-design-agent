@@ -79,7 +79,7 @@ Wire all screens together with real navigation. Add edge states where the journe
 ### Convert to v2 (legacy audit → prototype)
 ```
 Convert this audit to v2: [path to audit folder, e.g. _bmad-output/planning-artifacts/audit/maintenance/company/leave-policy]
-Keep every feature; redesign the UX with Toge. Show me the redesign plan before building.
+Keep every feature and all the data; redesign only the UX/UI with Toge. Show me the redesign plan before building.
 ```
 
 ```

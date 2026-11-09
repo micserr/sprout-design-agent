@@ -20,7 +20,7 @@ See [`PROMPTS.md`](PROMPTS.md) for ready-to-use prompts for every skill and work
 
 | Skill | What it does | Trigger phrases |
 |---|---|---|
-| `toge:convert-to-v2` | Turns a legacy parity audit (`audit.json` + `shots/` from the `legacy-parity-audit` skill) into a Sprout HR v2 prototype in Toge. Builds a parity ledger of every user action, field, rule, state and permission; redesigns the UX/UI with the designer's approval; builds the room in the prototype repo; checks every ledger row; writes the Before and after back into the audit. No feature is dropped; additions are flagged for approval. | "convert to v2", "build the After", "prototype this audit", "migrate <page> to the new design system" |
+| `toge:convert-to-v2` | Turns a legacy parity audit (`audit.json` + `shots/` from the `legacy-parity-audit` skill) into a Sprout HR v2 prototype in Toge. Builds a parity ledger of every user action, field, rule, state and permission; redesigns only the UX/UI with the designer's approval; builds the room in the prototype repo; checks both ways that every ledger row is built and nothing outside the audit was added; writes the Before and after back into the audit. Strict parity: no data or feature is dropped, added or invented. | "convert to v2", "build the After", "prototype this audit", "migrate <page> to the new design system" |
 
 ### Design Workflow
 
